@@ -1,131 +1,113 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import Modal from 'react-modal';
-import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
 import '../css/calendar.css';
+import { v4 as uuidv4 } from 'uuid'; // Importa una librería para generar identificadores únicos
 
-Modal.setAppElement('#root');
+Modal.setAppElement('#root'); // Configura el elemento raíz para el modal para mejorar la accesibilidad
 
 function Calendar() {
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [viewEventModalIsOpen, setViewEventModalIsOpen] = useState(false);
-    const [confirmDeleteModalIsOpen, setConfirmDeleteModalIsOpen] = useState(false);
-    const [events, setEvents] = useState([]);
-    const [eventTitle, setEventTitle] = useState('');
-    const [eventDescription, setEventDescription] = useState('');
-    const [eventDate, setEventDate] = useState('');
-    const [eventColor, setEventColor] = useState('green');
-    const [selectedEvent, setSelectedEvent] = useState(null);
+    // Definición de estados para manejar los modales y los eventos
+    const [modalIsOpen, setModalIsOpen] = useState(false); // Estado para controlar si el modal de creación/edición está abierto
+    const [viewEventModalIsOpen, setViewEventModalIsOpen] = useState(false); // Estado para controlar si el modal de visualización está abierto
+    const [confirmDeleteModalIsOpen, setConfirmDeleteModalIsOpen] = useState(false); // Estado para controlar si el modal de confirmación de eliminación está abierto
+    const [events, setEvents] = useState([]); // Estado para almacenar los eventos del calendario
+    const [eventTitle, setEventTitle] = useState(''); // Estado para el título del evento
+    const [eventDescription, setEventDescription] = useState(''); // Estado para la descripción del evento
+    const [eventDate, setEventDate] = useState(''); // Estado para la fecha del evento
+    const [eventColor, setEventColor] = useState('green'); // Estado para el color del evento
+    const [selectedEvent, setSelectedEvent] = useState(null); // Estado para almacenar el evento seleccionado
 
-    useEffect(() => {
-        axios.get('http://localhost:3000/events')
-            .then(response => setEvents(response.data))
-            .catch(error => console.error('Error al cargar los eventos:', error));
-    }, []);
-
+    // Maneja el clic en una fecha del calendario
     const handleDateClick = (arg) => {
-        setEventDate(arg.dateStr);
-        openModal();
+        setEventDate(arg.dateStr); // Establece la fecha seleccionada
+        openModal(); // Abre el modal de creación/edición
     };
 
     const openModal = () => {
-        setModalIsOpen(true);
+        setModalIsOpen(true); // Abre el modal de creación/edición
     };
 
     const closeModal = () => {
-        setModalIsOpen(false);
-        resetEventForm();
+        setModalIsOpen(false); // Cierra el modal de creación/edición
+        resetEventForm(); // Resetea el formulario del evento
     };
 
     const openViewEventModal = () => {
-        setViewEventModalIsOpen(true);
+        setViewEventModalIsOpen(true); // Abre el modal de visualización de evento
     };
 
     const closeViewEventModal = () => {
-        setViewEventModalIsOpen(false);
+        setViewEventModalIsOpen(false); // Cierra el modal de visualización de evento
     };
 
     const openConfirmDeleteModal = () => {
-        setConfirmDeleteModalIsOpen(true);
+        setConfirmDeleteModalIsOpen(true); // Abre el modal de confirmación de eliminación
     };
 
     const closeConfirmDeleteModal = () => {
-        setConfirmDeleteModalIsOpen(false);
+        setConfirmDeleteModalIsOpen(false); // Cierra el modal de confirmación de eliminación
     };
 
+    // Resetea los campos del formulario del evento
     const resetEventForm = () => {
-        setSelectedEvent(null);
-        setEventTitle('');
-        setEventDescription('');
-        setEventDate('');
-        setEventColor('green');
+        setSelectedEvent(null); // Deselecciona el evento
+        setEventTitle(''); // Resetea el título del evento
+        setEventDescription(''); // Resetea la descripción del evento
+        setEventDate(''); // Resetea la fecha del evento
+        setEventColor('green'); // Resetea el color del evento
     };
 
+    // Maneja la acción de guardar el evento
     const handleSaveEvent = () => {
         if (selectedEvent) {
-            const updatedEvent = {
-                id: selectedEvent.id,
-                title: eventTitle,
-                start: eventDate,
-                description: eventDescription,
-                color: eventColor
-            };
-
-            axios.put(`http://localhost:3000/events/${selectedEvent.id}`, updatedEvent)
-                .then(response => {
-                    setEvents(events.map(event =>
-                        event.id === selectedEvent.id ? response.data : event
-                    ));
-                    closeModal();
-                })
-                .catch(error => console.error('Error al editar el evento:', error));
+            // Edita un evento existente
+            setEvents(events.map(event =>
+                event.id === selectedEvent.id
+                    ? { ...event, title: eventTitle, description: eventDescription, color: eventColor }
+                    : event
+            ));
         } else {
+            // Crea un nuevo evento
             const newEvent = {
-                id: uuidv4(),
+                id: uuidv4(), // Genera un identificador único para el nuevo evento
                 title: eventTitle,
                 start: eventDate,
                 description: eventDescription,
                 color: eventColor
             };
-
-            axios.post('http://localhost:3000/events', newEvent)
-                .then(response => {
-                    setEvents([...events, response.data]);
-                    closeModal();
-                })
-                .catch(error => console.error('Error al crear el evento:', error));
+            setEvents([...events, newEvent]); // Añade el nuevo evento a la lista de eventos
         }
+        closeModal(); // Cierra el modal de creación/edición
     };
 
+    // Maneja el clic en un evento del calendario
     const handleEventClick = (info) => {
-        const clickedEvent = events.find(event => event.id === info.event.id);
-        setSelectedEvent(clickedEvent);
-        setEventTitle(clickedEvent.title);
-        setEventDescription(clickedEvent.description);
-        setEventDate(clickedEvent.start);
-        setEventColor(clickedEvent.color);
-        openViewEventModal();
+        const clickedEvent = events.find(event => event.id === info.event.id); // Busca el evento clickeado en la lista de eventos
+        setSelectedEvent(clickedEvent); // Establece el evento seleccionado
+        setEventTitle(clickedEvent.title); // Establece el título del evento
+        setEventDescription(clickedEvent.description); // Establece la descripción del evento
+        setEventDate(clickedEvent.start); // Establece la fecha del evento
+        setEventColor(clickedEvent.color); // Establece el color del evento
+        openViewEventModal(); // Abre el modal de visualización de evento
     };
 
+    // Maneja la acción de eliminar un evento
     const handleDeleteEvent = () => {
-        axios.delete(`http://localhost:3000/events/${selectedEvent.id}`)
-            .then(() => {
-                setEvents(events.filter(event => event.id !== selectedEvent.id));
-                closeConfirmDeleteModal();
-                closeViewEventModal();
-            })
-            .catch(error => console.error('Error al eliminar el evento:', error));
+        setEvents(events.filter(event => event.id !== selectedEvent.id)); // Elimina el evento seleccionado de la lista de eventos
+        closeConfirmDeleteModal(); // Cierra el modal de confirmación de eliminación
+        closeViewEventModal(); // Cierra el modal de visualización de evento
     };
 
     const handleEditEvent = () => {
-        openModal();
-        closeViewEventModal();
+        openModal(); // Abre el modal de creación/edición
+        closeViewEventModal(); // Cierra el modal de visualización de evento
     };
 
+    // Renderiza el contenido del evento en el calendario
     const eventContent = (eventInfo) => {
         return (
             <>
@@ -207,7 +189,7 @@ function Calendar() {
                     <button onClick={closeConfirmDeleteModal}>Cancelar</button>
                 </div>
             </Modal>
-        </div>
+            </div>
     );
 }
 
