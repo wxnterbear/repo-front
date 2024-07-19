@@ -1,0 +1,46 @@
+[
+    {
+        "id": "1",
+        "title": "Propuesta 1",
+        "description": "Descripción propuesta 1",
+        "status": "rejected",
+        "comments": [
+            {
+                "body": "Mepa",
+                "comment_by": "salo"
+            },
+            {
+                "body": "Nomegusta",
+                "comment_by": "salo"
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "title": "Propuesta increíble",
+        "description": "He aquí la propuesta xd",
+        "status": "accepted",
+        "comments": [
+            {
+                "body": "Nomegusta",
+                "comment_by": "root"
+            },
+            {
+                "body": "Está increíble wuiii",
+                "comment_by": "R1oGeyms"
+            }
+        ]
+    },
+    {
+        "id": "3",
+        "title": "Propuesta 3 omgomg",
+        "description": "Consiste en llorar todos juntos, epa",
+        "status": "accepted",
+        "comments": [
+            {
+                "body": "Mepa",
+                "comment_by": "root"
+            }
+        ]
+    }
+]

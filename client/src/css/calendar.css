@@ -1,0 +1,274 @@
+@font-face {
+    font-family: 'JerseyR';
+    src: url('../font/jerseyr.ttf') format('truetype');
+}
+
+.fc-button.fc-prev-button,
+.fc-button.fc-next-button,
+.fc-button.fc-today-button {
+    background-color: #581845;
+    border: none;
+    color: rgb(255, 255, 255);
+}
+
+.fc-button.fc-prev-button:hover,
+.fc-button.fc-next-button:hover,
+.fc-button.fc-today-button:hover {
+    background-color: #900C3F;
+    border: none;
+    color: rgb(255, 255, 255);
+}
+
+.fc-button.fc-dayGridMonth-button,
+.fc-button.fc-timeGridWeek-button,
+.fc-button.fc-timeGridDay-button {
+    background-color: #581845;
+    border: none;
+
+}
+
+.fc-button.fc-dayGridMonth-button:hover,
+.fc-button.fc-timeGridWeek-button:hover,
+.fc-button.fc-timeGridDay-button:hover {
+    background-color: #900C3F;
+    border: none;
+}
+
+.full-container {
+    font-family: 'JerseyR', sans-serif;
+    background-color: rgba(204, 161, 64, 1);
+    font-size: 20px;
+}
+
+
+.overlay1 {
+    font-family: 'JerseyR', sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 1000;
+}
+
+
+.modal-creation-event {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 420px;
+    background-color: rgba(31, 35, 70, 1);
+}
+
+.modal-creation-event h2 {
+    text-align: center;
+    color: rgba(204, 161, 64, 1);
+    font-size: 40px;
+}
+
+.modal-creation-event label {
+    display: block;
+    margin-top: 5px;
+    color: rgba(204, 161, 64, 1);
+    font-size: 30px;
+}
+
+.modal-creation-event input,
+.modal-creation-event textarea,
+.modal-creation-event select {
+    width: 95%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid rgba(31, 35, 70, 1);
+    border-radius: 5px;
+    background-color: #ffffff;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+
+}
+
+.modal-creation-event .fecha {
+    margin-top: 10px;
+    font-weight: normal;
+    color: rgba(204, 161, 64, 1);
+    font-size: 30px;
+}
+
+.modal-creation-event .guardar,
+.modal-creation-event .cancelar {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'JerseyR', sans-serif;
+    font-size: 25px;
+    transition: background-color 0.3s;
+
+}
+
+.modal-creation-event .guardar {
+    background-color: #175A0C;
+    color: white;
+
+}
+
+.modal-creation-event .guardar:hover {
+    background-color: #0a2906;
+
+}
+
+.modal-creation-event .cancelar {
+    background-color: #a3180e;
+    color: white;
+}
+
+.modal-creation-event .cancelar:hover {
+    background-color: #630b05;
+}
+
+.modal-view-event {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(31, 35, 70, 1);
+    color: rgba(204, 161, 64, 1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    width: 400px;
+}
+
+.modal-view-event h2 {
+    text-align: center;
+    font-size: 45px;
+    font-weight: bolder;
+
+}
+
+.modal-view-event p {
+    margin: 10px 0;
+    font-size: 25px;
+    font-weight: bolder;
+
+}
+
+.modal-view-event .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.modal-view-event button {
+    flex: 1;
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'JerseyR', sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+    transition: background-color 0.3s;
+}
+
+.modal-view-event button:first-child {
+    background-color: #ffc107;
+    color: black;
+}
+
+.modal-view-event button:first-child:hover {
+    background-color: #8a6700;
+}
+
+.modal-view-event button:nth-child(2) {
+    background-color: #a3180e;
+    color: white;
+}
+
+.modal-view-event button:nth-child(2):hover {
+    background-color: #630b05;
+}
+
+.modal-view-event button:last-child {
+    background-color: #07A193;
+    color: white;
+}
+
+.modal-view-event button:last-child:hover {
+    background-color: #074b45;
+}
+
+/* Modal para confirmar eliminación */
+.modal-confirm-delete {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(31, 35, 70, 1);
+    color: rgba(204, 161, 64, 1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    width: 300px;
+}
+
+.modal-confirm-delete h2 {
+    text-align: center;
+    font-size: 35px;
+}
+
+.modal-confirm-delete p {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 20px;
+}
+
+.modal-confirm-delete .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+}
+
+.modal-confirm-delete button {
+    flex: 1;
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'JerseyR', sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+    transition: background-color 0.3s;
+}
+
+.modal-confirm-delete button:first-child {
+    background-color: #a3180e;
+    color: white;
+}
+
+.modal-confirm-delete button:first-child:hover {
+    background-color: #630b05;
+}
+
+.modal-confirm-delete button:last-child {
+    background-color: #07A193;
+    color: white;
+}
+
+.modal-confirm-delete button:last-child:hover {
+    background-color: #074b45;
+}
