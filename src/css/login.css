@@ -1,0 +1,56 @@
+@font-face {
+  font-family: 'JerseyR';
+  src: url('../font/jerseyr.ttf') format('truetype');
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(31, 35, 70, 1);
+  min-height: 100vh;
+ 
+}
+
+.login-container {
+  width: 70%;
+  height: 250px;
+  padding: 20px;
+  background-color: rgba(204, 161, 64, 1);
+  color: rgba(31, 35, 70, 1);
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(204, 162, 64, 0.418);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-family: 'JerseyR', sans-serif;
+  font-size: 60px;
+  color: rgba(31, 35, 70, 1);
+  margin-bottom: 40px;
+}
+
+.image-container {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: solid 4px;
+
+}
+
+.image {
+  width: 200px;
+  height: 200px;
+
+}
+
+.form-container {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
