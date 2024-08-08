@@ -3,6 +3,13 @@
     src: url('../font/jerseyr.ttf') format('truetype');
 }
 
+body{
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-left: 15px;
+    
+}
+
 .fc-button.fc-prev-button,
 .fc-button.fc-next-button,
 .fc-button.fc-today-button {
@@ -34,10 +41,20 @@
     border: none;
 }
 
+:root{
+    --fc-today-bg-color: #05521e; /* día actual */ 
+    --fc-button-bg-color: #900C3F; /* boton de 'today' */ 
+    --fc-button-active-bg-color: #900C3F; /* boton activo */ 
+    --fc-border-color: #ffe285; /* borde del calendario */ 
+    --fc-border-radius: 15px;
+}
+
+
 .full-container {
     font-family: 'JerseyR', sans-serif;
     background-color: rgba(204, 161, 64, 1);
     font-size: 20px;
+    border-radius: 15px;
 }
 
 

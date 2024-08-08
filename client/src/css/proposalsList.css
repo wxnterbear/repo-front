@@ -1,0 +1,46 @@
+@font-face {
+    font-family: 'JerseyR';
+    src: url('../font/jerseyr.ttf') format('truetype');
+  }
+
+.proposals-list {
+    padding: 20px;
+    background: rgba(31, 35, 70, 1);
+  }
+  
+  .proposals-list h1 {
+    font-size:60px;
+    margin-bottom: 20px;
+    color: rgba(204, 161, 64, 1);
+    font-family: 'JerseyR', sans-serif;
+  }
+  
+  .proposals-list ul {
+    list-style: none;
+    padding: 10px;
+    border-radius: 5px;
+    background: #0000009d;
+  }
+  
+  .proposals-list li {
+    padding: 10px 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    background: #941c1c;
+    color: rgb(245, 198, 137);
+    font-family: 'JerseyR', sans-serif;
+    font-size: 30px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+  }
+
+  .proposals-list li:hover {
+
+    background: #470d0d;
+
+  }
+
+  

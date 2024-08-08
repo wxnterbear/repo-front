@@ -1,0 +1,126 @@
+@font-face {
+    font-family: 'JerseyR';
+    src: url('../font/jerseyr.ttf') format('truetype');
+}
+
+body {
+    background-color: rgba(31, 35, 70, 1);
+}
+
+.brainstorming-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: rgba(118, 148, 184, 0.61);
+    border-radius: 8px;
+}
+
+.brainstorming-header {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    margin-bottom: 20px; 
+}
+
+.title {
+    font-family: 'JerseyR', sans-serif;
+    font-size: 45px;
+    color: rgba(204, 161, 64, 1);
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 2px solid rgba(31, 35, 70, 1);
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    font-size: 15px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+button {
+    padding: 10px 20px;
+    font-family: 'JerseyR', sans-serif;
+    background-color: #045f7e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #013141;
+}
+
+.ideas-board {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 100%; /* Asegura que el contenedor no exceda el ancho disponible */
+    overflow-x: auto;
+    margin: 20px;
+}
+
+.idea-postit {
+    background-color: rgba(204, 161, 64, 1);
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s;
+    
+    
+}
+
+.idea-postit:hover {
+    transform: scale(1.05);
+}
+
+.modal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid rgba(31, 35, 70, 1);
+    border-radius: 5px;
+    font-size: 15px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.archive-button{
+
+    background: rgba(204, 161, 64, 1);
+    color: rgba(31, 35, 70, 1);
+    font-size: 38px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.archive-button:hover{
+
+    background: rgb(126, 95, 24);
+}

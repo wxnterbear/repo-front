@@ -1,0 +1,97 @@
+@font-face {
+  font-family: 'JerseyR';
+  src: url('../font/jerseyr.ttf') format('truetype');
+}
+
+body {
+  background-color: rgba(31, 35, 70, 1);
+}
+
+.proposal-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: rgb(31, 35, 70);
+  margin-top: 20px;
+}
+
+.proposal-detail h1 {
+  font-family: 'JerseyR', sans-serif;
+  font-size: 45px;
+  color: rgba(204, 161, 64, 1);
+}
+
+.proposal-detail p {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 20px;
+  color: #FFFFFF;
+  margin: 0 0 10px;
+}
+
+.proposal-detail select,
+.proposal-detail textarea {
+  width: 97%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 2px solid rgba(204, 161, 64, 1);
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  font-size: 15px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.proposal-detail textarea {
+  resize: vertical;
+}
+
+.proposal-detail .buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.proposal-detail .buttons button {
+  
+  font-family: 'JerseyR', sans-serif;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.proposal-detail .buttons button:first-child {
+  background-color: #175A0C;
+  color: white;
+}
+
+.proposal-detail .buttons button:first-child:hover {
+  background-color: #0a2906;
+}
+
+.proposal-detail .buttons button:last-child {
+  background-color: #a3180e;
+  color: white;
+}
+
+.proposal-detail .buttons button:last-child:hover {
+  background-color: #630b05;
+}
+
+.proposal-detail button {
+  margin-top: 10px;
+  font-size: 25px;
+  border-radius: 5px;
+  border: none;
+  padding: 10px 15px;
+  font-family: 'JerseyR', sans-serif;
+  background-color: #045f7e;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.proposal-detail button:hover {
+  background-color: #013141;
+}

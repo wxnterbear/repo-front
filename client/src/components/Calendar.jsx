@@ -145,7 +145,7 @@ function Calendar() {
                     center: 'title', // Título centrado
                     end: 'dayGridMonth,timeGridWeek,timeGridDay' // Botones al final del toolbar
                 }}
-                height={'90vh'} // Altura del calendario
+                height={'95vh'} // Altura del calendario
                 dateClick={handleDateClick} // Evento que se ejecuta al hacer clic en una fecha
                 events={events} // Eventos a mostrar en el calendario
                 eventContent={eventContent} // Renderizador del contenido del evento
