@@ -10,6 +10,6 @@ services:
   - type: web
     name: backend
     env: node
-    build_command: cd server && npm install
-    start_command: cd server && npm start
+    build_command: cd server && node server.js
+    start_command: cd server && node server.js
     repo: <https://github.com/wxnterbear/facultadIng.git>
