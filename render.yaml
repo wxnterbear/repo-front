@@ -5,11 +5,11 @@ services:
     static_publish_dir: client/build
     build_command: cd client && npm install && npm run build
     start_command: cd client && npm start
-    repo: <YOUR_REPO_URL>
+    repo: <https://github.com/wxnterbear/facultadIng.git>
     
   - type: web
     name: backend
     env: node
     build_command: cd server && npm install
     start_command: cd server && npm start
-    repo: <YOUR_REPO_URL>
+    repo: <https://github.com/wxnterbear/facultadIng.git>
