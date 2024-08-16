@@ -18,6 +18,7 @@ const ProposalDetail = () => {
       try {
         const response = await axios.get('http://127.0.0.1:8000/content_proposal/');
         const proposal = response.data.find(proposal => proposal.id === parseInt(id)); // Busca la propuesta con el id proporcionado
+        console.log('Propuesta seleccionada:', proposal); // Inspecciona la estructura del objeto aquí
         setSelectedProposal(proposal);
       } catch (error) {
         console.error('Error obteniendo las propuestas:', error);
@@ -101,13 +102,15 @@ const ProposalDetail = () => {
   return (
     <div className="proposal-detail">
       <h1>{selectedProposal.title}</h1>
+      <p><strong>Descripción:</strong> {selectedProposal.desc || 'No hay descripción'}</p>
+      <p><strong>Descripción 2.0:</strong> {selectedProposal.descripcion}</p>
       <p><strong>Tipo:</strong> {selectedProposal.type}</p>
       <p><strong>Red social:</strong> {selectedProposal.social_media}</p>
-      <p><strong>Descripción:</strong> {selectedProposal.description || 'No hay descripción'}</p>
       <p><strong>Copy:</strong> {selectedProposal.copy || 'No hay copy'}</p>
       <p><strong>Creado por:</strong> {selectedProposal.proposed_by || 'Desconocido'}</p>
       <p><strong>Fecha de actualización:</strong> {selectedProposal.updated || 'Desconocida'}</p>
-      <p><strong>Estado:</strong> {selectedProposal.status || 'Desconocido'}</p>
+
+      {/* <p><strong>Estado:</strong> {selectedProposal.status || 'Desconocido'}</p>*/}
 
       {error && <p className="error-message">{error}</p>}
 
