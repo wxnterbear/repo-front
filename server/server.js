@@ -184,7 +184,7 @@ app.put('/proposals/:id/reject', async (req, res) => {
   }
 });
 
-// ------------------------------------------------ Ideas ------------------------------------------------ 
+// ------------------------------------------------ Ideas ------------------------------------------------ //
 
 const ideasFilePath = path.join(__dirname, 'ideas.json'); // Ruta al archivo de ideas
 const acceptedIdeasFilePath = path.join(__dirname, 'accepted_ideas.json'); // Ruta al archivo de ideas aceptadas
