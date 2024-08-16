@@ -1,0 +1,49 @@
+@font-face {
+    font-family: 'JerseyR';
+    src: url('../font/jerseyr.ttf') format('truetype');
+}
+
+
+.home-container {
+    background: #fff;
+    border-radius: 8px;
+    height: 400px;
+    align-items: center;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    justify-content: center; 
+}
+
+.title-home{
+    font-family: 'JerseyR', sans-serif;
+    font-size: 85px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; 
+    margin-bottom: 80px;
+}
+
+button {
+    padding: 20px 40px;
+    font-family: 'JerseyR', sans-serif;
+    background-color: #045f7e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #013141;
+}
+
+button:focus {
+    outline: none;
+}

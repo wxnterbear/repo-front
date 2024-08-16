@@ -6,6 +6,7 @@ import ProposalsList from './components/ProposalsList';
 import IdeasArchive from './components/IdeasArchive';
 import Brainstorming from './components/BrainStorming';
 import ProposalsForms from './components/ProposalsForm';
+import Home from './components/home';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         
 
         <Routes>
+        <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/proposals" element={<ProposalsList />} />
