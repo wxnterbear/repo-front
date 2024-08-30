@@ -45,7 +45,7 @@ const ProposalsForms = () => {
 
         try {
 
-            const response = await axios.post('http://localhost:8000/content_proposal/', formData, {
+            const response = await axios.post('http://django-tester.onrender.com/content_proposal/', formData, {
                 // El encabezado indica que el body de la solicitud 'formdata' está codificado en
                 // 'multipart/form-data' -> formato para enviar archivos a través de http
                 headers: {

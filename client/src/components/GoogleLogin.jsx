@@ -11,9 +11,9 @@ const Login = () => {
                 <div className='image-container'>
                     <img src={imagen} alt='Imagen' className='image' />
                 </div>
-                <div className='form-container'>
+                <div className='form-container-login'>
 
-                    <h1 className='title'>Inicio de sesión</h1>
+                    <h1 className='title-login'>Inicio de sesión</h1>
 
                     <GoogleLogin
                         onSuccess={credentialResponse => {

@@ -42,7 +42,7 @@ body{
 }
 
 :root{
-    --fc-today-bg-color: #05521e; /* día actual */ 
+    --fc-today-bg-color: #62a376; /* día actual */ 
     --fc-button-bg-color: #900C3F; /* boton de 'today' */ 
     --fc-button-active-bg-color: #900C3F; /* boton activo */ 
     --fc-border-color: #ffe285; /* borde del calendario */ 

@@ -110,8 +110,8 @@ const Brainstorming = () => {
                     <option value="reject">Rechazar</option>
                 </select>
                 <br />
-                <button onClick={handleAction}>Confirmar</button> {/* Botón para confirmar la acción */}
-                <button onClick={closeModal}>Cancelar</button> {/* Botón para cancelar y cerrar el modal */}
+                <button c className='btn' onClick={handleAction}>Confirmar</button> {/* Botón para confirmar la acción */}
+                <button className='btn' onClick={closeModal}>Cancelar</button> {/* Botón para cancelar y cerrar el modal */}
             </Modal>
         </div>
     );

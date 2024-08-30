@@ -7,6 +7,7 @@ import IdeasArchive from './components/IdeasArchive';
 import Brainstorming from './components/BrainStorming';
 import ProposalsForms from './components/ProposalsForm';
 import Home from './components/home';
+import Register from './components/GoogleRegister';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Routes>
         <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/proposals" element={<ProposalsList />} />
           <Route path="/content_proposal/:id" element={<ProposalDetail />} />

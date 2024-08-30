@@ -29,7 +29,7 @@
     margin-bottom: 80px;
 }
 
-button {
+.opc {
     padding: 20px 40px;
     font-family: 'JerseyR', sans-serif;
     background-color: #045f7e;
@@ -40,10 +40,10 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.opc:hover {
     background-color: #013141;
 }
 
-button:focus {
+.opc:focus {
     outline: none;
 }

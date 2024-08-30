@@ -10,10 +10,10 @@ const Home = () => {
         <div className="home-container">
           <h1 className="title-home">Bienvenido</h1>
           <div className="button-container">
-            <button onClick={() => navigate('/brainstorming')}>Ir a lluvia de ideas</button>
-            <button onClick={() => navigate('/proposals')}>Ir a Propuestas</button>
-            <button onClick={() => navigate('/proposals_form')}>Ir al formulario de Propuestas</button>
-            <button onClick={() => navigate('/calendar')}>Ir a Calendario</button>
+            <button className="opc" onClick={() => navigate('/brainstorming')}>Ir a lluvia de ideas</button>
+            <button className="opc" onClick={() => navigate('/proposals')}>Ir a Propuestas</button>
+            <button className="opc" onClick={() => navigate('/proposals_form')}>Ir al formulario de Propuestas</button>
+            <button className="opc" onClick={() => navigate('/calendar')}>Ir a Calendario</button>
           </div>
         </div>
       );
