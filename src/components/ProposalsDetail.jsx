@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import '../css/proposalDetail.css';
+import '../css/header.css';
+
 
 const ProposalDetail = () => {
+
+  const navigate = useNavigate();
+
   const { id } = useParams();  // Obtiene el id desde los parámetros de la url
   const [loading, setLoading] = useState(true); // Maneja el estado de carga (si los datos aun están cargando desde la api)
   const [comments, setComments] = useState({}); // Objeto vacío para guardar los comentarios
@@ -16,8 +22,9 @@ const ProposalDetail = () => {
   useEffect(() => {
     const fetchProposals = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/content_proposal/');
+        const response = await axios.get('django-tester.onrender.com/content_proposal/');
         const proposal = response.data.find(proposal => proposal.id === parseInt(id)); // Busca la propuesta con el id proporcionado
+        console.log('Propuesta seleccionada:', proposal); // Inspecciona la estructura del objeto aquí
         setSelectedProposal(proposal);
       } catch (error) {
         console.error('Error obteniendo las propuestas:', error);
@@ -63,19 +70,19 @@ const ProposalDetail = () => {
     };
 
     // Envía el comentario al servidor
-    axios.post(`http://localhost:3001/proposals/${proposalId}/comments`, comment)
+    axios.post(`http://django-tester.onrender.com/proposals/${proposalId}/comments`, comment)
       .then(response => {
         console.log('Comentario enviado:', response.data);
         setError(''); // Limpiar mensaje de error al enviar comentario exitosamente
         // Envía la acción correspondiente después de enviar el comentario
         if (statusAction === 'accept') {
-          axios.put(`http://localhost:3001/proposals/${proposalId}/accept`)
+          axios.put(`django-tester.onrender.com/proposals/${proposalId}/accept`)
             .then(response => {
               console.log('Propuesta aceptada:', response.data);
             })
             .catch(error => console.error('Error al aceptar la propuesta:', error));
         } else if (statusAction === 'reject') {
-          axios.put(`http://localhost:3001/proposals/${proposalId}/reject`)
+          axios.put(`django-tester.onrender.com/proposals/${proposalId}/reject`)
             .then(response => {
               console.log('Propuesta rechazada:', response.data);
             })
@@ -100,14 +107,22 @@ const ProposalDetail = () => {
 
   return (
     <div className="proposal-detail">
+      <div className="header">
+            <button className="opc" onClick={() => navigate('/brainstorming')}>Ir a lluvia de ideas</button>
+            <button className="opc" onClick={() => navigate('/proposals')}>Ir a Propuestas</button>
+            <button className="opc" onClick={() => navigate('/proposals_form')}>Ir al formulario de Propuestas</button>
+            <button className="opc" onClick={() => navigate('/calendar')}>Ir a Calendario</button>
+          </div>
       <h1>{selectedProposal.title}</h1>
+      <p><strong>Descripción:</strong> {selectedProposal.desc || 'No hay descripción'}</p>
+      <p><strong>Descripción 2.0:</strong> {selectedProposal.descripcion}</p>
       <p><strong>Tipo:</strong> {selectedProposal.type}</p>
       <p><strong>Red social:</strong> {selectedProposal.social_media}</p>
-      <p><strong>Descripción:</strong> {selectedProposal.description || 'No hay descripción'}</p>
       <p><strong>Copy:</strong> {selectedProposal.copy || 'No hay copy'}</p>
       <p><strong>Creado por:</strong> {selectedProposal.proposed_by || 'Desconocido'}</p>
       <p><strong>Fecha de actualización:</strong> {selectedProposal.updated || 'Desconocida'}</p>
-      <p><strong>Estado:</strong> {selectedProposal.status || 'Desconocido'}</p>
+
+      {/* <p><strong>Estado:</strong> {selectedProposal.status || 'Desconocido'}</p>*/}
 
       {error && <p className="error-message">{error}</p>}
 
@@ -140,7 +155,7 @@ const ProposalDetail = () => {
           <option value="accept">Aceptar</option>
           <option value="reject">Rechazar</option>
         </select>
-        <button
+        <button className='btn-detail'
           onClick={() => handleCommentSubmit(selectedProposal.id)}
           disabled={!commentBy[selectedProposal.id] || !comments[selectedProposal.id] || !statusAction}
         >

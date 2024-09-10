@@ -1,0 +1,81 @@
+@font-face {
+    font-family: 'JerseyR';
+    src: url('../font/jerseyr.ttf') format('truetype');
+  }
+  
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+
+.opc-l, .opc-r{
+    background-color: #1d7532;
+    font-size: 20px;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: 'JerseyR', sans-serif;
+    transition: background-color 0.3s;
+  }
+  
+  .home-container {
+    text-align: center;
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url('../images/logologin.png') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+    padding-top: 60px; 
+  }
+
+  .home-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 1;
+  }
+  
+
+  .title-home {
+    font-size: 3rem;
+    z-index: 2;
+    margin-top: 0;
+    font-family: 'JerseyR', sans-serif;
+  }
+  
+ .p-home{
+    color: rgba(255, 255, 255, 0.87);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18px;
+    z-index: 2;
+    font-weight: bold;
+ }
+ .auth-buttons {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    z-index: 2;
+  }
+    
+  .opc-l:hover, .opc-r:hover {
+    background-color: #0e3f19;
+  }
+
+  
+  

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import '../css/proposalsList.css';
+import '../css/header.css';
 
 const ProposalsList = () => {
     const [proposals, setProposals] = useState([]);
@@ -12,7 +13,7 @@ const ProposalsList = () => {
         const fetchProposals = async () => {
             try {
                 // Solicitud get para obtener las propuestas
-                const response = await axios.get('http://127.0.0.1:8000/content_proposal/');
+                const response = await axios.get('http://django-tester.onrender.com/content_proposal/');
                 // await -> provoca que la ejecución de una función async sea pausada 
                 // hasta que una Promise sea terminada o rechazada, y regresa a la ejecución
                 // de la función async después del término.
@@ -36,6 +37,12 @@ const ProposalsList = () => {
 
     return (
         <div className="proposals-list">
+            <div className="header">
+            <button className="opc" onClick={() => navigate('/brainstorming')}>Ir a lluvia de ideas</button>
+            <button className="opc" onClick={() => navigate('/proposals')}>Ir a Propuestas</button>
+            <button className="opc" onClick={() => navigate('/proposals_form')}>Ir al formulario de Propuestas</button>
+            <button className="opc" onClick={() => navigate('/calendar')}>Ir a Calendario</button>
+          </div>
             <h1>Propuestas</h1>
             <ul>
                 {/* Lista para mostrar las propuestas */}

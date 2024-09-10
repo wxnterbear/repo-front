@@ -1,0 +1,17 @@
+/* Ejemplo de estilos personalizados */
+.bg-custom {
+    background-color: #f8f9fa; /* Un color de fondo personalizado */
+  }
+  
+  .navbar-custom {
+    border-bottom: 2px solid #dee2e6; /* Un borde inferior más grueso */
+  }
+  
+  .nav-link-custom {
+    color: #495057; /* Un color de texto personalizado */
+  }
+  
+  .nav-link-custom:hover {
+    color: #007bff; /* Cambia el color al pasar el cursor */
+  }
+  

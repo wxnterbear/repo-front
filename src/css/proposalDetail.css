@@ -3,29 +3,27 @@
   src: url('../font/jerseyr.ttf') format('truetype');
 }
 
-body {
-  background-color: rgba(31, 35, 70, 1);
-}
-
 .proposal-detail {
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 20px;
   background-color: rgb(31, 35, 70);
-  margin-top: 20px;
+  background: rgb(43, 43, 43);
+  border-radius: 8px;
 }
 
 .proposal-detail h1 {
+  margin-top: 80px;
   font-family: 'JerseyR', sans-serif;
-  font-size: 45px;
-  color: rgba(204, 161, 64, 1);
+  font-size: 50px;
+  color: rgb(255, 255, 255);
 }
 
 .proposal-detail p {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 20px;
-  color: #FFFFFF;
+  color: rgba(255, 255, 255, 0.822);
   margin: 0 0 10px;
 }
 
@@ -45,20 +43,23 @@ body {
   resize: vertical;
 }
 
-.proposal-detail .buttons {
-  display: flex;
-  gap: 10px;
+/*
+.proposal-detail .buttons button:first-child {
+  background-color: #175A0C;
+  color: white;
 }
 
-.proposal-detail .buttons button {
-  
-  font-family: 'JerseyR', sans-serif;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.proposal-detail .buttons button:first-child:hover {
+  background-color: #0a2906;
+}
+
+.proposal-detail .buttons button:last-child {
+  background-color: #a3180e;
+  color: white;
+}
+
+.proposal-detail .buttons button:last-child:hover {
+  background-color: #630b05;
 }
 
 .proposal-detail .buttons button:first-child {
@@ -78,20 +79,20 @@ body {
 .proposal-detail .buttons button:last-child:hover {
   background-color: #630b05;
 }
-
-.proposal-detail button {
+*/
+.btn-detail {
   margin-top: 10px;
   font-size: 25px;
   border-radius: 5px;
   border: none;
   padding: 10px 15px;
   font-family: 'JerseyR', sans-serif;
-  background-color: #045f7e;
+  background-color: rgb(81, 90, 90);
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-.proposal-detail button:hover {
-  background-color: #013141;
+.btn-detail:hover {
+  background-color: rgb(43, 48, 48);
 }
