@@ -13,7 +13,7 @@ const ProposalsList = () => {
         const fetchProposals = async () => {
             try {
                 // Solicitud get para obtener las propuestas
-                const response = await axios.get('http://django-tester.onrender.com/content_proposal/');
+                const response = await axios.get('https://django-tester.onrender.com/content_proposal/');
                 // await -> provoca que la ejecución de una función async sea pausada 
                 // hasta que una Promise sea terminada o rechazada, y regresa a la ejecución
                 // de la función async después del término.
