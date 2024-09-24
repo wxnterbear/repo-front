@@ -18,7 +18,7 @@ const ProposalsList = () => {
                 // hasta que una Promise sea terminada o rechazada, y regresa a la ejecución
                 // de la función async después del término.
 
-                setProposals(response.data) // Actualiza el estado de 'proposal' con las propuestas obtenidas
+                setProposals(response) // Actualiza el estado de 'proposal' con las propuestas obtenidas
 
             } catch (error) {
 
