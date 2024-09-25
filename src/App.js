@@ -11,6 +11,10 @@ import Register from './components/GoogleRegister';
 import AuthContext from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
+const NotFound = () => {
+  return <h1>404 - Página no encontrada</h1>;
+};
+
 function App() {
   return (
     
@@ -71,6 +75,7 @@ function App() {
                   </ProtectedRoute>
                 } 
               />
+                <Route path="*" element={<NotFound />} /> 
             </Routes>
           </header>
         </div>
