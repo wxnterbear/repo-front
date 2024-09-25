@@ -70,6 +70,7 @@ const ProposalDetail = () => {
     };
 
     // Envía el comentario al servidor
+    /*
     axios.post(`http://django-tester.onrender.com/proposals/${proposalId}/comments`, comment)
       .then(response => {
         console.log('Comentario enviado:', response.data);
@@ -94,7 +95,7 @@ const ProposalDetail = () => {
       .catch(error => {
         console.error('Error al enviar el comentario:', error.response ? error.response.data : error.message);
         setError('Error al enviar el comentario. Inténtalo nuevamente.');
-      });
+      });*/
   };
 
   if (loading) {

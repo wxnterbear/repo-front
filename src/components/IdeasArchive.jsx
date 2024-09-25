@@ -13,6 +13,7 @@ const IdeasArchive = () => {
     useEffect(() => {
 
         const fetchIdeas = async () => {
+            /*
             try {
                 const acceptedResponse = await axios.get('django-tester.onrender.com/ideas/accepted');
                 setAcceptedIdeas(acceptedResponse.data); // Actualiza  'acceptedIdeas' con las ideas aceptadas
@@ -21,7 +22,7 @@ const IdeasArchive = () => {
                 setRejectedIdeas(rejectedResponse.data); // Actualiza  'rejectedIdeas' con las ideas rechazadas
             } catch (error) {
                 console.error('Error fetching ideas:', error);
-            }
+            }*/
         };
 
         fetchIdeas(); // Llama a la función para obtener las ideas

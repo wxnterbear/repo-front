@@ -47,7 +47,7 @@ const ProposalsForms = () => {
             formData.append('files', files[i]);
         }
 
-        try {
+        /*try {
 
             const response = await axios.post('http://django-tester.onrender.com/content_proposal/', formData, {
                 // El encabezado indica que el body de la solicitud 'formdata' está codificado en
@@ -64,7 +64,7 @@ const ProposalsForms = () => {
 
             console.error('Error al enviar la propuesta:', error); //
             alert('Hubo un error al enviar la propuesta');
-        }
+        }*/
     }
 
     return (

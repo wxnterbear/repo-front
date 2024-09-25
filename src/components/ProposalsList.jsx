@@ -11,6 +11,7 @@ const ProposalsList = () => {
     useEffect(() => {
         // Función asincrónica para poder obtener las propuestas de la api
         const fetchProposals = async () => {
+            /*
             try {
                 // Solicitud get para obtener las propuestas
                 const response = await axios.get('https://django-tester.onrender.com/content_proposal/');
@@ -24,7 +25,7 @@ const ProposalsList = () => {
 
                 console.error('Error al obetener las propuestas: ', error);
 
-            }
+            }*/
         };
 
         fetchProposals();

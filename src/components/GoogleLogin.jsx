@@ -28,9 +28,9 @@ const Login = () => {
         const data = new FormData();
         data.append('username', formData.username);
         data.append('password', formData.password);
-
+/*
         try {
-            const response = await fetch('https://django-tester.onrender.com/auth/login/', {
+           const response = await fetch('https://django-tester.onrender.com/auth/login/', {
                 method: 'POST',
                 body: data,  
                 credentials: 'include',
@@ -52,10 +52,14 @@ const Login = () => {
         } catch (error) {
             console.error('Error al intentar iniciar sesión:', error);
             alert('Error de red: no se pudo conectar al servidor.');
-        }
-    };
+        }*/
+        login();
+        navigate('/calendar');  // Redirigir después de iniciar sesión
+        console.log("HOLA")
+    }
 
     const fetchContentProposal = async () => {
+        /*
         try {
             const response = await fetch('https://django-tester.onrender.com/content_proposal/', {
                 credentials: 'include',
@@ -69,7 +73,7 @@ const Login = () => {
             }
         } catch (error) {
             console.error('Error en la solicitud GET:', error);
-        }
+        }*/
     };
 
     // Fetch content proposal when component mounts

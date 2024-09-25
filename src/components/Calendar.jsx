@@ -27,9 +27,9 @@ function Calendar() {
     const [selectedEvent, setSelectedEvent] = useState(null);
 
     useEffect(() => {
-        axios.get('http://django-tester.onrender.com/events')
+        /*axios.get('http://django-tester.onrender.com/events')
             .then(response => setEvents(response.data))
-            .catch(error => console.error('Error al cargar los eventos:', error));
+            .catch(error => console.error('Error al cargar los eventos:', error));*/
     }, []);
 
     const handleDateClick = (arg) => {

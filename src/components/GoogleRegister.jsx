@@ -25,7 +25,7 @@ const Register = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+         /*e.preventDefault();
 
         if (formData.password1 !== formData.password2) {
             setError('Las contraseñas no coinciden');
@@ -39,7 +39,7 @@ const Register = () => {
         data_obj.append('password2', formData.password2);
 
         try {
-            const response = await fetch('https://django-tester.onrender.com/auth/signup/', {
+           const response = await fetch('https://django-tester.onrender.com/auth/signup/', {
                 method: 'POST',
                 body: data_obj,
                 credentials: 'include',
@@ -58,10 +58,10 @@ const Register = () => {
         } catch (err) {
             setError(err.message || 'Error en el registro');
         }
-        
+        */
     };
 
-    const fetchContentProposal = async () => {
+    const fetchContentProposal = async () => {/*
         try {
             const response = await fetch('https://django-tester.onrender.com/content_proposal/');
             const data = await response.json();
@@ -73,7 +73,7 @@ const Register = () => {
             }
         } catch (error) {
             console.error('Error en la solicitud GET:', error);
-        }
+        }*/
     };
 
     // Fetch content proposal when component mounts

@@ -15,12 +15,12 @@ const Brainstorming = () => {
     const navigate = useNavigate(); // para pasar al otro componente
 
     useEffect(() => {
-        const fetchIdeas = async () => {
+        /*const fetchIdeas = async () => {
             const response = await axios.get('http://django-tester.onrender.com/');
             setIdeas(response.data);
-        };
+        };*/
 
-        fetchIdeas();
+        //fetchIdeas();
     }, []);
 
 
