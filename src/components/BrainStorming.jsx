@@ -30,11 +30,12 @@ const Brainstorming = () => {
     };
 
     const handleAddIdea = async () => {
+        /*
         if (newIdea.trim()) { // Verifica que la idea no esté vacía después de eliminar espacios en blanco
             await axios.post('http://django-tester.onrender.com/ideas', { idea: newIdea }); // Envía la nueva idea al servidor
             setIdeas([...ideas, newIdea]); // Actualiza 'ideas' con la nueva idea
             setNewIdea(''); // Limpia el textarea
-        }
+        }*/
     };
 
     // Abre el modal para una idea específica
