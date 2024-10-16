@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import '../css/ideas.css'
 import Header from './header';
 
-const Brainstorming = () => {
+const BrainstormingCM = () => {
     const [ideas, setIdeas] = useState([]); // Estado para almacenar las ideas
     const [newIdea, setNewIdea] = useState(''); // Estado para la nueva idea 
     const [modalIsOpen, setModalIsOpen] = useState(false); // Estado para controlar si el modal está abierto
@@ -53,18 +53,7 @@ const Brainstorming = () => {
 
     // Maneja la acción de aceptar o rechazar la idea
     const handleAction = async () => {
-        if (action === 'accept' || action === 'reject') {
-            if (selectedUser && selectedIdea) {
-                const endpoint = action === 'accept' ? '/accept' : '/reject';
-                await axios.post(`http://localhost:3001/ideas/${endpoint}`, {
-                    idea: selectedIdea,
-                    user: selectedUser
-
-                });
-                setIdeas(ideas.filter(i => i.id !== selectedIdea.id)); // Remueve la idea aceptada/rechazada del estado
-                closeModal();
-            }
-        } else if (action === 'edit') {
+        if (action === 'edit') {
             if (selectedIdea) {
                 await axios.put(`http://localhost:3001/ideas/${selectedIdea.id}`, {
                     idea: selectedIdea.idea
@@ -129,8 +118,6 @@ const Brainstorming = () => {
                     onChange={(e) => setAction(e.target.value)} // Evento onChange para actualizar el estado action
                 >
                     <option value="" disabled>Selecciona una acción</option>
-                    <option value="accept">Aceptar</option>
-                    <option value="reject">Rechazar</option>
                     <option value="edit">Editar</option>
                     <option value="delete">Eliminar</option>
                 </select>
@@ -142,7 +129,7 @@ const Brainstorming = () => {
                             value={selectedIdea ? selectedIdea.idea : ''}
                             onChange={(e) => setSelectedIdea({ ...selectedIdea, idea: e.target.value })}
                         />
-                        <br /> 
+                        <br />
                     </>
                 )}
 
@@ -156,4 +143,4 @@ const Brainstorming = () => {
     );
 }
 
-export default Brainstorming;
+export default BrainstormingCM;

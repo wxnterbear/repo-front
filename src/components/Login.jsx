@@ -1,15 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { authContext } from '../context/AuthContext';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext'; // Importar el contexto
 import '../css/login.css';
-import '../css/header.css';
 import imagen from '../images/logologin.png';
 
 const Login = () => {
-
-    const { login } = useContext(authContext);
     const navigate = useNavigate();
-
+    const { login } = useContext(AuthContext); // Usar login del contexto
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -22,69 +19,52 @@ const Login = () => {
         });
     };
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const data = new FormData();
         data.append('username', formData.username);
         data.append('password', formData.password);
-
+    
         try {
             const response = await fetch('https://django-tester.onrender.com/auth/login/', {
                 method: 'POST',
-                body: data,  
+                body: data,
                 credentials: 'include',
             });
+    
+            const contentType = response.headers.get('content-type');
+    
+            if (contentType && contentType.includes('application/json')) {
+                const result = await response.json();
+                
+                if (response.ok) {
+                    console.log('Login exitoso:', result);
+                    const token = result.token;
+                    
+                    // Usar la función login del contexto
+                    login(token);
 
-            const result = await response.json();
-
-            if (response.ok) {
-                console.log('Login exitoso:', result);
-                const token = result.token;  
-                localStorage.setItem('token', token); // Guarda el token en el localStorage
-                login();
-                navigate('/calendar');  // Redirigir después de iniciar sesión
-
+                    // Redirigir después del login exitoso
+                    navigate('/calendar');
+                } else {
+                    const errorMessage = result.message || 'Error desconocido';
+                    alert('Error en la autenticación: ' + errorMessage);
+                }
             } else {
-                alert('Error en la autenticación: ' + result.message);
+                const htmlText = await response.text();
+                console.error('El servidor devolvió HTML en lugar de JSON:', htmlText);
+                alert('Error: El servidor devolvió una respuesta inesperada.');
             }
-
         } catch (error) {
             console.error('Error al intentar iniciar sesión:', error);
             alert('Error de red: no se pudo conectar al servidor.');
         }
     };
 
-    const fetchContentProposal = async () => {
-        try {
-            const response = await fetch('https://django-tester.onrender.com/content_proposal/', {
-                credentials: 'include',
-            });
-            const data = await response.json();
-
-            if (response.ok) {
-                console.log('Contenido de propuestas:', data);  
-            } else {
-                console.error('Error al obtener las propuestas:', data);
-            }
-        } catch (error) {
-            console.error('Error en la solicitud GET:', error);
-        }
-    };
-
-    // Fetch content proposal when component mounts
-    useEffect(() => {
-        fetchContentProposal();
-    }, []);
-
     return (
         <div className='container-l'>
-            <div className="header">
-                <button className="opc" onClick={() => navigate('/brainstorming')}>Ir a lluvia de ideas</button>
-                <button className="opc" onClick={() => navigate('/proposals')}>Ir a Propuestas</button>
-                <button className="opc" onClick={() => navigate('/proposals_form')}>Ir al formulario de Propuestas</button>
-                <button className="opc" onClick={() => navigate('/calendar')}>Ir a Calendario</button>
-            </div>
+            
             <div className='login-container'>
                 <div className='image-container'>
                     <img src={imagen} alt='Imagen' className='image' />

@@ -1,17 +1,17 @@
-import React from 'react';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
-import { authContext } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 
-// Componente que protege una ruta
-function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useContext(authContext); // Obtiene el estado de autenticación desde authcontext
+const ProtectedRoute = ({ children }) => {
+    const { token } = useContext(AuthContext);  // Accede al token del contexto
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />; // Redirigir a login
-  }
+    if (!token) {
+        // Si no hay token, redirige al login
+        return <Navigate to="/login" />;
+    }
 
-  return children;
-}
+    // Si hay token, renderiza el componente hijo (la ruta protegida)
+    return children;
+};
 
 export default ProtectedRoute;

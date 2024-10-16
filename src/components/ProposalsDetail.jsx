@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../css/proposalDetail.css';
-import '../css/header.css';
-
+import Header from './header';
 
 const ProposalDetail = () => {
-
   const navigate = useNavigate();
-
   const { id } = useParams();  // Obtiene el id desde los parámetros de la url
-  const [loading, setLoading] = useState(true); // Maneja el estado de carga (si los datos aun están cargando desde la api)
-  const [comments, setComments] = useState({}); // Objeto vacío para guardar los comentarios
-  const [commentBy, setCommentBy] = useState({}); // Objeto vacío para guardar a la persona que hace el comentario
-  const [selectedProposal, setSelectedProposal] = useState([]);
-  const [error, setError] = useState(''); // Estado para mensajes de error
-  const [statusAction, setStatusAction] = useState(''); // Hook para el estado de propuesta
+  const [loading, setLoading] = useState(true); // Maneja el estado de carga
+  const [comments, setComments] = useState({}); // Objeto para guardar comentarios
+  const [commentBy, setCommentBy] = useState({}); // Objeto para la persona que hace el comentario
+  const [selectedProposal, setSelectedProposal] = useState(null); // Cambiado a null para evitar problemas de renderizado
+  const [error, setError] = useState(''); // Estado para manejar mensajes de error
+  const [statusAction, setStatusAction] = useState(''); // Hook para el estado de la propuesta
 
   // Obtener los datos de las propuestas
   useEffect(() => {
     const fetchProposals = async () => {
       try {
-        const response = await axios.get('django-tester.onrender.com/content_proposal/');
-        const proposal = response.data.find(proposal => proposal.id === parseInt(id)); // Busca la propuesta con el id proporcionado
-        console.log('Propuesta seleccionada:', proposal); // Inspecciona la estructura del objeto aquí
+        const response = await fetch('https://django-tester.onrender.com/content_proposal/', {
+          credentials: 'include', // Incluye las credenciales (cookies) en la solicitud si es necesario
+        });
+        const data = await response.json();
+        const proposal = data.find((proposal) => proposal.id === parseInt(id));
+        console.log('Propuesta seleccionada:', proposal);
         setSelectedProposal(proposal);
       } catch (error) {
         console.error('Error obteniendo las propuestas:', error);
@@ -34,7 +32,7 @@ const ProposalDetail = () => {
     };
 
     fetchProposals();
-  }, [id]); // Ejecuta el hook solo cuando cambia el id
+  }, [id]);
 
   // Actualiza el estado de 'comments' cuando se escribe un comentario
   const handleCommentChange = (event, proposalId) => {
@@ -58,43 +56,56 @@ const ProposalDetail = () => {
   };
 
   // Envía el comentario y la acción al servidor
-  const handleCommentSubmit = (proposalId) => {
+  const handleCommentSubmit = async (proposalId) => {
     if (!comments[proposalId] || !commentBy[proposalId] || !statusAction) {
       setError('Por favor, completa todos los campos antes de enviar el comentario.');
       return;
     }
-    
+
     const comment = {
       body: comments[proposalId],
       comment_by: commentBy[proposalId],
     };
 
-    // Envía el comentario al servidor
-    axios.post(`http://django-tester.onrender.com/proposals/${proposalId}/comments`, comment)
-      .then(response => {
-        console.log('Comentario enviado:', response.data);
-        setError(''); // Limpiar mensaje de error al enviar comentario exitosamente
-        // Envía la acción correspondiente después de enviar el comentario
-        if (statusAction === 'accept') {
-          axios.put(`django-tester.onrender.com/proposals/${proposalId}/accept`)
-            .then(response => {
-              console.log('Propuesta aceptada:', response.data);
-            })
-            .catch(error => console.error('Error al aceptar la propuesta:', error));
-        } else if (statusAction === 'reject') {
-          axios.put(`django-tester.onrender.com/proposals/${proposalId}/reject`)
-            .then(response => {
-              console.log('Propuesta rechazada:', response.data);
-            })
-            .catch(error => console.error('Error al rechazar la propuesta:', error));
-        }
-        // Limpiar la selección de estado después de enviar
-        setStatusAction('');
-      })
-      .catch(error => {
-        console.error('Error al enviar el comentario:', error.response ? error.response.data : error.message);
-        setError('Error al enviar el comentario. Inténtalo nuevamente.');
+    try {
+      // Envía el comentario al servidor
+      const commentResponse = await fetch(`https://django-tester.onrender.com/proposals/${proposalId}/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(comment),
       });
+
+      if (!commentResponse.ok) {
+        throw new Error('Error al enviar el comentario');
+      }
+
+      console.log('Comentario enviado:', await commentResponse.json());
+      setError('');
+
+      // Envía la acción correspondiente (aceptar o rechazar)
+      if (statusAction === 'accept' || statusAction === 'reject') {
+        const actionResponse = await fetch(`https://django-tester.onrender.com/proposals/${proposalId}/${statusAction}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!actionResponse.ok) {
+          throw new Error(`Error al ${statusAction === 'accept' ? 'aceptar' : 'rechazar'} la propuesta`);
+        }
+
+        console.log(`Propuesta ${statusAction === 'accept' ? 'aceptada' : 'rechazada'}:`, await actionResponse.json());
+      }
+
+      // Limpia el estado después de enviar
+      setStatusAction('');
+    } catch (error) {
+      console.error(error.message);
+      setError('Error al enviar el comentario o la acción. Inténtalo nuevamente.');
+    }
   };
 
   if (loading) {
@@ -107,12 +118,7 @@ const ProposalDetail = () => {
 
   return (
     <div className="proposal-detail">
-      <div className="header">
-            <button className="opc" onClick={() => navigate('/brainstorming')}>Ir a lluvia de ideas</button>
-            <button className="opc" onClick={() => navigate('/proposals')}>Ir a Propuestas</button>
-            <button className="opc" onClick={() => navigate('/proposals_form')}>Ir al formulario de Propuestas</button>
-            <button className="opc" onClick={() => navigate('/calendar')}>Ir a Calendario</button>
-          </div>
+      <Header />
       <h1>{selectedProposal.title}</h1>
       <p><strong>Descripción:</strong> {selectedProposal.desc || 'No hay descripción'}</p>
       <p><strong>Descripción 2.0:</strong> {selectedProposal.descripcion}</p>
@@ -121,8 +127,6 @@ const ProposalDetail = () => {
       <p><strong>Copy:</strong> {selectedProposal.copy || 'No hay copy'}</p>
       <p><strong>Creado por:</strong> {selectedProposal.proposed_by || 'Desconocido'}</p>
       <p><strong>Fecha de actualización:</strong> {selectedProposal.updated || 'Desconocida'}</p>
-
-      {/* <p><strong>Estado:</strong> {selectedProposal.status || 'Desconocido'}</p>*/}
 
       {error && <p className="error-message">{error}</p>}
 
@@ -152,10 +156,12 @@ const ProposalDetail = () => {
           onChange={handleStatusChange}
         >
           <option value="" disabled>Selecciona una acción</option>
-          <option value="accept">Aceptar</option>
-          <option value="reject">Rechazar</option>
+          <option value="AP">Aceptar</option>
+          <option value="RJ">Rechazar</option>
+          <option value="MC">Solicitar cambios</option>
         </select>
-        <button className='btn-detail'
+        <button
+          className='btn-detail'
           onClick={() => handleCommentSubmit(selectedProposal.id)}
           disabled={!commentBy[selectedProposal.id] || !comments[selectedProposal.id] || !statusAction}
         >

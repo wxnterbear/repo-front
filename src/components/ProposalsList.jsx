@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import '../css/proposalsList.css';
-import '../css/header.css';
+import Header from './header';
 
 const ProposalsList = () => {
     const [proposals, setProposals] = useState([]);
@@ -13,7 +13,7 @@ const ProposalsList = () => {
         const fetchProposals = async () => {
             try {
                 // Solicitud get para obtener las propuestas
-                const response = await axios.get('http://django-tester.onrender.com/content_proposal/');
+                const response = await axios.get('https://django-tester.onrender.com/content_proposal');
                 // await -> provoca que la ejecución de una función async sea pausada 
                 // hasta que una Promise sea terminada o rechazada, y regresa a la ejecución
                 // de la función async después del término.
@@ -22,7 +22,7 @@ const ProposalsList = () => {
 
             } catch (error) {
 
-                console.error('Error al obetener las propuestas: ', error);
+                console.error('Error al obtener las propuestas: ', error);
 
             }
         };
@@ -37,12 +37,7 @@ const ProposalsList = () => {
 
     return (
         <div className="proposals-list">
-            <div className="header">
-            <button className="opc" onClick={() => navigate('/brainstorming')}>Ir a lluvia de ideas</button>
-            <button className="opc" onClick={() => navigate('/proposals')}>Ir a Propuestas</button>
-            <button className="opc" onClick={() => navigate('/proposals_form')}>Ir al formulario de Propuestas</button>
-            <button className="opc" onClick={() => navigate('/calendar')}>Ir a Calendario</button>
-          </div>
+            <Header />
             <h1>Propuestas</h1>
             <ul>
                 {/* Lista para mostrar las propuestas */}
@@ -50,8 +45,8 @@ const ProposalsList = () => {
                     // Itera sobre el array de propuestas y muestra un elemento li por cada propuesta
                     <li className="proposals" key={proposal.id} onClick={() => handleClick(proposal.id)}>
                         {/* Cada propuesta se muestra en un elemento li con una key única */}       
-                        Nombre: {proposal.title} <br></br>
-                        Descripción: {proposal.copy} <br></br>
+                        Nombre: {proposal.title} <br/ >
+                        Descripción: {proposal.copy} <br/ >
                         Hecha por: {proposal.proposed_by}
                     </li>
                 ))}

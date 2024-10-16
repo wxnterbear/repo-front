@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate} from 'react-router-dom';
 import axios from "axios";
 import '../css/ideasArchive.css';
-import '../css/header.css';
+import Header from './header';
 
 const IdeasArchive = () => {
     const [acceptedIdeas, setAcceptedIdeas] = useState([]); // Estado para almacenar las ideas aceptadas
@@ -14,10 +14,10 @@ const IdeasArchive = () => {
 
         const fetchIdeas = async () => {
             try {
-                const acceptedResponse = await axios.get('django-tester.onrender.com/ideas/accepted');
+                const acceptedResponse = await axios.get('http://localhost:3001/ideas/accepted');
                 setAcceptedIdeas(acceptedResponse.data); // Actualiza  'acceptedIdeas' con las ideas aceptadas
 
-                const rejectedResponse = await axios.get('django-tester.onrender.com/ideas/rejected');
+                const rejectedResponse = await axios.get('http://localhost:3001/ideas/rejected');
                 setRejectedIdeas(rejectedResponse.data); // Actualiza  'rejectedIdeas' con las ideas rechazadas
             } catch (error) {
                 console.error('Error fetching ideas:', error);
@@ -29,12 +29,7 @@ const IdeasArchive = () => {
 
     return (
         <div className="ideas-archive-container"> {/* Contenedor principal */}
-        <div className="header">
-            <button className="opc" onClick={() => navigate('/brainstorming')}>Ir a lluvia de ideas</button>
-            <button className="opc" onClick={() => navigate('/proposals')}>Ir a Propuestas</button>
-            <button className="opc" onClick={() => navigate('/proposals_form')}>Ir al formulario de Propuestas</button>
-            <button className="opc" onClick={() => navigate('/calendar')}>Ir a Calendario</button>
-          </div>
+        <Header />
             <div className="ideas-board-a-r accepted">
                 <h1 className="title-a">Ideas Aceptadas</h1> {/* Título para las ideas aceptadas */}
                 <div className="ideas-list-a-r"> {/* Contenedor para las ideas aceptadas */}

@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import '../css/calendar.css';
-import '../css/header.css';
+import Header from './header';
 
 Modal.setAppElement('#root');
 
@@ -27,7 +27,7 @@ function Calendar() {
     const [selectedEvent, setSelectedEvent] = useState(null);
 
     useEffect(() => {
-        axios.get('http://django-tester.onrender.com/events')
+        axios.get('http://localhost:3001/events')
             .then(response => setEvents(response.data))
             .catch(error => console.error('Error al cargar los eventos:', error));
     }, []);
@@ -80,7 +80,7 @@ function Calendar() {
                 color: eventColor
             };
 
-            axios.put(`django-tester.onrender.com/events/${selectedEvent.id}`, updatedEvent)
+            axios.put(`http://localhost:3001/events/${selectedEvent.id}`, updatedEvent)
                 .then(response => {
                     setEvents(events.map(event =>
                         event.id === selectedEvent.id ? response.data : event
@@ -97,7 +97,7 @@ function Calendar() {
                 color: eventColor
             };
 
-            axios.post('django-tester.onrender.com/events', newEvent)
+            axios.post('http://localhost:3001/events', newEvent)
                 .then(response => {
                     setEvents([...events, response.data]);
                     closeModal();
@@ -117,7 +117,7 @@ function Calendar() {
     };
 
     const handleDeleteEvent = () => {
-        axios.delete(`http://django-tester.onrender.com/${selectedEvent.id}`)
+        axios.delete(`http://localhost:3001/events/${selectedEvent.id}`)
             .then(() => {
                 setEvents(events.filter(event => event.id !== selectedEvent.id));
                 closeConfirmDeleteModal();
@@ -142,12 +142,7 @@ function Calendar() {
 
     return (
         <div className='full-container'>
-            <div className="header">
-            <button className="opc" onClick={() => navigate('/brainstorming')}>Ir a lluvia de ideas</button>
-            <button className="opc" onClick={() => navigate('/proposals')}>Ir a Propuestas</button>
-            <button className="opc" onClick={() => navigate('/proposals_form')}>Ir al formulario de Propuestas</button>
-            <button className="opc" onClick={() => navigate('/calendar')}>Ir a Calendario</button>
-          </div>
+            <Header />
           <div className='container-calendar'>
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]} // Plugins que se usarán en el calendario
