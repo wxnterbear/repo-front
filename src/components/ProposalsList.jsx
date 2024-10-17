@@ -20,10 +20,10 @@ const ProposalsList = () => {
                     return;
                 }
 
-                // Solicitud GET para obtener las propuestas con el token en los encabezados
                 const response = await axios.get('https://django-tester.onrender.com/content_proposal/', {
                     headers: {
-                        Authorization: `Bearer ${token}`  // Enviar el token en el encabezado de autorización
+                        'Authorization': `Bearer ${token}`,  // Uso de comillas invertidas para interpolación y formato 'Bearer'
+                        'Content-Type': 'application/json'
                     }
                 });
 
