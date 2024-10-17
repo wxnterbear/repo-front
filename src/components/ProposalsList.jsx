@@ -6,31 +6,37 @@ import Header from './header';
 
 const ProposalsList = () => {
     const [proposals, setProposals] = useState([]);
-    const navigate = useNavigate(); // Inicializa useNavigate
+    const navigate = useNavigate();
 
     useEffect(() => {
-        // Función asincrónica para poder obtener las propuestas de la api
+        // Función asincrónica para obtener las propuestas de la API con token de autenticación
         const fetchProposals = async () => {
             try {
-                // Solicitud get para obtener las propuestas
-                const response = await axios.get('https://django-tester.onrender.com/content_proposal/');
-                // await -> provoca que la ejecución de una función async sea pausada 
-                // hasta que una Promise sea terminada o rechazada, y regresa a la ejecución
-                // de la función async después del término.
+                // Obtener el token del localStorage
+                const token = localStorage.getItem('token');
 
-                setProposals(response.data) // Actualiza el estado de 'proposal' con las propuestas obtenidas
+                if (!token) {
+                    console.error('No se encontró el token de autenticación');
+                    return;
+                }
+
+                // Solicitud GET para obtener las propuestas con el token en los encabezados
+                const response = await axios.get('https://django-tester.onrender.com/content_proposal/', {
+                    headers: {
+                        Authorization: `Bearer ${token}`  // Enviar el token en el encabezado de autorización
+                    }
+                });
+
+                setProposals(response.data); // Actualiza el estado de 'proposals' con las propuestas obtenidas
 
             } catch (error) {
-
-                console.error('Error al obtener las propuestas: ', error);
-
+                console.error('Error al obtener las propuestas: ', error.response?.data || error.message);
             }
         };
 
         fetchProposals();
-    }, []) // [] -> El hook de efecto solo se ejecuta una vez (al montar el componente)
+    }, []); // [] -> El hook de efecto solo se ejecuta una vez (al montar el componente)
 
-    // Función para manejar el clic en el elemento <li>
     const handleClick = (id) => {
         navigate(`/content_proposal/${id}`); // Navega a la ruta del detalle de la propuesta
     };
@@ -41,7 +47,9 @@ const ProposalsList = () => {
             <h1>Propuestas</h1>
             <ul>
                 {/* Lista para mostrar las propuestas */}
-                {proposals.length === 0 ? <p className="msj_empty">No hay propuestas disponibles por el momento :c</p> : (
+                {proposals.length === 0 ? (
+                    <p className="msj_empty">No hay propuestas disponibles por el momento :c</p>
+                ) : (
                     <ul>
                         {proposals.map(proposal => (
                             <li className="proposals" key={proposal.id} onClick={() => handleClick(proposal.id)}>
@@ -58,5 +66,3 @@ const ProposalsList = () => {
 }
 
 export default ProposalsList;
-
-
