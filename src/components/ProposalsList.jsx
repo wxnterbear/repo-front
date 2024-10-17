@@ -22,7 +22,7 @@ const ProposalsList = () => {
 
                 const response = await axios.get('https://django-tester.onrender.com/content_proposal/', {
                     headers: {
-                        'Authorization': `Bearer ${token}`,  // Uso de comillas invertidas para interpolación y formato 'Bearer'
+                        'Authorization': `Token ${token}`,  
                         'Content-Type': 'application/json'
                     }
                 });
