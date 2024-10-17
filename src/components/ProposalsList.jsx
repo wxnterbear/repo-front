@@ -41,7 +41,7 @@ const ProposalsList = () => {
             <h1>Propuestas</h1>
             <ul>
                 {/* Lista para mostrar las propuestas */}
-                {proposals.length === 0 ? <p>No hay propuestas disponibles por el momento :c</p> : (
+                {proposals.length === 0 ? <p className="msj_empty">No hay propuestas disponibles por el momento :c</p> : (
                     <ul>
                         {proposals.map(proposal => (
                             <li className="proposals" key={proposal.id} onClick={() => handleClick(proposal.id)}>

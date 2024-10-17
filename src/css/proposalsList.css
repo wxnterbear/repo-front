@@ -14,6 +14,7 @@
     margin-bottom: 20px;
     color: rgb(255, 255, 255);
     font-family: 'JerseyR', sans-serif;
+    font-weight: lighter;
   }
   
   .proposals-list ul {
@@ -42,6 +43,12 @@
 
     background-color: rgb(43, 48, 48);
 
+  }
+
+  .msj_empty{
+    color: rgb(255, 255, 255);
+    font-family: 'JerseyR', sans-serif;
+    font-size: 25px;
   }
 
   
