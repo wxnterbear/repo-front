@@ -84,7 +84,7 @@ const ProposalsForms = () => {
             const response = await axios.post('https://django-tester.onrender.com/content_proposal/', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`, 
+                    'Authorization': token, 
                 },
             });
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../css/proposalsList.css';
 import Header from './header';
@@ -13,7 +13,7 @@ const ProposalsList = () => {
         const fetchProposals = async () => {
             try {
                 // Solicitud get para obtener las propuestas
-                const response = await axios.get('https://django-tester.onrender.com/content_proposal');
+                const response = await axios.get('https://django-tester.onrender.com/content_proposal/');
                 // await -> provoca que la ejecución de una función async sea pausada 
                 // hasta que una Promise sea terminada o rechazada, y regresa a la ejecución
                 // de la función async después del término.
@@ -41,15 +41,17 @@ const ProposalsList = () => {
             <h1>Propuestas</h1>
             <ul>
                 {/* Lista para mostrar las propuestas */}
-                {proposals.map(proposal => (
-                    // Itera sobre el array de propuestas y muestra un elemento li por cada propuesta
-                    <li className="proposals" key={proposal.id} onClick={() => handleClick(proposal.id)}>
-                        {/* Cada propuesta se muestra en un elemento li con una key única */}       
-                        Nombre: {proposal.title} <br/ >
-                        Descripción: {proposal.copy} <br/ >
-                        Hecha por: {proposal.proposed_by}
-                    </li>
-                ))}
+                {proposals.length === 0 ? <p>No hay propuestas disponibles por el momento :c</p> : (
+                    <ul>
+                        {proposals.map(proposal => (
+                            <li className="proposals" key={proposal.id} onClick={() => handleClick(proposal.id)}>
+                                Nombre: {proposal.title} <br />
+                                Descripción: {proposal.copy} <br />
+                                Hecha por: {proposal.proposed_by}
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </ul>
         </div>
     );

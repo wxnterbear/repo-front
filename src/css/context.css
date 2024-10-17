@@ -1,0 +1,25 @@
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Altura completa de la ventana */
+    font-family: 'JerseyR', sans-serif;
+    font-size: 2rem; /* Ajusta el tamaño de fuente */
+    color: white;
+}
+
+.loading-text {
+    animation: pulse 3s infinite; /* Animación que se repite indefinidamente */
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.2;
+    }
+}
