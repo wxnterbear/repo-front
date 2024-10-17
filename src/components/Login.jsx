@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Importar axios para hacer solicitudes
 import { AuthContext } from '../context/AuthContext'; // Importar el contexto
 import '../css/login.css';
 import imagen from '../images/logologin.png';
@@ -11,6 +12,7 @@ const Login = () => {
         username: '',
         password: ''
     });
+    const [error, setError] = useState(null); // Para manejar errores
 
     const handleChange = (e) => {
         setFormData({
@@ -22,39 +24,26 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        const data = new FormData();
+        const data = new URLSearchParams(); // Usar URLSearchParams para formatear correctamente los datos
         data.append('username', formData.username);
         data.append('password', formData.password);
     
         try {
-            const response = await fetch('https://django-tester.onrender.com/auth/login/', {
-                method: 'POST',
-                body: data,
-                credentials: 'include',
+            const response = await axios.post('https://django-tester.onrender.com/auth/login/', data, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded', // Asegúrate de que el tipo de contenido sea correcto
+                },
+                withCredentials: true,
             });
     
-            const contentType = response.headers.get('content-type');
-    
-            if (contentType && contentType.includes('application/json')) {
-                const result = await response.json();
-                
-                if (response.ok) {
-                    console.log('Login exitoso:', result);
-                    const token = result.token;
-                    
-                    // Usar la función login del contexto
-                    login(token);
-
-                    // Redirigir después del login exitoso
-                    navigate('/calendar');
-                } else {
-                    const errorMessage = result.message || 'Error desconocido';
-                    alert('Error en la autenticación: ' + errorMessage);
-                }
+            if (response.status === 200) {
+                const token = response.data.token; // Ajusta esto si el token se llama diferente
+                console.log('Token recibido:', token);
+                login(token); // Guarda el token en el contexto
+                navigate('/calendar'); // Redirige al calendario
             } else {
-                const htmlText = await response.text();
-                console.error('El servidor devolvió HTML en lugar de JSON:', htmlText);
-                alert('Error: El servidor devolvió una respuesta inesperada.');
+                console.error('Error al iniciar sesión:', response.data.message);
+                alert('Error: ' + response.data.message);
             }
         } catch (error) {
             console.error('Error al intentar iniciar sesión:', error);
@@ -64,7 +53,6 @@ const Login = () => {
 
     return (
         <div className='container-l'>
-            
             <div className='login-container'>
                 <div className='image-container'>
                     <img src={imagen} alt='Imagen' className='image' />
@@ -72,6 +60,7 @@ const Login = () => {
                 <div className='form-container-login'>
                     <h1 className='title-login'>Inicio de sesión</h1>
                     <center>
+                        {error && <p style={{ color: 'red' }}>{error}</p>} {/* Mostrar errores si existen */}
                         <form onSubmit={handleSubmit}>
                             <input
                                 type='text'
