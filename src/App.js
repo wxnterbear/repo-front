@@ -2,11 +2,13 @@ import Login from './components/Login';
 import Calendar from './components/Calendar';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ProposalDetail from './components/ProposalsDetail';
+import ProposalDetailCm from './components/ProposalsDetailCm';
 import ProposalsList from './components/ProposalsList';
 import ProposalsListCm from './components/ProposalsListCm';
 import IdeasArchive from './components/IdeasArchive';
 import Brainstorming from './components/BrainStorming';
 import ProposalsForms from './components/ProposalsForm';
+import EditProposal from './components/EditProposal';
 import Home from './components/home';
 import BrainStormingCM from './components/BrainStormingCM';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -50,6 +52,14 @@ function App() {
               } 
             />
             <Route 
+              path="/content_proposal_Cm/:id" 
+              element={
+                <ProtectedRoute>
+                  <ProposalDetailCm />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
               path="/brainstorming" 
               element={
                 <ProtectedRoute>
@@ -78,6 +88,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ProposalsForms />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/editproposal/:id" 
+              element={
+                <ProtectedRoute>
+                  <EditProposal />
                 </ProtectedRoute>
               } 
             />

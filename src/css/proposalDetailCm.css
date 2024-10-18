@@ -1,0 +1,168 @@
+.proposal-detail-d {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background: rgb(43, 43, 43);
+    border-radius: 8px;
+    margin-top: 40px;
+}
+
+.proposal-container {
+    display: flex; /* Usar Flexbox para el diseño de dos columnas */
+    justify-content: space-between; /* Espacio entre las columnas */
+    margin-top: 30px;
+}
+
+.proposal-details {
+    flex: 1; /* Ocupa el espacio restante */
+    margin-right: 20px; /* Espacio entre columnas */
+    max-height: 600px; /* Altura máxima para el desplazamiento */
+    overflow-y: auto; /* Habilitar scroll si es necesario */
+    border: 1px solid #ccc; /* Borde alrededor del contenedor */
+    padding: 15px; /* Espaciado interno */
+}
+
+.proposal-comments {
+    flex: 1; /* Ocupa el espacio restante */
+    max-height: 600px; /* Altura máxima para el desplazamiento */
+    overflow-y: auto; /* Habilitar scroll si es necesario */
+    border: 1px solid #ccc; /* Borde alrededor del contenedor */
+    padding: 15px; /* Espaciado interno */
+}
+
+.proposal-detail-d h1 {
+    font-family: 'JerseyR', sans-serif;
+    font-size: 40px;
+    color: rgb(255, 255, 255);
+    font-weight: lighter;
+}
+
+.proposal-detail-d h2 {
+    margin-top: 20px;
+    font-family: 'JerseyR', sans-serif;
+    font-size: 50px;
+    color: rgb(255, 255, 255);
+    font-weight: lighter;
+}
+
+.proposal-detail-d p {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.822);
+    margin: 0 0 10px;
+}
+
+.comment {
+    margin-bottom: 10px; /* Espacio entre comentarios */
+}
+
+.comments{
+    width: 99%;
+    border-radius: 8px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    background-color: rgba(81, 90, 90, 0.623);
+    color: white;
+
+}
+
+.btn-edit,
+.btn-save {
+    margin-top: 10px;
+    font-size: 25px;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 15px;
+    font-family: 'JerseyR', sans-serif;
+    background-color: rgb(81, 90, 90);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-edit:hover,
+.btn-save:hover {
+    background-color: rgb(43, 48, 48);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content-d {
+    position: relative;
+    background: rgb(43, 43, 43);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-content-d label {
+    color: white;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.input-form-d,
+.select-type-d,
+.select-rs-d,
+.copy-d,
+.desc-d,
+.select-by-d,
+.input-btn {
+    width: 97%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 2px solid rgb(133, 133, 133);;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+/* Estilo adicional para el formulario de comentarios */
+.comment-textarea,
+.comment-input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid rgba(204, 161, 64, 1);
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.comment-button {
+    margin-top: 10px;
+    font-size: 25px;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 15px;
+    font-family: 'JerseyR', sans-serif;
+    background-color: rgb(81, 90, 90);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.comment-button:hover {
+    background-color: rgb(43, 48, 48);
+}

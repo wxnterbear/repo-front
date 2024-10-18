@@ -38,10 +38,50 @@ const ProposalsForms = () => {
 
     // Función de validación
     const validateForm = () => {
-        if (socialMedia.includes('YT') && type === 'IMG') {
-            setError('YouTube no permite subir imágenes. Por favor, selecciona otro tipo de contenido o redes sociales.');
+        // Verificación de archivos
+        if (files.length === 0) {
+            alert('Debes seleccionar al menos un archivo para subir.');
             return false;
         }
+
+        const selectedFileTypes = Array.from(files).map(file => file.type);
+        const hasVideo = selectedFileTypes.some(type => type.startsWith('video'));
+        const hasImage = selectedFileTypes.some(type => type.startsWith('image'));
+
+        // Verificaciones para YouTube y archivos
+        if (socialMedia.includes('YT') && hasImage) {
+            alert('No puedes subir imágenes si seleccionas YouTube.');
+            return false;
+        }
+
+        if (type === 'IMG' && hasVideo) {
+            alert('No puedes subir videos si seleccionas tipo Imagen.');
+            return false;
+        }
+
+        if (type === 'VID' && hasImage) {
+            alert('No puedes subir imágenes si seleccionas tipo Video.');
+            return false;
+        }
+
+        // Verificaciones para Storie_Image y Storie_Video
+        if (type === 'STI' && hasVideo) {
+            alert('No puedes subir videos si seleccionas tipo Storie_Image.');
+            return false;
+        }
+
+        if (type === 'STV' && hasImage) {
+            alert('No puedes subir imágenes si seleccionas tipo Storie_Video.');
+            return false;
+        }
+
+        // Verificación para Storie_Video y YouTube
+        if (type === 'STV' && socialMedia.includes('YT')) {
+            alert('No puedes seleccionar YouTube si eliges Storie_Video.');
+            return false;
+        }
+
+        // Si todas las validaciones pasan
         setError(''); // Resetea el error si todo está bien
         return true;
     };
@@ -76,7 +116,6 @@ const ProposalsForms = () => {
         // Depuración: imprimir el contenido de formData
         for (let [key, value] of formData.entries()) {
             console.log('Token:', token);
-
             console.log(key, value);
         }
 
@@ -84,7 +123,7 @@ const ProposalsForms = () => {
             const response = await axios.post('https://django-tester.onrender.com/content_proposal/', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': token, 
+                    'Authorization': token,
                 },
             });
 
@@ -103,56 +142,57 @@ const ProposalsForms = () => {
             <center>
                 <div className="form-c">
                     <form onSubmit={handleSubmit}>
-                        <div className="form-container"><center>
-                            <strong className="title-p">Propuestas de contenido</strong>
-                            <div className="title-container">
-                                <label>Título:</label><br />
-                                <input className="input-form-p" type="text" value={title} onChange={handleTitleChange} required />
-                            </div>
-                            <div className="type-container">
-                                <label>Tipo:</label>
-                                <select className="select-form-p" value={type} onChange={handleTypeChange} required>
-                                    <option value="">---------</option>
-                                    <option value="VID">Video</option>
-                                    <option value="IMG">Imagen</option>
-                                    <option value="STI">Storie_Image</option>
-                                    <option value="STV">Storie_Video</option>
-                                </select>
-                            </div>
-                            <div className="sm-container">
-                                <label>Redes Sociales:</label>
-                                <Select
-                                    isMulti
-                                    options={socialMediaOptions}
-                                    onChange={handleSocialMediaChange}
-                                    className="select-form-p"
-                                />
-                            </div>
+                        <div className="form-container">
+                            <center>
+                                <strong className="title-p">Propuestas de contenido</strong>
+                                <div className="title-container">
+                                    <label>Título:</label><br />
+                                    <input className="input-form-p" type="text" value={title} onChange={handleTitleChange} required />
+                                </div>
+                                <div className="type-container">
+                                    <label>Tipo:</label>
+                                    <select className="select-form-p" value={type} onChange={handleTypeChange} required>
+                                        <option value="">---------</option>
+                                        <option value="VID">Video</option>
+                                        <option value="IMG">Imagen</option>
+                                        <option value="STI">Storie_Image</option>
+                                        <option value="STV">Storie_Video</option>
+                                    </select>
+                                </div>
+                                <div className="sm-container">
+                                    <label>Redes Sociales:</label>
+                                    <Select
+                                        isMulti
+                                        options={socialMediaOptions}
+                                        onChange={handleSocialMediaChange}
+                                        className="select-form-p"
+                                    />
+                                </div>
 
-                            {error && <p style={{ color: 'red' }}>{error}</p>}
+                                {error && <p style={{ color: 'red' }}>{error}</p>}
 
-                            <div className="copy-container">
-                                <label>Copy:</label>
-                                <textarea className="copy" value={copy} onChange={handleCopyChange} required ></textarea>
-                            </div>
-                            <div className="description-container">
-                                <label>Descripción:</label>
-                                <textarea className="description-form" value={description} onChange={handleDescriptionChange} required ></textarea>
-                            </div>
-                            <div className="pb-container">
-                                <label>Propuesto por:</label>
-                                <select value={proposedBy} onChange={handleProposedByChange} required>
-                                    <option value="">---------</option>
-                                    <option value="wavy">wavy</option>
-                                    <option value="salo">salo</option>
-                                </select>
-                            </div>
-                            <div className="file-container">
-                                <label>Archivos:</label>
-                                <input type="file" multiple onChange={handleFilesChange} />
-                            </div>
-                            <button className="btn-pform" type="submit">Enviar Propuesta</button>
-                        </center>
+                                <div className="copy-container">
+                                    <label>Copy:</label>
+                                    <textarea className="copy" value={copy} onChange={handleCopyChange} required ></textarea>
+                                </div>
+                                <div className="description-container">
+                                    <label>Descripción:</label>
+                                    <textarea className="description-form" value={description} onChange={handleDescriptionChange} required ></textarea>
+                                </div>
+                                <div className="pb-container">
+                                    <label>Propuesto por:</label>
+                                    <select value={proposedBy} onChange={handleProposedByChange} required>
+                                        <option value="">---------</option>
+                                        <option value="wavy">wavy</option>
+                                        <option value="salo">salo</option>
+                                    </select>
+                                </div>
+                                <div className="file-container">
+                                    <label>Archivos:</label>
+                                    <input type="file" multiple onChange={handleFilesChange} />
+                                </div>
+                                <button className="btn-pform" type="submit">Enviar Propuesta</button>
+                            </center>
                         </div>
                     </form>
                 </div>

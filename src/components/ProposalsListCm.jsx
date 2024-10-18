@@ -46,7 +46,7 @@ const ProposalsListCm = () => {
 
     // Función para manejar el clic en el elemento <li>
     const handleClick = (id) => {
-        navigate(`/content_proposal/${id}`); // Navega a la ruta del detalle de la propuesta
+        navigate(`/content_proposal_Cm/${id}`); // Navega a la ruta del detalle de la propuesta
     };
 
     return (

@@ -15,24 +15,52 @@ const ProposalDetail = () => {
 
   // Obtener los datos de las propuestas
   useEffect(() => {
-    const fetchProposals = async () => {
-      try {
-        const response = await fetch('https://django-tester.onrender.com/content_proposal/', {
-          credentials: 'include', // Incluye las credenciales (cookies) en la solicitud si es necesario
-        });
-        const data = await response.json();
-        const proposal = data.find((proposal) => proposal.id === parseInt(id));
-        console.log('Propuesta seleccionada:', proposal);
-        setSelectedProposal(proposal);
-      } catch (error) {
-        console.error('Error obteniendo las propuestas:', error);
-      } finally {
-        setLoading(false);
-      }
+    const fetchContentProposal = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('No tienes token de acceso. Inicia sesión primero.');
+                navigate('/login');
+                return;
+            }
+
+            const response = await fetch(`https://django-tester.onrender.com/content_proposal/${id}/`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json(); // Obtenemos la respuesta que contiene la propuesta y los comentarios
+                console.log("Datos obtenidos:", data);
+
+                const proposal = data.proposal; // Obtenemos la propuesta
+                const comments = data.comments; // Obtenemos los comentarios
+
+                if (proposal) {
+                    setSelectedProposal(proposal);
+                    
+                } else {
+                    setError('Propuesta no encontrada.');
+                }
+
+                if (comments) {
+                    setComments(comments);
+                }
+            } else {
+                setError('Error al obtener los datos.');
+            }
+        } catch (error) {
+            setError('Error en la solicitud al servidor.');
+        } finally {
+            setLoading(false);
+        }
     };
 
-    fetchProposals();
-  }, [id]);
+    fetchContentProposal();
+}, [id, navigate]);
 
   // Actualiza el estado de 'comments' cuando se escribe un comentario
   const handleCommentChange = (event, proposalId) => {
@@ -68,10 +96,19 @@ const ProposalDetail = () => {
     };
 
     try {
+      // Obtener el token del localStorage
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('No tienes token de acceso. Inicia sesión primero.');
+        navigate('/login');
+        return;
+      }
+
       // Envía el comentario al servidor
       const commentResponse = await fetch(`https://django-tester.onrender.com/proposals/${proposalId}/comments`, {
         method: 'POST',
         headers: {
+          'Authorization': `Token ${token}`,  // Enviar el token en el header
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(comment),
@@ -89,6 +126,7 @@ const ProposalDetail = () => {
         const actionResponse = await fetch(`https://django-tester.onrender.com/proposals/${proposalId}/${statusAction}`, {
           method: 'PUT',
           headers: {
+            'Authorization': `Token ${token}`,  // Enviar el token en el header
             'Content-Type': 'application/json',
           },
         });
@@ -113,15 +151,14 @@ const ProposalDetail = () => {
   }
 
   if (!selectedProposal) {
-    return <p>No se encontró la propuesta.</p>;
+    return <p className='proposal_empty'>No se encontró la propuesta.</p>;
   }
 
   return (
     <div className="proposal-detail">
       <Header />
       <h1>{selectedProposal.title}</h1>
-      <p><strong>Descripción:</strong> {selectedProposal.desc || 'No hay descripción'}</p>
-      <p><strong>Descripción 2.0:</strong> {selectedProposal.descripcion}</p>
+      <p><strong>Descripción:</strong> {selectedProposal.description || 'No hay descripción'}</p>
       <p><strong>Tipo:</strong> {selectedProposal.type}</p>
       <p><strong>Red social:</strong> {selectedProposal.social_media}</p>
       <p><strong>Copy:</strong> {selectedProposal.copy || 'No hay copy'}</p>
@@ -156,8 +193,8 @@ const ProposalDetail = () => {
           onChange={handleStatusChange}
         >
           <option value="" disabled>Selecciona una acción</option>
-          <option value="AP">Aceptar</option>
-          <option value="RJ">Rechazar</option>
+          <option value="accept">Aceptar</option>
+          <option value="reject">Rechazar</option>
           <option value="MC">Solicitar cambios</option>
         </select>
         <button
