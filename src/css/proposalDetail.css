@@ -1,86 +1,74 @@
-@font-face {
-  font-family: 'JerseyR';
-  src: url('../font/jerseyr.ttf') format('truetype');
-}
-
-.proposal-detail {
+.proposal-detail-ad {
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  background-color: rgb(31, 35, 70);
   background: rgb(43, 43, 43);
   border-radius: 8px;
+  margin-top: 40px;
 }
 
-.proposal-detail h1 {
-  margin-top: 80px;
+.proposal-container-ad {
+  display: flex; /* Usar Flexbox para el diseño de dos columnas */
+  justify-content: space-between; /* Espacio entre las columnas */
+  margin-top: 30px;
+}
+
+.proposal-details-ad {
+  flex: 1; /* Ocupa el espacio restante */
+  margin-right: 20px; /* Espacio entre columnas */
+  max-height: 600px; /* Altura máxima para el desplazamiento */
+  overflow-y: auto; /* Habilitar scroll si es necesario */
+  border: 1px solid #ccc; /* Borde alrededor del contenedor */
+  padding: 15px; /* Espaciado interno */
+}
+
+.proposal-comments-ad {
+  flex: 1; /* Ocupa el espacio restante */
+  max-height: 600px; /* Altura máxima para el desplazamiento */
+  overflow-y: auto; /* Habilitar scroll si es necesario */
+  border: 1px solid #ccc; /* Borde alrededor del contenedor */
+  padding: 15px; /* Espaciado interno */
+}
+
+.proposal-detail-ad h1 {
+  font-family: 'JerseyR', sans-serif;
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  font-weight: lighter;
+}
+
+.proposal-detail-ad h2 {
+  margin-top: 20px;
   font-family: 'JerseyR', sans-serif;
   font-size: 50px;
   color: rgb(255, 255, 255);
+  font-weight: lighter;
 }
 
-.proposal-detail p {
+.proposal-detail-ad p {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 20px;
   color: rgba(255, 255, 255, 0.822);
   margin: 0 0 10px;
 }
 
-.proposal-detail select,
-.proposal-detail textarea {
-  width: 97%;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 2px solid rgba(204, 161, 64, 1);
-  background-color: rgb(255, 255, 255);
-  border-radius: 5px;
-  font-size: 15px;
+.comment-ad {
+  margin-bottom: 10px; /* Espacio entre comentarios */
+}
+
+.comments-ad{
+  width: 99%;
+  border-radius: 8px;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
-.proposal-detail textarea {
-  resize: vertical;
-}
-
-/*
-.proposal-detail .buttons button:first-child {
-  background-color: #175A0C;
+  font-size: 15px;
+  background-color: rgba(81, 90, 90, 0.623);
   color: white;
+
 }
 
-.proposal-detail .buttons button:first-child:hover {
-  background-color: #0a2906;
-}
-
-.proposal-detail .buttons button:last-child {
-  background-color: #a3180e;
-  color: white;
-}
-
-.proposal-detail .buttons button:last-child:hover {
-  background-color: #630b05;
-}
-
-.proposal-detail .buttons button:first-child {
-  background-color: #175A0C;
-  color: white;
-}
-
-.proposal-detail .buttons button:first-child:hover {
-  background-color: #0a2906;
-}
-
-.proposal-detail .buttons button:last-child {
-  background-color: #a3180e;
-  color: white;
-}
-
-.proposal-detail .buttons button:last-child:hover {
-  background-color: #630b05;
-}
-*/
-.btn-detail {
+.btn-edit-ad,
+.btn-save-ad, .btn-change-status-ad {
   margin-top: 10px;
   font-size: 25px;
   border-radius: 5px;
@@ -93,6 +81,102 @@
   transition: background-color 0.3s;
 }
 
-.btn-detail:hover {
+.btn-close-ad{
+  margin-top: 10px;
+  margin-left: 20px;
+  font-size: 25px;
+  border-radius: 5px;
+  border: none;
+  padding: 10px 15px;
+  font-family: 'JerseyR', sans-serif;
+  background-color: rgb(81, 90, 90);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-edit-ad:hover,
+.btn-save-ad:hover, .btn-change-status-ad:hover, .btn-close-ad:hover {
+  background-color: rgb(43, 48, 48);
+}
+
+.modal-overlay-ad {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content-ad {
+  position: relative;
+  background: rgb(43, 43, 43);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-content-ad label {
+  color: white;
+}
+
+.close-button-ad {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.input-form-ad,
+.select-type-ad,
+.select-rs-ad,
+.copy-ad,
+.desc-ad,
+.select-by-ad,
+.input-btn-ad {
+  width: 97%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 2px solid rgb(133, 133, 133);;
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+/* Estilo adicional para el formulario de comentarios */
+.comment-textarea-ad,
+.comment-input-ad {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid rgba(204, 161, 64, 1);
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.comment-button-ad {
+  margin-top: 10px;
+  font-size: 25px;
+  border-radius: 5px;
+  border: none;
+  padding: 10px 15px;
+  font-family: 'JerseyR', sans-serif;
+  background-color: rgb(81, 90, 90);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.comment-button-ad:hover {
   background-color: rgb(43, 48, 48);
 }

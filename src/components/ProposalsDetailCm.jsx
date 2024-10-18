@@ -252,8 +252,8 @@ const ProposalDetailCm = () => {
     return (
         <div className="proposal-detail-d">
             <Header />
-            <div className="proposal-container">
-                <div className="proposal-details">
+            <div className="proposal-container-d">
+                <div className="proposal-details-d">
                     <h1>{selectedProposal.title}</h1>
                     <p><strong>Descripción:</strong> {selectedProposal.description || 'No hay descripción'}</p>
                     <p><strong>Tipo:</strong> {selectedProposal.type}</p>
@@ -263,12 +263,12 @@ const ProposalDetailCm = () => {
                     <p><strong>Fecha de actualización:</strong> {selectedProposal.updated_at || 'Desconocida'}</p>
                 </div>
 
-                <div className="proposal-comments">
+                <div className="proposal-comments-d">
                     <h2>Comentarios</h2>
                     {comments.length > 0 ? (
                         comments.map((comment, index) => (
-                            <div key={comment.id || index} className="comment">
-                                <p><strong>{comment.user || 'Usuario desconocido'}</strong>: {comment.body || 'Comentario vacío'}</p>
+                            <div key={comment.id || index} className="comment-d">
+                                <p><strong>{comment.comment_by || 'Usuario desconocido'}</strong>: {comment.body || 'Comentario vacío'}</p>
                             </div>
                         ))
                     ) : (
@@ -277,27 +277,27 @@ const ProposalDetailCm = () => {
 
                     <form onSubmit={handleAddComment}>
                         <textarea
-                            className='comments'
+                            className='comments-d'
                             value={newComment}
                             onChange={(e) => setNewComment(e.target.value)}
                             placeholder="Escribe un comentario..."
                             required
                         />
-                        <button className='btn-save' type="submit">Agregar Comentario</button>
+                        <button className='btn-save-d' type="submit">Agregar Comentario</button>
                     </form>
                 </div>
             </div>
             {error && <p className="error-message">{error}</p>}
 
-            <button className='btn-edit' onClick={() => setIsEditing(!isEditing)}>
+            <button className='btn-edit-d' onClick={() => setIsEditing(!isEditing)}>
                 {isEditing ? 'Cancelar Edición' : 'Editar Propuesta'}
             </button>
 
             {isEditing && (
                 <center>
-                    <div className="modal-overlay">
+                    <div className="modal-overlay-d">
                         <div className="modal-content-d">
-                            <button className="close-button" onClick={closeModal}>✖</button>
+                            <button className="close-button-d" onClick={closeModal}>✖</button>
                             <h2>Editar Propuesta</h2>
                             <label>Título:</label>
                             <input
@@ -358,7 +358,7 @@ const ProposalDetailCm = () => {
                                 onChange={handleProposedByChange}
                                 placeholder="Nombre del propuesto"
                             /><br />
-                            <button className='btn-save' type="button" onClick={handleEditProposal}>Guardar Cambios</button>
+                            <button className='btn-save-d' type="button" onClick={handleEditProposal}>Guardar Cambios</button>
                         </div>
                     </div>
                 </center>

@@ -4,17 +4,19 @@ import '../css/proposalDetail.css';
 import Header from './header';
 
 const ProposalDetail = () => {
-  const navigate = useNavigate();
-  const { id } = useParams();  // Obtiene el id desde los parámetros de la url
-  const [loading, setLoading] = useState(true); // Maneja el estado de carga
-  const [comments, setComments] = useState({}); // Objeto para guardar comentarios
-  const [commentBy, setCommentBy] = useState({}); // Objeto para la persona que hace el comentario
-  const [selectedProposal, setSelectedProposal] = useState(null); // Cambiado a null para evitar problemas de renderizado
-  const [error, setError] = useState(''); // Estado para manejar mensajes de error
-  const [statusAction, setStatusAction] = useState(''); // Hook para el estado de la propuesta
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const [loading, setLoading] = useState(true);
+    const [comments, setComments] = useState([]);
+    const [selectedProposal, setSelectedProposal] = useState(null);
+    const [error, setError] = useState('');
+    const [newComment, setNewComment] = useState('');
 
-  // Obtener los datos de las propuestas
-  useEffect(() => {
+    // Estado para el modal de cambio de estado
+    const [showStatusModal, setShowStatusModal] = useState(false);
+    const [newStatus, setNewStatus] = useState('');  // Nuevo estado seleccionado
+
+    // Función para obtener la propuesta y los comentarios
     const fetchContentProposal = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -33,21 +35,14 @@ const ProposalDetail = () => {
             });
 
             if (response.ok) {
-                const data = await response.json(); // Obtenemos la respuesta que contiene la propuesta y los comentarios
-                console.log("Datos obtenidos:", data);
-
-                const proposal = data.proposal; // Obtenemos la propuesta
-                const comments = data.comments; // Obtenemos los comentarios
+                const data = await response.json();
+                const proposal = data.proposal;
 
                 if (proposal) {
                     setSelectedProposal(proposal);
-                    
+                    fetchComments(); // Llama a la función para obtener comentarios
                 } else {
                     setError('Propuesta no encontrada.');
-                }
-
-                if (comments) {
-                    setComments(comments);
                 }
             } else {
                 setError('Error al obtener los datos.');
@@ -59,154 +54,170 @@ const ProposalDetail = () => {
         }
     };
 
-    fetchContentProposal();
-}, [id, navigate]);
+    // Función para obtener los comentarios
+    const fetchComments = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`https://django-tester.onrender.com/content_proposal/${id}/`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
 
-  // Actualiza el estado de 'comments' cuando se escribe un comentario
-  const handleCommentChange = (event, proposalId) => {
-    setComments({
-      ...comments,
-      [proposalId]: event.target.value,
-    });
-  };
-
-  // Actualiza el estado de 'commentBy' cuando cambia la persona del comentario
-  const handleCommentByChange = (event, proposalId) => {
-    setCommentBy({
-      ...commentBy,
-      [proposalId]: event.target.value,
-    });
-  };
-
-  // Actualiza el estado de 'statusAction' cuando se selecciona una opción
-  const handleStatusChange = (event) => {
-    setStatusAction(event.target.value);
-  };
-
-  // Envía el comentario y la acción al servidor
-  const handleCommentSubmit = async (proposalId) => {
-    if (!comments[proposalId] || !commentBy[proposalId] || !statusAction) {
-      setError('Por favor, completa todos los campos antes de enviar el comentario.');
-      return;
-    }
-
-    const comment = {
-      body: comments[proposalId],
-      comment_by: commentBy[proposalId],
+            if (response.ok) {
+                const data = await response.json();
+                setComments(data.comments); // Actualiza el estado con los comentarios obtenidos
+            } else {
+                console.error('Error al obtener comentarios');
+            }
+        } catch (error) {
+            console.error('Error en la solicitud al servidor:', error);
+        }
     };
 
-    try {
-      // Obtener el token del localStorage
-      const token = localStorage.getItem('token');
-      if (!token) {
-        alert('No tienes token de acceso. Inicia sesión primero.');
-        navigate('/login');
-        return;
-      }
+    useEffect(() => {
+        fetchContentProposal();
+    }, [id, navigate]);
 
-      // Envía el comentario al servidor
-      const commentResponse = await fetch(`https://django-tester.onrender.com/proposals/${proposalId}/comments`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Token ${token}`,  // Enviar el token en el header
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(comment),
-      });
+    const handleAddComment = async (event) => {
+        event.preventDefault();
+        if (!newComment.trim()) return;
 
-      if (!commentResponse.ok) {
-        throw new Error('Error al enviar el comentario');
-      }
+        try {
+            const token = localStorage.getItem('token');
+            const formData = new FormData();
+            formData.append('id', selectedProposal.id);
+            formData.append('body', newComment);
 
-      console.log('Comentario enviado:', await commentResponse.json());
-      setError('');
+            const response = await fetch(`https://django-tester.onrender.com/content_proposal/comment/`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Token ${token}`,
+                },
+                body: formData,
+            });
 
-      // Envía la acción correspondiente (aceptar o rechazar)
-      if (statusAction === 'accept' || statusAction === 'reject') {
-        const actionResponse = await fetch(`https://django-tester.onrender.com/proposals/${proposalId}/${statusAction}`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Token ${token}`,  // Enviar el token en el header
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!actionResponse.ok) {
-          throw new Error(`Error al ${statusAction === 'accept' ? 'aceptar' : 'rechazar'} la propuesta`);
+            if (response.ok) {
+                setNewComment(''); // Limpia el campo del nuevo comentario
+                fetchComments(); // Vuelve a cargar los comentarios después de agregar uno nuevo
+            } else {
+                const errorData = await response.json();
+                alert(`Error al agregar el comentario: ${JSON.stringify(errorData)}`);
+            }
+        } catch (error) {
+            alert('Error al agregar el comentario');
         }
+    };
 
-        console.log(`Propuesta ${statusAction === 'accept' ? 'aceptada' : 'rechazada'}:`, await actionResponse.json());
-      }
+    // Función para cambiar el estado de la propuesta
+    const handleStatusChange = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const formData = new FormData();
+            formData.append('id', selectedProposal.id);
+            formData.append('status', newStatus);  // Estado seleccionado
 
-      // Limpia el estado después de enviar
-      setStatusAction('');
-    } catch (error) {
-      console.error(error.message);
-      setError('Error al enviar el comentario o la acción. Inténtalo nuevamente.');
+            const response = await fetch(`https://django-tester.onrender.com/content_proposal/change_status/`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Token ${token}`,
+                },
+                body: formData,
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert(`Estado cambiado correctamente: ${result.message}`);
+                setShowStatusModal(false);  // Cerrar el modal después de cambiar el estado
+            } else {
+                const errorData = await response.json();
+                alert(`Error al cambiar el estado: ${JSON.stringify(errorData)}`);
+            }
+        } catch (error) {
+            alert('Error al cambiar el estado de la propuesta');
+        }
+    };
+
+    if (loading) {
+        return <p>Cargando...</p>;
     }
-  };
 
-  if (loading) {
-    return <p>Cargando...</p>;
-  }
+    if (!selectedProposal) {
+        return <p className='proposal_empty'>No se encontró la propuesta.</p>;
+    }
 
-  if (!selectedProposal) {
-    return <p className='proposal_empty'>No se encontró la propuesta.</p>;
-  }
+    return (
+        <div className="proposal-detail-ad">
+            <Header />
+            <div className="proposal-container-ad">
+                <div className="proposal-details-ad">
+                    <h1>{selectedProposal.title}</h1>
+                    <p><strong>Descripción:</strong> {selectedProposal.description || 'No hay descripción'}</p>
+                    <p><strong>Tipo:</strong> {selectedProposal.type}</p>
+                    <p><strong>Red social:</strong> {selectedProposal.social_media}</p>
+                    <p><strong>Copy:</strong> {selectedProposal.copy || 'No hay copy'}</p>
+                    <p><strong>Creado por:</strong> {selectedProposal.proposed_by || 'Desconocido'}</p>
+                    <p><strong>Fecha de actualización:</strong> {selectedProposal.updated_at || 'Desconocida'}</p>
+                </div>
 
-  return (
-    <div className="proposal-detail">
-      <Header />
-      <h1>{selectedProposal.title}</h1>
-      <p><strong>Descripción:</strong> {selectedProposal.description || 'No hay descripción'}</p>
-      <p><strong>Tipo:</strong> {selectedProposal.type}</p>
-      <p><strong>Red social:</strong> {selectedProposal.social_media}</p>
-      <p><strong>Copy:</strong> {selectedProposal.copy || 'No hay copy'}</p>
-      <p><strong>Creado por:</strong> {selectedProposal.proposed_by || 'Desconocido'}</p>
-      <p><strong>Fecha de actualización:</strong> {selectedProposal.updated || 'Desconocida'}</p>
+                <div className="proposal-comments-ad">
+                    <h2>Comentarios</h2>
+                    {Array.isArray(comments) && comments.length > 0 ? (
+                        comments.map((comment, index) => (
+                            <div key={comment.id || index} className="comment-ad">
+                                <p><strong>{comment.comment_by || 'Usuario desconocido'}</strong>: {comment.body || 'Comentario vacío'}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No hay comentarios.</p>
+                    )}
 
-      {error && <p className="error-message">{error}</p>}
+                    <form onSubmit={handleAddComment}>
+                        <textarea
+                            className='comments-ad'
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            placeholder="Escribe un comentario..."
+                            required
+                        />
+                        <button className='btn-save-ad' type="submit">Agregar Comentario</button>
+                    </form>
+                </div>
+            </div>
+            <button className="btn-change-status-ad" onClick={() => setShowStatusModal(true)}>
+                Cambiar Estado de la Propuesta
+            </button>
+            {/* Modal para cambiar el estado */}
+            {showStatusModal && (
+                <div className="modal-overlay-ad">
+                    <div className="modal-content-ad">
+                        <h2>Cambiar Estado</h2>
+                        <label>Estado:</label>
+                        <select
+                            value={newStatus}
+                            onChange={(e) => setNewStatus(e.target.value)}
+                            className="status-select"
+                        >
+                            <option value="">Seleccionar...</option>
+                            <option value="RE">Rechazar</option>
+                            <option value="AP">Aceptar</option>
+                            <option value="PC">Pedir Cambios</option>
+                        </select>
+                        <button className="btn-save-ad" onClick={handleStatusChange}>
+                            Enviar
+                        </button>
+                        <button className="btn-close-ad" onClick={() => setShowStatusModal(false)}>
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            )}
 
-      <div>
-        <select
-          name="comment_by"
-          value={commentBy[selectedProposal.id] || ''}
-          onChange={(e) => handleCommentByChange(e, selectedProposal.id)}
-        >
-          <option value="" disabled>Selecciona un usuario</option>
-          <option value="salo">salo</option>
-          <option value="root">root</option>
-          <option value="R1oGeyms">R1oGeyms</option>
-        </select>
-        <textarea
-          name="body"
-          cols="3"
-          rows="3"
-          value={comments[selectedProposal.id] || ''}
-          onChange={(e) => handleCommentChange(e, selectedProposal.id)}
-          placeholder="Escribe un comentario..."
-          required
-        ></textarea>
-        <select
-          name="status_action"
-          value={statusAction}
-          onChange={handleStatusChange}
-        >
-          <option value="" disabled>Selecciona una acción</option>
-          <option value="accept">Aceptar</option>
-          <option value="reject">Rechazar</option>
-          <option value="MC">Solicitar cambios</option>
-        </select>
-        <button
-          className='btn-detail'
-          onClick={() => handleCommentSubmit(selectedProposal.id)}
-          disabled={!commentBy[selectedProposal.id] || !comments[selectedProposal.id] || !statusAction}
-        >
-          Enviar comentario
-        </button>
-      </div>
-    </div>
-  );
+            {error && <p className="error-message">{error}</p>}
+        </div>
+    );
 };
 
 export default ProposalDetail;

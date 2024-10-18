@@ -8,13 +8,13 @@
     margin-top: 40px;
 }
 
-.proposal-container {
+.proposal-container-d {
     display: flex; /* Usar Flexbox para el diseño de dos columnas */
     justify-content: space-between; /* Espacio entre las columnas */
     margin-top: 30px;
 }
 
-.proposal-details {
+.proposal-details-d {
     flex: 1; /* Ocupa el espacio restante */
     margin-right: 20px; /* Espacio entre columnas */
     max-height: 600px; /* Altura máxima para el desplazamiento */
@@ -23,7 +23,7 @@
     padding: 15px; /* Espaciado interno */
 }
 
-.proposal-comments {
+.proposal-comments-d {
     flex: 1; /* Ocupa el espacio restante */
     max-height: 600px; /* Altura máxima para el desplazamiento */
     overflow-y: auto; /* Habilitar scroll si es necesario */
@@ -53,11 +53,11 @@
     margin: 0 0 10px;
 }
 
-.comment {
+.comment-d {
     margin-bottom: 10px; /* Espacio entre comentarios */
 }
 
-.comments{
+.comments-d{
     width: 99%;
     border-radius: 8px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -67,8 +67,8 @@
 
 }
 
-.btn-edit,
-.btn-save {
+.btn-edit-d,
+.btn-save-d {
     margin-top: 10px;
     font-size: 25px;
     border-radius: 5px;
@@ -81,12 +81,12 @@
     transition: background-color 0.3s;
 }
 
-.btn-edit:hover,
-.btn-save:hover {
+.btn-edit-d:hover,
+.btn-save-d:hover {
     background-color: rgb(43, 48, 48);
 }
 
-.modal-overlay {
+.modal-overlay-d {
     position: fixed;
     top: 0;
     left: 0;
@@ -114,7 +114,7 @@
     color: white;
 }
 
-.close-button {
+.close-button-d {
     position: absolute;
     top: 10px;
     right: 15px;
@@ -130,7 +130,7 @@
 .copy-d,
 .desc-d,
 .select-by-d,
-.input-btn {
+.input-btn-d {
     width: 97%;
     margin-bottom: 10px;
     padding: 10px;
@@ -141,8 +141,8 @@
 }
 
 /* Estilo adicional para el formulario de comentarios */
-.comment-textarea,
-.comment-input {
+.comment-textarea-d,
+.comment-input-d {
     width: 100%;
     padding: 10px;
     border: 2px solid rgba(204, 161, 64, 1);
@@ -150,7 +150,7 @@
     font-size: 15px;
 }
 
-.comment-button {
+.comment-button-d {
     margin-top: 10px;
     font-size: 25px;
     border-radius: 5px;
@@ -163,6 +163,6 @@
     transition: background-color 0.3s;
 }
 
-.comment-button:hover {
+.comment-button-d:hover {
     background-color: rgb(43, 48, 48);
 }
