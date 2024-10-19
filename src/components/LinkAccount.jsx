@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import '../css/linkAccount.css';
-import Header from './header';
+import React, { useState } from "react";
+import '../css/linkAccount.css'
+import { useLocation } from "react-router-dom";
 
 const LinkAccount = () => {
-    const navigate = useNavigate();
     const location = useLocation();
-    const [loading, setLoading] = useState(true);
-    const [linked, setLinked] = useState(false);
-    const [error, setError] = useState('');
+    const [message, setMessage] = useState("");
+    const [error, setError] = useState(null);
+    const [hasChecked, setHasChecked] = useState(false); 
 
     const handleLinkGoogle = async () => {
         try {
             const response = await fetch('https://django-tester.onrender.com/auth/google/');
             const data = await response.json();
-            console.log('Respuesta del servidor:', data);
+            console.log('Respuesta del servidor (link):', data);
             
             if (data) {
-                window.location.href = data; 
+                window.location.href = data; // Redirige a la URL de autenticación de Google
             } else {
                 setError('Error al obtener la URL de autenticación de Google');
             }
@@ -26,97 +24,59 @@ const LinkAccount = () => {
         }
     };
 
-    const handleOauthCallback = async () => {
-        const params = new URLSearchParams(location.search);
-        const code = params.get('code');
-        const state = params.get('state');
-        const scope = params.get('scope');
+    const handleOauthCallback = async (queryString) => {
+        console.log('Procesando callback con queryString:', queryString);
 
-        console.log('code:', code, 'state:', state, 'scope:', scope);
+        const url = `https://django-tester.onrender.com/auth/google/oauth2callback${queryString}`;
 
-        if (code && state && scope) {
-            const url = `https://django-tester.onrender.com/auth/google/oauth2callback/?state=${state}&code=${code}&scope=${scope}`;
-            console.log('olo')
-            try {
-                const response = await fetch(url, {
-                    method: 'GET',  
-                    
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log('Resultado del servidor:', result);
-                    if (result.message === 'Credenciales creadas') {
-                        setLinked(true);
-                        navigate('/link_account'); 
-                    } else {
-                        setError(result.message);
-                    }
-                } else {
-                    const errorData = await response.json();
-                    setError(`Error al procesar el callback de Google: ${errorData.message}`);
-                }
-            } catch (error) {
-                setError('Error en la solicitud al servidor');
-            } finally {
-                setLoading(false);
-            }
-        } else {
-            console.log('Faltan parámetros para la vinculación.');
-            setLoading(false);
-        }
-    };
-
-    const handleUnlinkGoogle = async () => {
         try {
-            const response = await fetch('https://django-tester.onrender.com/auth/unlink/google/', {
-                method: 'POST', 
+            const response = await fetch(url, {
+                method: 'GET',
                 headers: {
-                    'Authorization': `Token ${localStorage.getItem('token')}`, 
+                    'Content-Type': 'application/json',
                 },
             });
 
             if (response.ok) {
-                setLinked(false); 
+                const result = await response.json();
+                console.log('Resultado del servidor:', result);
+                setMessage(`Vinculación exitosa: ${JSON.stringify(result)}`);
             } else {
                 const errorData = await response.json();
-                setError(`Error al desvincular: ${errorData.message}`);
+                setError(`Error al procesar el callback de Google: ${errorData.message}`);
             }
         } catch (error) {
             setError('Error en la solicitud al servidor');
         }
     };
 
-    useEffect(() => {
-        handleOauthCallback();
-    }, []);
+    // Verifica si hay parámetros en la URL y ejecuta el callback
+    const queryString = location.search;
 
-    if (loading) {
-        return <p>Cargando...</p>;
+    // Llama al callback solo si se ha cambiado el estado y no se ha hecho antes
+    if (!hasChecked && queryString) {
+        const params = new URLSearchParams(queryString);
+        const code = params.get('code');
+        const state = params.get('state');
+
+        // Solo proceder si existen los parámetros de Google en la URL
+        if (code && state) {
+            handleOauthCallback(queryString); // Solo llama a la función si hay parámetros
+            setHasChecked(true); // Marca que ya se ha ejecutado el callback
+        } else {
+            console.log('No se encontraron parámetros de Google en la URL.');
+        }
     }
 
     return (
-        <div className="l-container">
-            <Header />
-            <div className="link-container">
-                <h1>Vinculación de Cuentas</h1>
-                {linked ? (
-                    <div>
-                        <center>
-                            <p>Tu cuenta está vinculada.</p>
-                            <button onClick={handleUnlinkGoogle}>Desvincular Cuenta de Google</button>
-                        </center>
-                    </div>
-                ) : (
-                    <center>
-                        <button onClick={handleLinkGoogle}>Vincular Cuenta de Google</button>
-                    </center>
-                )}
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-            </div>
+        <div>
+            <h1>Vinculación de Google</h1>
+            {error ? (
+                <p style={{ color: 'red' }}>{error}</p>
+            ) : (
+                <p>{message}</p>
+            )}
+            <button onClick={handleLinkGoogle}>Iniciar Vinculación con Google</button>
         </div>
     );
 };

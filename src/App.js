@@ -12,6 +12,7 @@ import EditProposal from './components/EditProposal';
 import Home from './components/home';
 import BrainStormingCM from './components/BrainStormingCM';
 import LinkAccount from './components/LinkAccount';
+import GoogleCallback from './components/GoogleCalback';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { useContext } from 'react';
@@ -36,6 +37,7 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+            <Route path="/auth/google/oauth2callback/?" element={<GoogleCallback />} />
             <Route 
               path="/proposals" 
               element={
