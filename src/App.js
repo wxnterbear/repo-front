@@ -37,7 +37,7 @@ function App() {
                 </ProtectedRoute>
               } 
             />
-            <Route path="/auth/google/oauth2callback/?" element={<GoogleCallback />} />
+            <Route path="/auth/google/oauth2callback/?" element={<LinkAccount />} />
             <Route 
               path="/proposals" 
               element={
