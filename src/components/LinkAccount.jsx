@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import '../css/linkAccount.css';
 import { useLocation } from "react-router-dom";
+import Swal from 'sweetalert2'; // Importar SweetAlert
 
 const LinkAccount = () => {
     const location = useLocation();
@@ -68,7 +69,14 @@ const LinkAccount = () => {
                 const result = await response.json();
                 console.log('Resultado del servidor:', result);
                 setIsLinked(true); // Cambiar estado a vinculado
-                alert(`Vinculación exitosa: ${JSON.stringify(result)}`); // Mostrar un alert en vez de un mensaje en el componente
+                
+                // Usar SweetAlert para mostrar la vinculación exitosa
+                Swal.fire({
+                    title: 'Vinculación exitosa!',
+                    text: `La cuenta ha sido vinculada con éxito: ${JSON.stringify(result)}`,
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                });
             } else {
                 const errorData = await response.json();
                 setError(`Error al procesar el callback de Google: ${errorData.message}`);
@@ -79,7 +87,7 @@ const LinkAccount = () => {
     };
 
     return (
-        <div>
+        <div className="link-container"> 
             <h1>Vinculación de Google</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <button onClick={handleLinkGoogle} disabled={isLinked}>
