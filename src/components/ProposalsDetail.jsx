@@ -118,7 +118,8 @@ const ProposalDetail = () => {
             const formData = new FormData();
             formData.append('id', selectedProposal.id);
             formData.append('status', newStatus);  // Estado seleccionado
-
+    
+            // Cambiar el estado de la propuesta
             const response = await fetch(`https://django-tester.onrender.com/content_proposal/change_status/`, {
                 method: 'POST',
                 headers: {
@@ -126,21 +127,23 @@ const ProposalDetail = () => {
                 },
                 body: formData,
             });
-
+    
             if (response.ok) {
                 const result = await response.json();
-                alert(`Estado cambiado correctamente: ${result.message}`);
-                console.log('Estado cambiado:', result.success); // Imprimir el estado en la consola
-
-                // Si el cambio de estado fue exitoso, intentar publicar
-                if (result.success) {
-                    const publishResponse = await fetch(`https://django-tester.onrender.com/content_proposal/publish/${selectedProposal.id}/`, {
-                        method: 'POST',
+                const userName = result.user; 
+                alert(`Estado cambiado correctamente a: ${newStatus}. Cambiado por: ${userName}`);
+                console.log('Estado cambiado:', result); 
+    
+                
+                if (newStatus === "AP" && result.publish === true) { 
+                    
+                    const publishResponse = await fetch(`https://django-tester.onrender.com/publish/${selectedProposal.id}`, {
+                        method: 'GET', 
                         headers: {
                             'Authorization': `Token ${token}`,
                         },
                     });
-
+    
                     if (publishResponse.ok) {
                         const publishResult = await publishResponse.json();
                         alert(`Propuesta publicada correctamente: ${publishResult.message}`);
@@ -149,8 +152,8 @@ const ProposalDetail = () => {
                         alert(`Error al publicar la propuesta: ${JSON.stringify(publishErrorData)}`);
                     }
                 }
-
-                setShowStatusModal(false);  // Cerrar el modal después de cambiar el estado
+    
+                setShowStatusModal(false);  
             } else {
                 const errorData = await response.json();
                 alert(`Error al cambiar el estado: ${JSON.stringify(errorData)}`);
@@ -158,7 +161,8 @@ const ProposalDetail = () => {
         } catch (error) {
             alert('Error al cambiar el estado de la propuesta');
         }
-    };
+    }; 
+    
 
     if (loading) {
         return <p>Cargando...</p>;

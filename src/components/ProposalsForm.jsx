@@ -146,7 +146,7 @@ const ProposalsForms = () => {
 
             console.log('Respuesta del servidor:', response.data);
             alert('Propuesta enviada con éxito');
-            navigate('/'); // Redirige a la página deseada después de enviar la propuesta
+            navigate('/proposals'); // Redirige a la página deseada después de enviar la propuesta
         } catch (error) {
             console.error('Error al enviar la propuesta:', error.response ? error.response.data : error.message);
             alert('Hubo un error al enviar la propuesta: ' + (error.response ? error.response.data : error.message));
