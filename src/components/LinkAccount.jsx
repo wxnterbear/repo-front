@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'; // Importar SweetAlert
 const LinkAccount = () => {
     const location = useLocation();
     const [error, setError] = useState(null);
-    const [hasChecked, setHasChecked] = useState(false); 
+    const [hasChecked, setHasChecked] = useState(false);
     const [token, setToken] = useState(localStorage.getItem('token')); // Obtener el token del localStorage
     const [isLinked, setIsLinked] = useState(false); // Para saber si la cuenta está vinculada
 
@@ -40,7 +40,7 @@ const LinkAccount = () => {
             const response = await fetch('https://django-tester.onrender.com/auth/google/');
             const data = await response.json();
             console.log('Respuesta del servidor (link):', data);
-            
+
             if (data) {
                 window.location.href = data; // Redirige a la URL de autenticación de Google
             } else {
@@ -69,7 +69,7 @@ const LinkAccount = () => {
                 const result = await response.json();
                 console.log('Resultado del servidor:', result);
                 setIsLinked(true); // Cambiar estado a vinculado
-                
+
                 // Usar SweetAlert para mostrar la vinculación exitosa
                 Swal.fire({
                     title: 'Vinculación exitosa!',
@@ -77,6 +77,7 @@ const LinkAccount = () => {
                     icon: 'success',
                     confirmButtonText: 'Aceptar'
                 });
+                console.log(`La cuenta ha sido vinculada con éxito: ${JSON.stringify(result)}`)
             } else {
                 const errorData = await response.json();
                 setError(`Error al procesar el callback de Google: ${errorData.message}`);
@@ -87,12 +88,14 @@ const LinkAccount = () => {
     };
 
     return (
-        <div className="link-container"> 
+        <div className="link-container">
             <h1>Vinculación de Google</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            <button onClick={handleLinkGoogle} disabled={isLinked}>
-                {isLinked ? "Cuenta Vinculada" : "Iniciar Vinculación con Google"}
-            </button>
+            <center>
+                <button onClick={handleLinkGoogle} disabled={isLinked}>
+                    {isLinked ? "Cuenta Vinculada" : "Iniciar Vinculación con Google"}
+                </button>
+            </center>
         </div>
     );
 };
