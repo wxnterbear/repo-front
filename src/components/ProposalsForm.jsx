@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Select from 'react-select';
@@ -25,6 +25,14 @@ const ProposalsForms = () => {
         { value: 'FB', label: 'Facebook' },
         { value: 'YT', label: 'YouTube' }
     ];
+
+    useEffect(() => {
+        // Verificar que el token esté presente al cargar el componente
+        if (!token) {
+            alert('Token no disponible. Por favor, inicia sesión nuevamente.');
+            navigate('/login'); // Redirige a la página de login si no hay token
+        }
+    }, [token, navigate]); // Dependencias del useEffect
 
     const handleTitleChange = (e) => setTitle(e.target.value);
     const handleTypeChange = (e) => setType(e.target.value);
@@ -89,13 +97,6 @@ const ProposalsForms = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Verificar que el token esté presente
-        if (!token) {
-            alert('Token no disponible. Por favor, inicia sesión nuevamente.');
-            navigate('/login'); // Redirige a la página de login si no hay token
-            return;
-        }
-
         // Validar el formulario
         if (!validateForm()) {
             return; // Si la validación falla, no envía el formulario
@@ -123,7 +124,7 @@ const ProposalsForms = () => {
             const response = await axios.post('https://django-tester.onrender.com/content_proposal/', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': token,
+                    'Authorization': `Token ${token}`, // Asegúrate de que el token esté en el formato correcto
                 },
             });
 
