@@ -66,10 +66,13 @@ const LinkAccount = () => {
     };
 
     const handleLinkMeta = () => {
-        const metaAuthUrl = 'https://www.facebook.com/v17.0/dialog/oauth?client_id=1360414881319473&redirect_uri=https%3A%2F%2Frepo-front-o1hw.onrender.com%2Fauth%2Fmeta%2F&scope=email%2Cpages_manage_cta%2Cpages_manage_instant_articles%2Cpages_manage_engagement%2Cpages_manage_posts%2Cpages_read_engagement%2Cpublish_video%2Cinstagram_basic%2Cinstagram_shopping_tag_products%2Cinstagram_content_publish&response_type=code&ret=login&fbapp_pres=0&logger_id=41cf9ed8-b228-4b0f-af1e-a2806bd3a321&tp=unspecified&cbt=1725916819679&ext=1725920435&hash=AeZAyJGld3iQbPmNgr4';
+        const clientId = '1360414881319473'; 
+        const redirectUri = encodeURIComponent('https://repo-front-o1hw.onrender.com/auth/meta/');
+        const scope = encodeURIComponent('email,pages_manage_cta,pages_manage_instant_articles,pages_manage_engagement,pages_manage_posts,pages_read_engagement,publish_video,instagram_basic,instagram_shopping_tag_products,instagram_content_publish');
 
-        // Redirigir a la URL de autenticación de Meta
-        window.location.href = metaAuthUrl;
+        const authUrl = `https://www.facebook.com/v17.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
+
+        window.location.href = authUrl;
     };
 
     const handleOauthMetaCallback = async (queryString) => {
