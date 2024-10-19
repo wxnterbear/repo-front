@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import '../css/linkAccount.css';
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import Swal from 'sweetalert2'; // Importar SweetAlert
 
 const LinkAccount = () => {
     const location = useLocation();
+    const history = useHistory(); // Para manejar la redirección
     const [error, setError] = useState(null);
     const [hasChecked, setHasChecked] = useState(false);
     const [token, setToken] = useState(localStorage.getItem('token')); // Obtener el token del localStorage
     const [isLinked, setIsLinked] = useState(false); // Para saber si la cuenta está vinculada
+    const [loading, setLoading] = useState(false); // Para mostrar el estado de carga
 
     useEffect(() => {
         // Verificar el token al cargar el componente
@@ -27,6 +29,7 @@ const LinkAccount = () => {
 
             // Solo proceder si existen los parámetros de Google en la URL
             if (code && state) {
+                setLoading(true); // Mostrar estado de carga
                 handleOauthCallback(queryString); // Solo llama a la función si hay parámetros
                 setHasChecked(true); // Marca que ya se ha ejecutado el callback
             } else {
@@ -73,17 +76,21 @@ const LinkAccount = () => {
                 // Usar SweetAlert para mostrar la vinculación exitosa
                 Swal.fire({
                     title: 'Vinculación exitosa!',
-                    text: `La cuenta ha sido vinculada con éxito: ${JSON.stringify(result)}`,
+                    text: 'La cuenta de Google ha sido vinculada con éxito',
                     icon: 'success',
                     confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    setLoading(false); // Ocultar estado de carga
+                    history.replace('/link-account'); // Limpiar la URL y redirigir
                 });
-                console.log(`La cuenta ha sido vinculada con éxito: ${JSON.stringify(result)}`)
             } else {
                 const errorData = await response.json();
                 setError(`Error al procesar el callback de Google: ${errorData.message}`);
+                setLoading(false); // Ocultar estado de carga en caso de error
             }
         } catch (error) {
             setError('Error en la solicitud al servidor');
+            setLoading(false); // Ocultar estado de carga en caso de error
         }
     };
 
@@ -91,11 +98,15 @@ const LinkAccount = () => {
         <div className="link-container">
             <h1>Vinculación de Google</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            <center>
-                <button onClick={handleLinkGoogle} disabled={isLinked}>
-                    {isLinked ? "Cuenta Vinculada" : "Iniciar Vinculación con Google"}
-                </button>
-            </center>
+            {loading ? ( // Mostrar mensaje de carga
+                <p>Cargando...</p>
+            ) : (
+                <center>
+                    <button onClick={handleLinkGoogle} disabled={isLinked}>
+                        {isLinked ? "Cuenta Vinculada" : "Iniciar Vinculación con Google"}
+                    </button>
+                </center>
+            )}
         </div>
     );
 };
