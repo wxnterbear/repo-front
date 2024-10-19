@@ -9,8 +9,7 @@ const LinkAccount = () => {
     const [error, setError] = useState(null);
     const [hasChecked, setHasChecked] = useState(false);
     const [token, setToken] = useState(localStorage.getItem('token')); // Obtener el token del localStorage
-    const [isLinked, setIsLinked] = useState(false); // Para saber si la cuenta está vinculada
-    const [loading, setLoading] = useState(false); // Para mostrar el estado de carga
+    const [isLinked, setIsLinked] = useState(localStorage.getItem('isLinked') === 'true'); // Obtener el estado de vinculación desde localStorage
 
     useEffect(() => {
         // Verificar el token al cargar el componente
@@ -29,7 +28,6 @@ const LinkAccount = () => {
 
             // Solo proceder si existen los parámetros de Google en la URL
             if (code && state) {
-                setLoading(true); // Mostrar estado de carga
                 handleOauthCallback(queryString); // Solo llama a la función si hay parámetros
                 setHasChecked(true); // Marca que ya se ha ejecutado el callback
             } else {
@@ -72,6 +70,7 @@ const LinkAccount = () => {
                 const result = await response.json();
                 console.log('Resultado del servidor:', result);
                 setIsLinked(true); // Cambiar estado a vinculado
+                localStorage.setItem('isLinked', 'true'); // Guardar en localStorage
 
                 // Usar SweetAlert para mostrar la vinculación exitosa
                 Swal.fire({
@@ -80,17 +79,14 @@ const LinkAccount = () => {
                     icon: 'success',
                     confirmButtonText: 'Aceptar'
                 }).then(() => {
-                    setLoading(false); // Ocultar estado de carga
-                    navigate('/link-account'); // Limpiar la URL y redirigir
+                    navigate('/link-account'); // Redirigir al componente LinkAccount
                 });
             } else {
                 const errorData = await response.json();
                 setError(`Error al procesar el callback de Google: ${errorData.message}`);
-                setLoading(false); // Ocultar estado de carga en caso de error
             }
         } catch (error) {
             setError('Error en la solicitud al servidor');
-            setLoading(false); // Ocultar estado de carga en caso de error
         }
     };
 
@@ -98,15 +94,11 @@ const LinkAccount = () => {
         <div className="link-container">
             <h1>Vinculación de Google</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            {loading ? ( // Mostrar mensaje de carga
-                <p>Cargando...</p>
-            ) : (
-                <center>
-                    <button onClick={handleLinkGoogle} disabled={isLinked}>
-                        {isLinked ? "Cuenta Vinculada" : "Iniciar Vinculación con Google"}
-                    </button>
-                </center>
-            )}
+            <center>
+                <button onClick={handleLinkGoogle} disabled={isLinked}>
+                    {isLinked ? "Cuenta Vinculada" : "Iniciar Vinculación con Google"}
+                </button>
+            </center>
         </div>
     );
 };
