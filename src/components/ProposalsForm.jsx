@@ -44,6 +44,12 @@ const ProposalsForms = () => {
     const handleProposedByChange = (e) => setProposedBy(e.target.value);
     const handleFilesChange = (e) => setFiles(e.target.files);
 
+    // Función para verificar la duración del video y si es vertical
+    const isVideoValid = (file) => {
+        // Puedes usar una librería para verificar las propiedades del video si es necesario
+        return true; // Reemplazar con lógica de validación real
+    };
+
     // Función de validación
     const validateForm = () => {
         // Verificación de archivos
@@ -87,6 +93,16 @@ const ProposalsForms = () => {
         if (type === 'STV' && socialMedia.includes('YT')) {
             alert('No puedes seleccionar YouTube si eliges Storie_Video.');
             return false;
+        }
+
+        // Verificación para videos de YouTube
+        if (socialMedia.includes('YT') && type === 'VID') {
+            for (const file of files) {
+                if (!isVideoValid(file)) {
+                    alert('El video debe durar un máximo de 60 segundos y ser en formato vertical.');
+                    return false;
+                }
+            }
         }
 
         // Si todas las validaciones pasan
