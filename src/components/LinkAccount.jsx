@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import '../css/linkAccount.css';
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"; // Importar useNavigate
 import Swal from 'sweetalert2'; // Importar SweetAlert
 
 const LinkAccount = () => {
     const location = useLocation();
-    const history = useHistory(); // Para manejar la redirección
+    const navigate = useNavigate(); // Para manejar la redirección
     const [error, setError] = useState(null);
     const [hasChecked, setHasChecked] = useState(false);
     const [token, setToken] = useState(localStorage.getItem('token')); // Obtener el token del localStorage
@@ -81,7 +81,7 @@ const LinkAccount = () => {
                     confirmButtonText: 'Aceptar'
                 }).then(() => {
                     setLoading(false); // Ocultar estado de carga
-                    history.replace('/link-account'); // Limpiar la URL y redirigir
+                    navigate('/link-account'); // Limpiar la URL y redirigir
                 });
             } else {
                 const errorData = await response.json();
