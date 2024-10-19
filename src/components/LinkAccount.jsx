@@ -90,6 +90,12 @@ const LinkAccount = () => {
         }
     };
 
+    useEffect(() => {
+        // Actualizar el estado local basado en localStorage
+        const storedIsLinked = localStorage.getItem('isLinked') === 'true';
+        setIsLinked(storedIsLinked);
+    }, []); // Solo se ejecuta una vez al montar el componente
+
     return (
         <div className="link-container">
             <h1>Vinculación de Google</h1>
