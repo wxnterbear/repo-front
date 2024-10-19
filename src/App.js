@@ -11,6 +11,7 @@ import ProposalsForms from './components/ProposalsForm';
 import EditProposal from './components/EditProposal';
 import Home from './components/home';
 import BrainStormingCM from './components/BrainStormingCM';
+import LinkAccount from './components/LinkAccount';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { useContext } from 'react';
@@ -104,6 +105,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ProposalsListCm />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/link_account" 
+              element={
+                <ProtectedRoute>
+                  <LinkAccount />
                 </ProtectedRoute>
               } 
             />

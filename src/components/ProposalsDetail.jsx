@@ -201,9 +201,9 @@ const ProposalDetail = () => {
                             className="status-select"
                         >
                             <option value="">Seleccionar...</option>
-                            <option value="RE">Rechazar</option>
+                            <option value="RJ">Rechazar</option>
                             <option value="AP">Aceptar</option>
-                            <option value="PC">Pedir Cambios</option>
+                            <option value="MC">Pedir Cambios</option>
                         </select>
                         <button className="btn-save-ad" onClick={handleStatusChange}>
                             Enviar
