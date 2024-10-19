@@ -4,10 +4,10 @@ import { useLocation } from "react-router-dom";
 
 const LinkAccount = () => {
     const location = useLocation();
-    const [message, setMessage] = useState("");
     const [error, setError] = useState(null);
     const [hasChecked, setHasChecked] = useState(false); 
     const [token, setToken] = useState(localStorage.getItem('token')); // Obtener el token del localStorage
+    const [isLinked, setIsLinked] = useState(false); // Para saber si la cuenta está vinculada
 
     useEffect(() => {
         // Verificar el token al cargar el componente
@@ -67,7 +67,8 @@ const LinkAccount = () => {
             if (response.ok) {
                 const result = await response.json();
                 console.log('Resultado del servidor:', result);
-                setMessage(`Vinculación exitosa: ${JSON.stringify(result)}`);
+                setIsLinked(true); // Cambiar estado a vinculado
+                alert(`Vinculación exitosa: ${JSON.stringify(result)}`); // Mostrar un alert en vez de un mensaje en el componente
             } else {
                 const errorData = await response.json();
                 setError(`Error al procesar el callback de Google: ${errorData.message}`);
@@ -80,12 +81,10 @@ const LinkAccount = () => {
     return (
         <div>
             <h1>Vinculación de Google</h1>
-            {error ? (
-                <p style={{ color: 'red' }}>{error}</p>
-            ) : (
-                <p>{message}</p>
-            )}
-            <button onClick={handleLinkGoogle}>Iniciar Vinculación con Google</button>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <button onClick={handleLinkGoogle} disabled={isLinked}>
+                {isLinked ? "Cuenta Vinculada" : "Iniciar Vinculación con Google"}
+            </button>
         </div>
     );
 };
