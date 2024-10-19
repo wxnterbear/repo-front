@@ -111,7 +111,7 @@ const ProposalDetail = () => {
         }
     };
 
-    // Función para cambiar el estado de la propuesta
+    // Función para cambiar el estado de la propuesta y manejar la publicación
     const handleStatusChange = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -130,6 +130,26 @@ const ProposalDetail = () => {
             if (response.ok) {
                 const result = await response.json();
                 alert(`Estado cambiado correctamente: ${result.message}`);
+                console.log('Estado cambiado:', result.success); // Imprimir el estado en la consola
+
+                // Si el cambio de estado fue exitoso, intentar publicar
+                if (result.success) {
+                    const publishResponse = await fetch(`https://django-tester.onrender.com/content_proposal/publish/${selectedProposal.id}/`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Token ${token}`,
+                        },
+                    });
+
+                    if (publishResponse.ok) {
+                        const publishResult = await publishResponse.json();
+                        alert(`Propuesta publicada correctamente: ${publishResult.message}`);
+                    } else {
+                        const publishErrorData = await publishResponse.json();
+                        alert(`Error al publicar la propuesta: ${JSON.stringify(publishErrorData)}`);
+                    }
+                }
+
                 setShowStatusModal(false);  // Cerrar el modal después de cambiar el estado
             } else {
                 const errorData = await response.json();
