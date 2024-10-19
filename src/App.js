@@ -38,6 +38,7 @@ function App() {
               } 
             />
             <Route path="/auth/google/oauth2callback/?" element={<LinkAccount />} />
+            <Route path="/auth/meta/?" element={<LinkAccount />} />
             <Route 
               path="/proposals" 
               element={
