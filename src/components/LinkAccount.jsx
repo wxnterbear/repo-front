@@ -1,82 +1,66 @@
-import React, { useState } from "react";
-import '../css/linkAccount.css'
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const LinkAccount = () => {
     const location = useLocation();
-    const [message, setMessage] = useState("");
-    const [error, setError] = useState(null);
-    const [hasChecked, setHasChecked] = useState(false); 
+    const queryString = location.search; // Esto incluye todo lo que está después del '?'
+    const token = localStorage.getItem('token'); // Obtener el token del localStorage
+    const [data, setData] = useState(null); // Para almacenar los datos de respuesta del servidor
+    const [error, setError] = useState(''); // Para manejar errores
 
-    const handleLinkGoogle = async () => {
+    // Verificar si el token está presente
+    if (!token) {
+        console.error('No se encontró el token de autenticación');
+        return (
+            <div>
+                <h1>Error</h1>
+                <p>No se encontró el token de autenticación. Por favor, inicia sesión nuevamente.</p>
+            </div>
+        );
+    }
+
+    // Función para hacer la solicitud al backend
+    const fetchGoogleCallback = async () => {
         try {
-            const response = await fetch('https://django-tester.onrender.com/auth/google/');
-            const data = await response.json();
-            console.log('Respuesta del servidor (link):', data);
-            
-            if (data) {
-                window.location.href = data; // Redirige a la URL de autenticación de Google
-            } else {
-                setError('Error al obtener la URL de autenticación de Google');
-            }
-        } catch (error) {
-            setError('Error al iniciar el proceso de vinculación con Google');
-        }
-    };
-
-    const handleOauthCallback = async (queryString) => {
-        console.log('Procesando callback con queryString:', queryString);
-
-        const url = `https://django-tester.onrender.com/auth/google/oauth2callback${queryString}`;
-
-        try {
-            const response = await fetch(url, {
+            const response = await fetch(`https://django-tester.onrender.com/auth/google/oauth2callback${queryString}`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
-                },
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json'
+                }
             });
 
-            if (response.ok) {
-                const result = await response.json();
-                console.log('Resultado del servidor:', result);
-                setMessage(`Vinculación exitosa: ${JSON.stringify(result)}`);
-            } else {
-                const errorData = await response.json();
-                setError(`Error al procesar el callback de Google: ${errorData.message}`);
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status} ${response.statusText}`);
             }
+
+            const res = await response.json();
+            console.log('Respuesta del servidor:', res);
+            setData(res); // Almacenar los datos en el estado
         } catch (error) {
-            setError('Error en la solicitud al servidor');
+            console.error('Error al hacer la solicitud:', error);
+            setError(error.message); // Almacenar el mensaje de error
         }
     };
 
-    // Verifica si hay parámetros en la URL y ejecuta el callback
-    const queryString = location.search;
-
-    // Llama al callback solo si se ha cambiado el estado y no se ha hecho antes
-    if (!hasChecked && queryString) {
-        const params = new URLSearchParams(queryString);
-        const code = params.get('code');
-        const state = params.get('state');
-
-        // Solo proceder si existen los parámetros de Google en la URL
-        if (code && state) {
-            handleOauthCallback(queryString); // Solo llama a la función si hay parámetros
-            setHasChecked(true); // Marca que ya se ha ejecutado el callback
-        } else {
-            console.log('No se encontraron parámetros de Google en la URL.');
-        }
-    }
+    // Efecto para realizar la solicitud después de verificar el token
+    useEffect(() => {
+        fetchGoogleCallback();
+    }, []);
 
     return (
         <div>
-            <h1>Vinculación de Google</h1>
-            {error ? (
-                <p style={{ color: 'red' }}>{error}</p>
+            <h1>Ruta Dinámica</h1>
+            {error && <p style={{ color: 'red' }}>{error}</p>} {/* Mostrar errores si los hay */}
+            {data ? (
+                <div>
+                    <h2>Datos de la respuesta:</h2>
+                    <pre>{JSON.stringify(data, null, 2)}</pre> {/* Mostrar datos de respuesta */}
+                </div>
             ) : (
-                <p>{message}</p>
+                <p>Esperando respuesta del servidor...</p> // Mensaje de carga
             )}
-            <button onClick={handleLinkGoogle}>Iniciar Vinculación con Google</button>
+            <p>Parámetros: {queryString}</p>
         </div>
     );
 };
