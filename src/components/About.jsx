@@ -72,34 +72,43 @@ const About = () => {
             <div className="about-container">
                 <section className="about-header">
                     <h1 className="title-about">Sobre Nuestra Aplicación</h1>
-                    <p className="p1-about">Descubre para qué hemos creado esta herramienta :o</p>
+                    <p className="p1-about">Bienvenidos a la próxima evolución en innovación y colaboración. 
+                        Nuestra aplicación ha sido diseñada con un propósito claro: empoderar a las mentes creativas, 
+                        simplificar procesos y transformar ideas en realidad. Con una interfaz intuitiva y herramientas 
+                        diseñadas para potenciar la productividad, te ofrecemos una plataforma donde cada propuesta cobra
+                         vida, cada evento está a un clic de distancia, y la creatividad no tiene límites. Aquí, el trabajo
+                          en equipo y la eficiencia se encuentran para crear soluciones únicas.</p>
                 </section>
 
                 <section className="about-content">
                     <div className="about-objective">
                         <h2 className="subtitle-about">Nuestros Objetivos :D</h2>
-                        <p className="p2-about">sdadadad</p>
+                        <p className="p2-about">no sé si poner texto hmmm</p>
                     </div>
 
                     <div className="about-goals">
                         <div className="goal-item">
-                            <h3 className="goal-about">Objetivo 1</h3>
-                            <p className="p-goal">sdadasdasdas</p>
+                            <h3 className="goal-about">Inspirar Colaboración</h3>
+                            <p className="p-goal">Fomentamos el trabajo en equipo, permitiendo que las ideas fluyan libremente 
+                                y evolucionen a través de propuestas dinámicas.</p>
                         </div>
 
                         <div className="goal-item">
-                            <h3 className="goal-about">Objetivo 2</h3>
-                            <p className="p-goal">dasdasdasdas</p>
+                            <h3 className="goal-about">Simplificar la Gestión</h3>
+                            <p className="p-goal">Desde la planificación hasta la ejecución, nuestra app transforma la gestión de proyectos
+                                 en una experiencia fluida y organizada.</p>
                         </div>
 
                         <div className="goal-item">
-                            <h3 className="goal-about">Objetivo 3</h3>
-                            <p className="p-goal">dasdasdasd</p>
+                            <h3 className="goal-about">Transformar la productividad</h3>
+                            <p className="p-goal">Con un enfoque en la eficiencia, nuestra app te ayuda a mantener el control total de tus 
+                                proyectos y eventos, para que puedas concentrarte en lo que realmente importa: hacer que las cosas sucedan.</p>
                         </div>
 
                         <div className="goal-item">
-                            <h3 className="goal-about">Objetivo 4</h3>
-                            <p className="p-goal">sdasdasdasd</p>
+                            <h3 className="goal-about">Impulsar el reconociminedo digital</h3>
+                            <p className="p-goal">Nos comprometemos a hacer que tu empresa sea más visible y reconocida en el mundo digital, 
+                                proporcionando las herramientas necesarias para destacar y sobresalir en un mercado competitivo.</p>
                         </div>
                         
                     </div>
