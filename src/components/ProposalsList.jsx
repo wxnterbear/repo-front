@@ -38,7 +38,7 @@ const ProposalsList = () => {
     }, []); // [] -> El hook de efecto solo se ejecuta una vez (al montar el componente)
 
     const handleClick = (id) => {
-        navigate(`/content_proposal/${id}`); // Navega a la ruta del detalle de la propuesta
+        navigate(`/content_proposal/${id}`); 
     };
 
     return (

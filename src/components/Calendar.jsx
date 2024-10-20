@@ -4,18 +4,15 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import Modal from 'react-modal';
-import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import '../css/calendar.css';
 import Header from './header';
 
 Modal.setAppElement('#root');
 
 function Calendar() {
-
     const navigate = useNavigate();
-    const token = localStorage.getItem('token'); // Obtén el token desde localStorage o de donde lo almacenes
+    const token = localStorage.getItem('token');
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [viewEventModalIsOpen, setViewEventModalIsOpen] = useState(false);
@@ -24,18 +21,35 @@ function Calendar() {
     const [eventTitle, setEventTitle] = useState('');
     const [eventDescription, setEventDescription] = useState('');
     const [eventDate, setEventDate] = useState('');
-    const [eventColor, setEventColor] = useState('green');
+    const [eventColor, setEventColor] = useState('');
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+
 
     useEffect(() => {
-        axios.get('https://django-tester.onrender.com/project_management/events/', {
+        if (!token) {
+            alert('Token no disponible. Por favor, inicia sesión nuevamente.');
+            navigate('/login');
+        }
+    }, [token, navigate]);
+
+    useEffect(() => {
+        if (token) {
+            fetchEvents();
+        }
+    }, [token]);
+
+    const fetchEvents = () => {
+        fetch('https://django-tester.onrender.com/project_management/events', {
             headers: {
-                Authorization: `Bearer ${token}`
+                'Authorization': `Token ${token}`,
             }
         })
-            .then(response => setEvents(response.data))
+            .then(response => response.json())
+            .then(data => setEvents(data))
             .catch(error => console.error('Error al cargar los eventos:', error));
-    }, [token]);
+    };
 
     const handleDateClick = (arg) => {
         setEventDate(arg.dateStr);
@@ -73,74 +87,156 @@ function Calendar() {
         setEventDescription('');
         setEventDate('');
         setEventColor('green');
+        setError('');
+        setSuccessMessage('');
     };
 
     const handleSaveEvent = () => {
+        // Verifica que el título tenga un máximo de 45 caracteres
+        if (eventTitle.length > 45) {
+            alert('El título no puede exceder los 45 caracteres.');
+            return; // Salir de la función si la validación falla
+        }
+
+        if (!validateEventForm()) return;
+
+        const formData = new FormData();
+        formData.append('title', eventTitle);
+        formData.append('date', eventDate);
+        formData.append('description', eventDescription);
+        formData.append('color', eventColor);
+
         if (selectedEvent) {
-            const updatedEvent = {
-                id: selectedEvent.id,
-                title: eventTitle,
-                start: eventDate,
-                description: eventDescription,
-                color: eventColor
-            };
-
-            axios.put(`https://django-tester.onrender.com/project_management/events/${selectedEvent.id}`, updatedEvent, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-                .then(response => {
-                    setEvents(events.map(event =>
-                        event.id === selectedEvent.id ? response.data : event
-                    ));
-                    closeModal();
-                })
-                .catch(error => console.error('Error al editar el evento:', error));
+            handleUpdateEvent(formData);
         } else {
-            const newEvent = {
-                id: uuidv4(),
-                title: eventTitle,
-                start: eventDate,
-                description: eventDescription,
-                color: eventColor
-            };
-
-            axios.post('https://django-tester.onrender.com/project_management/events', newEvent, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-                .then(response => {
-                    setEvents([...events, response.data]);
-                    closeModal();
-                })
-                .catch(error => console.error('Error al crear el evento:', error));
+            handleCreateEvent(formData);
         }
     };
 
-    const handleEventClick = (info) => {
-        const clickedEvent = events.find(event => event.id === info.event.id);
-        setSelectedEvent(clickedEvent);
-        setEventTitle(clickedEvent.title);
-        setEventDescription(clickedEvent.description);
-        setEventDate(clickedEvent.start);
-        setEventColor(clickedEvent.color);
-        openViewEventModal();
+
+    // Función para manejar la creación de eventos (POST)
+    const handleCreateEvent = (formData) => {
+        fetch('https://django-tester.onrender.com/project_management/events/', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Token ${token}`,
+            },
+            body: formData,
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errData => {
+                        console.error("Error de respuesta del servidor:", errData);
+                        const errorMessage = errData.detail || `Error: ${response.status} - ${response.statusText}`;
+                        throw new Error(errorMessage);
+                    });
+                }
+                return response.json(); 
+            })
+            .then(data => {
+                console.log("Evento creado correctamente:", data);
+                // Agregar el nuevo evento al estado
+                setEvents(prevEvents => [...prevEvents, data]); // Esto debería funcionar para mostrarlo en el calendario
+                closeModal();
+                setSuccessMessage('Evento creado exitosamente.');
+            })
+            .catch(error => {
+                console.error("Error al crear el evento:", error);
+                setError(error.message);
+            });
+    };
+
+    const handleUpdateEvent = (formData) => {
+        const url = `https://django-tester.onrender.com/project_management/events/${selectedEvent.id}/`;
+
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Token ${token}`,
+            },
+            body: formData,
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errData => {
+                        console.error("Error de respuesta del servidor:", errData);
+                        const errorMessage = errData.detail || `Error: ${response.status} - ${response.statusText}`;
+                        throw new Error(errorMessage);
+                    });
+                }
+                return response.json(); 
+            })
+            .then(data => {
+                console.log("Evento actualizado correctamente:", data);
+                // Actualizar el evento en el estado
+                fetchEvents();
+                closeModal();
+                alert('Evento actualizado exitosamente.');
+            })
+            .catch(error => {
+                console.error("Error al actualizar el evento:", error);
+                setError(error.message);
+            });
+    };
+
+    const validateEventForm = () => {
+        if (!eventTitle || !eventDescription) {
+            alert('El título y la descripción son obligatorios.');
+            return false;
+        }
+        setError('');
+        return true;
     };
 
     const handleDeleteEvent = () => {
-        axios.delete(`https://django-tester.onrender.com/project_management/events/${selectedEvent.id}`, {
+        fetch(`https://django-tester.onrender.com/project_management/events/${selectedEvent.id}/`, {
+            method: 'DELETE',
             headers: {
-                Authorization: `Bearer ${token}`
+                'Authorization': `Token ${token}`
             }
         })
-            .then(() => {
-                setEvents(events.filter(event => event.id !== selectedEvent.id));
-                closeConfirmDeleteModal();
-                closeViewEventModal();
+            .then(response => {
+                if (response.status === 204) {
+                    // El evento se eliminó correctamente
+                    fetchEvents();
+                    closeConfirmDeleteModal();
+                    closeViewEventModal();
+                    return;
+                }
+                if (!response.ok) {
+                    // Intentar obtener el cuerpo de la respuesta
+                    return response.json().then(errData => {
+                        console.error("Error de respuesta del servidor:", errData);
+                        const errorMessage = errData.detail || `Error: ${response.status} - ${response.statusText}`;
+                        throw new Error(errorMessage);
+                    });
+                }
+                return response.json();
             })
-            .catch(error => console.error('Error al eliminar el evento:', error));
+            .then(() => {
+                console.log('Evento eliminado con éxito.');
+                alert('Evento eliminado con éxito')
+            })
+            .catch(error => {
+                console.error("Error al eliminar el evento:", error);
+                setError(error.message); // Muestra el mensaje de error
+            });
+    };
+    
+
+    const handleEventClick = (info) => {
+        const clickedEvent = events.find(event => event.id.toString() === info.event.id.toString());
+
+        if (clickedEvent) {
+            setSelectedEvent(clickedEvent);
+            setEventTitle(clickedEvent.title);
+            setEventDescription(clickedEvent.description);
+            setEventDate(clickedEvent.date);
+            setEventColor(clickedEvent.color);
+            openViewEventModal();
+        } else {
+            console.error("Evento no encontrado");
+        }
     };
 
     const handleEditEvent = () => {
@@ -162,18 +258,18 @@ function Calendar() {
             <Header />
             <div className='container-calendar'>
                 <FullCalendar
-                    plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]} // Plugins que se usarán en el calendario
-                    initialView='dayGridMonth' // Vista inicial del calendario
+                    plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                    initialView='dayGridMonth'
                     headerToolbar={{
-                        start: 'prev,today,next', // Botones al inicio del toolbar
-                        center: 'title', // Título centrado
-                        end: 'dayGridMonth,timeGridWeek,timeGridDay' // Botones al final del toolbar
+                        start: 'prev,today,next',
+                        center: 'title',
+                        end: 'dayGridMonth,timeGridWeek,timeGridDay'
                     }}
-                    height={'95vh'} // Altura del calendario
-                    dateClick={handleDateClick} // Evento que se ejecuta al hacer clic en una fecha
-                    events={events} // Eventos a mostrar en el calendario
-                    eventContent={eventContent} // Renderizador del contenido del evento
-                    eventClick={handleEventClick} // Evento que se ejecuta al hacer clic en un evento
+                    height={'95vh'}
+                    dateClick={handleDateClick}
+                    events={events}
+                    eventContent={eventContent}
+                    eventClick={handleEventClick}
                 />
 
                 <Modal
@@ -183,6 +279,8 @@ function Calendar() {
                     overlayClassName="overlay1"
                 >
                     <h2>{selectedEvent ? 'Editar Evento' : 'Crear Evento'}</h2>
+                    {error && <p className='error'>{error}</p>}
+                    {successMessage && <p className='success'>{successMessage}</p>}
                     <label className='titulo'>Título del Evento:</label>
                     <input type="text" value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
                     <label className='descripcion'>Descripción del Evento:</label>
@@ -190,33 +288,40 @@ function Calendar() {
                     <label className='color'>Color del Evento:</label>
                     <select value={eventColor} onChange={(e) => setEventColor(e.target.value)}>
                         <option value="" disabled>Selecciona un color</option>
-                        <option value="#07A128">Verde</option>
-                        <option value="#900C3F">Rosa</option>
-                        <option value="#581845">Morado</option>
-                        <option value="#07A193">Azul</option>
+                        <option value="GREEN">Verde</option>
+                        <option value="YELLOW">Amarillo</option>
+                        <option value="RED">Rojo</option>
+                        <option value="BLUE">Azul</option>
                     </select>
                     <p className='fecha'>Fecha seleccionada: {eventDate}</p>
                     <div>
-                        <button className='guardar' onClick={handleSaveEvent}>{selectedEvent ? 'Guardar Cambios' : 'Guardar Evento'}</button>
+                        <button className='guardar' onClick={handleSaveEvent}>
+                            {selectedEvent ? 'Guardar Cambios' : 'Guardar Evento'}
+                        </button>
                         <button className='cancelar' onClick={closeModal}>Cancelar</button>
                     </div>
                 </Modal>
 
                 <Modal
                     isOpen={viewEventModalIsOpen}
-                    onRequestClose={closeViewEventModal}
+                    onRequestClose={closeViewEventModal} 
                     className="modal-view-event"
                     overlayClassName="overlay1"
                 >
                     <h2>Detalles del Evento</h2>
-                    <p><strong>Título:</strong> {selectedEvent?.title}</p>
-                    <p><strong>Descripción:</strong> {selectedEvent?.description}</p>
-                    <p><strong>Fecha:</strong> {selectedEvent?.start}</p>
-                    <div className="button-container">
-                        <button onClick={handleEditEvent}>Editar Evento</button>
-                        <button onClick={openConfirmDeleteModal}>Eliminar Evento</button>
-                        <button onClick={closeViewEventModal}>Cerrar</button>
-                    </div>
+                    {selectedEvent && (
+                        <>
+                            <p><strong>Título:</strong> {selectedEvent.title}</p>
+                            <p><strong>Descripción:</strong> {selectedEvent.description}</p>
+                            <p><strong>Fecha:</strong> {selectedEvent.date}</p>
+                            <p><strong>Color:</strong> {selectedEvent.color}</p>
+                            <div>
+                                <button className='editar' onClick={handleEditEvent}>Editar Evento</button>
+                                <button className='eliminar' onClick={openConfirmDeleteModal}>Eliminar Evento</button>
+                                <button className='cerrar' onClick={closeViewEventModal}>Cerrar</button>
+                            </div>
+                        </>
+                    )}
                 </Modal>
 
                 <Modal
@@ -226,10 +331,11 @@ function Calendar() {
                     overlayClassName="overlay1"
                 >
                     <h2>Confirmar Eliminación</h2>
-                    <p>¿Estás seguro de que deseas eliminar el evento "{selectedEvent?.title}"?</p>
-                    <div className="button-container">
-                        <button onClick={handleDeleteEvent}>Sí</button>
-                        <button onClick={closeConfirmDeleteModal}>Cancelar</button>
+                    <p>¿Estás seguro de que deseas eliminar este evento?</p>
+                    <div><center>
+                        <button className='confirmar' onClick={handleDeleteEvent}>Sí, Eliminar</button>
+                        <button className='cancelar' onClick={closeConfirmDeleteModal}>Cancelar</button>
+                        </center>
                     </div>
                 </Modal>
             </div>

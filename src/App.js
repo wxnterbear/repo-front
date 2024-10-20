@@ -11,6 +11,7 @@ import ProposalsForms from './components/ProposalsForm';
 import EditProposal from './components/EditProposal';
 import Home from './components/home';
 import BrainStormingCM from './components/BrainStormingCM';
+import About from './components/About';
 import LinkAccount from './components/LinkAccount';
 import GoogleCallback from './components/GoogleCalback';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -84,6 +85,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <IdeasArchive />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/about" 
+              element={
+                <ProtectedRoute>
+                  <About />
                 </ProtectedRoute>
               } 
             />

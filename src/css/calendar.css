@@ -48,10 +48,21 @@ body{
     border: none;
 }
 
+.fc-h-event .fc-event-main {
+    color: rgba(0, 0, 0, 0.726);
+}
 
 .fc-event-main{
     white-space: normal; /* Permite que el texto se divida en varias líneas */
     word-wrap: break-word; /* Permite que las palabras largas se dividan en varias líneas */
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 15px;
+    
+    
 }
 :root{
     --fc-today-bg-color: #ffffff69; /* día actual */ 
@@ -184,19 +195,24 @@ a{
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1001;
     width: 400px;
+    max-width: 90%;
+    overflow-wrap: break-word;
+    
 }
 
 .modal-view-event h2 {
     text-align: center;
     font-size: 45px;
-    font-weight: bolder;
+    font-weight: lighter;
+    font-family: 'JerseyR', sans-serif;
 
 }
 
 .modal-view-event p {
     margin: 10px 0;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bolder;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
 }
 
@@ -204,6 +220,7 @@ a{
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+    
 }
 
 .modal-view-event button {

@@ -19,12 +19,13 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 22px;
+  font-size: 25px;
   margin: 4px 10px;
   cursor: pointer;
   transition: background-color 0.3s;
   border-radius: 5px;
   font-family: 'JerseyR', sans-serif;
+  font-weight: lighter;
 }
 
 .opc:hover {
