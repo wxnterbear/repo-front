@@ -59,19 +59,19 @@ const LinkAccount = () => {
     const handleUnlinkGoogle = async () => {
         try {
             const token = localStorage.getItem('token');
-
-            const response = await fetch('https://django-tester.onrender.com/auth/google/unlink/', { // Cambiar a la URL correcta de desvinculación
-                method: 'GET',
+    
+            const response = await fetch('https://django-tester.onrender.com/auth/google/unlink/', { // Cambiar a la URL correcta
+                method: 'GET',  // Cambia a 'GET' si es lo que acepta el endpoint
                 headers: {
                     'Authorization': `Token ${token}`,
                     'Content-Type': 'application/json',
                 },
             });
-
+    
             if (response.ok) {
                 localStorage.removeItem('isGoogleLinked'); // Eliminar del localStorage
                 setIsGoogleLinked(false); // Actualizar estado
-
+    
                 Swal.fire({
                     title: 'Desvinculación exitosa!',
                     text: 'La cuenta de Google ha sido desvinculada con éxito',
@@ -88,6 +88,7 @@ const LinkAccount = () => {
             setError('Error al procesar la solicitud de desvinculación');
         }
     };
+    
 
     const handleOauthCallback = async (queryString) => {
         console.log('Procesando callback con queryString:', queryString);
