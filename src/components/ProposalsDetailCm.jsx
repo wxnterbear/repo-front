@@ -169,6 +169,7 @@ const ProposalDetailCm = () => {
             const formData = new FormData();
             formData.append('title', editedProposal.title || '');
             formData.append('description', editedProposal.description || '');
+            formData.append('social_media', editedProposal.social_media || '');
             formData.append('type', editedProposal.type || '');
             formData.append('edited_by', editedProposal.edited_by || '');
             formData.append('copy', editedProposal.copy || '');
@@ -349,15 +350,7 @@ const ProposalDetailCm = () => {
                                 multiple
                                 onChange={handleFilesChange}
                             /><br />
-                            <br /><label>Propuesto por:</label>
-                            <input
-                                className="input-form-d"
-                                type="text"
-                                name="edited_by"
-                                value={editedProposal.edited_by || ''}
-                                onChange={handleProposedByChange}
-                                placeholder="Nombre del propuesto"
-                            /><br />
+                            <br />
                             <button className='btn-save-d' type="button" onClick={handleEditProposal}>Guardar Cambios</button>
                         </div>
                     </div>
