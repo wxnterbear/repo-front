@@ -39,7 +39,7 @@ const About = () => {
         data.append('message', formData.message);
 
         try {
-            const response = await fetch('https://django-tester.onrender.com/about', {
+            const response = await fetch('https://django-tester.onrender.com/suport/contact', {
                 method: 'POST',
                 headers: {
                     Authorization: `Token ${token}`,

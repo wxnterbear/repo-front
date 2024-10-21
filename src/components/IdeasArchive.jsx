@@ -1,59 +1,76 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate} from 'react-router-dom';
-import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 import '../css/ideasArchive.css';
 import Header from './header';
 
 const IdeasArchive = () => {
-    const [acceptedIdeas, setAcceptedIdeas] = useState([]); // Estado para almacenar las ideas aceptadas
-    const [rejectedIdeas, setRejectedIdeas] = useState([]); // Estado para almacenar las ideas rechazadas
-
+    const [acceptedIdeas, setAcceptedIdeas] = useState([]);  // Estado para ideas aceptadas
+    const [rejectedIdeas, setRejectedIdeas] = useState([]);  // Estado para ideas rechazadas
+    const token = localStorage.getItem('token');
     const navigate = useNavigate();
 
     useEffect(() => {
-
         const fetchIdeas = async () => {
             try {
-                const acceptedResponse = await axios.get('http://localhost:3001/ideas/accepted');
-                setAcceptedIdeas(acceptedResponse.data); // Actualiza  'acceptedIdeas' con las ideas aceptadas
+                const response = await fetch('https://django-tester.onrender.com/project_management/ideas', {
+                    headers: {
+                        'Authorization': `Token ${token}`,
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error(`Error al obtener ideas: ${response.status}`);
+                }
 
-                const rejectedResponse = await axios.get('http://localhost:3001/ideas/rejected');
-                setRejectedIdeas(rejectedResponse.data); // Actualiza  'rejectedIdeas' con las ideas rechazadas
+                const data = await response.json();
+                const accepted = data.filter(idea => idea.status === 'AP'); // Filtrar ideas aceptadas
+                const rejected = data.filter(idea => idea.status === 'RJ'); // Filtrar ideas rechazadas
+
+                setAcceptedIdeas(accepted);
+                setRejectedIdeas(rejected);
             } catch (error) {
                 console.error('Error fetching ideas:', error);
             }
         };
 
-        fetchIdeas(); // Llama a la función para obtener las ideas
-    }, []); // El segundo argumento [] asegura que esto solo se ejecute una vez al montar el componente
+        fetchIdeas();
+    }, []);
 
     return (
-        <div className="ideas-archive-container"> {/* Contenedor principal */}
-        <Header />
+        <div className="ideas-archive-container">
+            <Header />
             <div className="ideas-board-a-r accepted">
-                <h1 className="title-a">Ideas Aceptadas</h1> {/* Título para las ideas aceptadas */}
-                <div className="ideas-list-a-r"> {/* Contenedor para las ideas aceptadas */}
-                    {acceptedIdeas.map((idea, index) => ( // Mapea las ideas aceptadas y renderiza un div para cada una
-                        <div key={index} className="idea-postit-a-r"> {/* Cada idea es un "post-it" */}
-                            <p><strong>Idea:</strong> {idea.idea}</p> {/* Texto de la idea */}
-                            <p><strong>Usuario:</strong> {idea.user}</p> {/* Usuario que tomó la acción */}
-                        </div>
-                    ))}
+                <h1 className="title-a">Ideas Aceptadas</h1>
+                <div className="ideas-list-a-r">
+                    {acceptedIdeas.length > 0 ? (
+                        acceptedIdeas.map((idea, index) => (
+                            <div key={index} className="idea-postit-a-r">
+                                <p><strong>Idea:</strong> {idea.idea}</p>
+                                <p><strong>Usuario:</strong> {idea.created_by}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="empty-ideas">No hay ideas aceptadas por el momento</p>
+                    )}
                 </div>
             </div>
+
             <div className="ideas-board-a-r rejected">
-                <h1 className="title-r">Ideas Rechazadas</h1> {/* Título para las ideas rechazadas */}
-                <div className="ideas-list-a-r"> {/* Contenedor para las ideas rechazadas */}
-                    {rejectedIdeas.map((idea, index) => ( // Mapea las ideas rechazadas y renderiza un div para cada una
-                        <div key={index} className="idea-postit-a-r"> {/* Cada idea es un "post-it" */}
-                            <p><strong>Idea:</strong> {idea.idea}</p> {/* Texto de la idea */}
-                            <p><strong>Usuario:</strong> {idea.user}</p> {/* Usuario que tomó la acción */}
-                        </div>
-                    ))}
+                <h1 className="title-r">Ideas Rechazadas</h1>
+                <div className="ideas-list-a-r">
+                    {rejectedIdeas.length > 0 ? (
+                        rejectedIdeas.map((idea, index) => (
+                            <div key={index} className="idea-postit-a-r">
+                                <p><strong>Idea:</strong> {idea.idea}</p>
+                                <p><strong>Usuario:</strong> {idea.created_by}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="empty-ideas">No hay ideas rechazadas por el momento</p>
+                    )}
                 </div>
             </div>
         </div>
     );
 }
 
-export default IdeasArchive; // Exporta el componente para su uso en otros archivos
+export default IdeasArchive;

@@ -15,6 +15,8 @@ const Brainstorming = () => {
     const [selectedUser, setSelectedUser] = useState(''); // Estado para el usuario seleccionado en el modal
     const [error, setError] = useState(''); // Estado para manejar errores
     const [action, setAction] = useState(''); // Estado para la acción seleccionada (aceptar/rechazar) en el modal
+    const [reason, setReason] = useState('')
+    const [archivedIdeas, setArchivedIdeas] = useState([]); // Ideas aceptadas y rechazadas
     const navigate = useNavigate(); // para pasar al otro componente
 
     useEffect(() => {
@@ -39,28 +41,33 @@ const Brainstorming = () => {
             .then(response => response.json())
             .then(data => {
                 console.log("Ideas:", data);
-                setIdeas(data);
+                // Filtrar ideas aceptadas o rechazadas
+                const pendingIdeas = data.filter(idea => idea.status !== 'AP' && idea.status !== 'RJ');
+                const archived = data.filter(idea => idea.status === 'AP' || idea.status === 'RJ');
+                setIdeas(pendingIdeas); // Solo las ideas pendientes se muestran
+                setArchivedIdeas(archived); // Guardar las aceptadas y rechazadas
             })
             .catch(error => console.error('Error al cargar las ideas:', error));
     };
+    
 
     const handleInputChange = (e) => {
         setNewIdea(e.target.value);
     };
 
     const handleAddIdea = () => {
-        if (!newIdea.trim()) { 
-            alert('No puedes enviar una idea vacía.'); 
-            return; 
+        if (newIdea.trim().length < 5) {
+            alert('La idea debe tener al menos 5 caracteres.');
+            return;
         }
 
         const formData = new FormData();
-        formData.append('idea', newIdea); 
+        formData.append('idea', newIdea);
 
         fetch('https://django-tester.onrender.com/project_management/ideas/', {
             method: 'POST',
             headers: {
-                'Authorization': `Token ${token}`, 
+                'Authorization': `Token ${token}`,
             },
             body: formData,
         })
@@ -72,13 +79,14 @@ const Brainstorming = () => {
                         throw new Error(errorMessage);
                     });
                 }
-                return response.json(); 
+                return response.json();
             })
             .then(data => {
                 console.log("Idea creada correctamente:", data);
-                setIdeas(prevIdeas => [...prevIdeas, { id: prevIdeas.length + 1, idea: newIdea }]);
-                setNewIdea(''); 
+                setIdeas(prevIdeas => [...prevIdeas, data]);
+                setNewIdea('');
                 alert('Idea creada exitosamente.');
+                fetchIdeas();
             })
             .catch(error => {
                 console.error("Error al crear la idea:", error);
@@ -88,39 +96,63 @@ const Brainstorming = () => {
 
     // Abre el modal para una idea específica
     const openModal = (idea) => {
-        setSelectedIdea(idea); 
-        setModalIsOpen(true); 
+        setSelectedIdea(idea);
+        setModalIsOpen(true);
     };
 
     // Cierra el modal
     const closeModal = () => {
         setModalIsOpen(false);
-        setSelectedIdea(null); 
-        setSelectedUser(''); 
-        setAction(''); 
-        setError(''); 
+        setSelectedIdea(null);
+        setSelectedUser('');
+        setAction('');
+        setError('');
     };
 
     // Maneja la acción de aceptar o rechazar la idea
     const handleAction = async () => {
-        if (action === 'accept' || action === 'reject') {
-            if (selectedUser && selectedIdea) {
-                const endpoint = action === 'accept' ? '/accept' : '/reject';
-                try {
-                    await axios.post(`https://django-tester.onrender.com/project_management/ideas/${endpoint}/`, {
-                        idea_id: selectedIdea.id, 
-                        user: selectedUser
-                    });
-                    setIdeas(ideas.filter(i => i.id !== selectedIdea.id)); // Remueve la idea aceptada/rechazada del estado
-                    closeModal();
-                } catch (error) {
-                    console.error("Error al manejar la acción:", error);
-                    setError("Error al procesar la acción.");
+        const formData = new FormData();
+
+        if (action === 'RJ' && reason.trim() === '') {
+            alert('Debes proporcionar un motivo para rechazar la idea');
+            return;
+        }
+    
+        if (selectedIdea) {
+            formData.append('id', selectedIdea.id);
+            formData.append('status', action); // 'AP' o 'RJ'
+            if (action === 'RJ') formData.append('reason', reason);
+    
+            try {
+                const response = await fetch(`https://django-tester.onrender.com/project_management/change-idea-status/`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Token ${token}`,
+                    },
+                    body: formData,
+                });
+    
+                if (!response.ok) {
+                    const errData = await response.json();
+                    const errorMessage = errData.message || `Error: ${response.status} - ${response.statusText}`;
+                    throw new Error(errorMessage);
                 }
+    
+                alert(`Idea ${action === 'AP' ? 'aceptada' : 'rechazada'} exitosamente`);
+    
+                // Mover la idea a la lista de archivadas
+                setIdeas(prevIdeas => prevIdeas.filter(idea => idea.id !== selectedIdea.id));
+                setArchivedIdeas(prevArchived => [...prevArchived, { ...selectedIdea, status: action }]);
+    
+                closeModal();
+            } catch (error) {
+                console.error(`Error al ${action === 'AP' ? 'aceptar' : 'rechazar'} la idea:`, error);
+                setError(error.message);
             }
+
         } else if (action === 'edit') {
             if (selectedIdea && selectedIdea.idea) {
-                const formData = new FormData();
+
                 formData.append('idea', selectedIdea.idea);
 
                 try {
@@ -131,15 +163,18 @@ const Brainstorming = () => {
                         },
                         body: formData,
                     });
-    
+
                     if (!response.ok) {
                         const errData = await response.json();
-                        
+
+
                         console.error("Error de respuesta del servidor:", errData);
                         const errorMessage = errData || `Error: ${response.status} - ${response.statusText}`;
                         throw new Error(errorMessage);
                     }
-    
+
+                    alert('Idea editada con exito')
+                    console.log("Idea editada correctamente:");
                     const updatedIdeas = ideas.map(idea =>
                         idea.id === selectedIdea.id ? { ...idea, idea: selectedIdea.idea } : idea
                     );
@@ -150,6 +185,7 @@ const Brainstorming = () => {
                     setError(error.message);
                 }
             }
+
 
         } else if (action === 'delete') {
             if (selectedIdea) {
@@ -163,14 +199,14 @@ const Brainstorming = () => {
                         },
 
                     });
-        
+
                     if (!response.ok) {
                         const errData = await response.json();
                         console.error("Error de respuesta del servidor:", errData);
                         const errorMessage = errData.message || errData.detail || `Error: ${response.status} - ${response.statusText}`;
                         throw new Error(errorMessage);
                     }
-        
+
                     alert('Idea eliminada con exito')
                     console.log("Idea eliminada correctamente:");
                     setIdeas(ideas.filter(i => i.id !== selectedIdea.id));
@@ -184,7 +220,7 @@ const Brainstorming = () => {
                 alert("No se seleccionó ninguna idea para eliminar.");
             }
         }
-        
+
     };
 
     return (
@@ -208,7 +244,8 @@ const Brainstorming = () => {
             <div className="ideas-board">
                 {ideas.map((idea, index) => (
                     <div key={index} className="idea-postit" onClick={() => openModal(idea)}>
-                        {idea.idea} {/* Muestra solo el texto de la idea */}
+                        <b>Idea: </b> {idea.idea} {/* Muestra solo el texto de la idea */}<br />
+                        <b>Creada por: </b> {idea.created_by}
                     </div>
                 ))}
             </div>
@@ -235,13 +272,24 @@ const Brainstorming = () => {
                     onChange={(e) => setAction(e.target.value)}
                 >
                     <option value="" disabled>Selecciona una acción</option>
-                    <option value="accept">Aceptar</option>
-                    <option value="reject">Rechazar</option>
+                    <option value="AP">Aceptar</option>
+                    <option value="RJ">Rechazar</option>
                     <option value="edit">Editar</option>
                     <option value="delete">Eliminar</option>
                 </select>
                 <br />
 
+                {action === 'RJ' && (
+                    <>
+                        <textarea
+                            className="reject-reason"
+                            value={reason}
+                            onChange={(e) => setReason(e.target.value)}
+                            placeholder="Escribe el motivo del rechazo..."
+                        />
+                        <br />
+                    </>
+                )}
                 {action === 'edit' && (
                     <>
                         <textarea
