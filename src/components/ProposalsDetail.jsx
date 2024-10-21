@@ -15,6 +15,7 @@ const ProposalDetail = () => {
     // Estado para el modal de cambio de estado
     const [showStatusModal, setShowStatusModal] = useState(false);
     const [newStatus, setNewStatus] = useState('');  // Nuevo estado seleccionado
+    const [reason, setReason] = useState(''); // Nueva razón para el cambio de estado
 
     // Función para obtener la propuesta y los comentarios
     const fetchContentProposal = async () => {
@@ -81,15 +82,14 @@ const ProposalDetail = () => {
         fetchContentProposal();
     }, [id, navigate]);
 
-    const handleAddComment = async (event) => {
-        event.preventDefault();
-        if (!newComment.trim()) return;
+    const handleAddComment = async (commentBody) => {
+        if (!commentBody.trim()) return; // Evita enviar comentarios vacíos
 
         try {
             const token = localStorage.getItem('token');
             const formData = new FormData();
             formData.append('id', selectedProposal.id);
-            formData.append('body', newComment);
+            formData.append('body', commentBody); // Usa el cuerpo del comentario proporcionado
 
             const response = await fetch(`https://django-tester.onrender.com/content_proposal/comment/`, {
                 method: 'POST',
@@ -100,7 +100,6 @@ const ProposalDetail = () => {
             });
 
             if (response.ok) {
-                setNewComment(''); // Limpia el campo del nuevo comentario
                 fetchComments(); // Vuelve a cargar los comentarios después de agregar uno nuevo
             } else {
                 const errorData = await response.json();
@@ -118,7 +117,13 @@ const ProposalDetail = () => {
             const formData = new FormData();
             formData.append('id', selectedProposal.id);
             formData.append('status', newStatus);  // Estado seleccionado
-    
+            
+            if (newStatus === 'RJ' || newStatus === 'MC') {
+                formData.append('reason', reason); 
+                await handleAddComment(reason); 
+                setReason(''); 
+            }
+
             // Cambiar el estado de la propuesta
             const response = await fetch(`https://django-tester.onrender.com/content_proposal/change_status/`, {
                 method: 'POST',
@@ -127,33 +132,11 @@ const ProposalDetail = () => {
                 },
                 body: formData,
             });
-    
+
             if (response.ok) {
                 const result = await response.json();
-                const userName = result.user; 
-                alert(`Estado cambiado correctamente a: ${newStatus}. Cambiado por: ${userName}`);
-                console.log('Estado cambiado:', result); 
-    
-                
-                if (newStatus === "AP" && result.publish === true) { 
-                    
-                    const publishResponse = await fetch(`https://django-tester.onrender.com/publish/${selectedProposal.id}`, {
-                        method: 'GET', 
-                        headers: {
-                            'Authorization': `Token ${token}`,
-                        },
-                    });
-    
-                    if (publishResponse.ok) {
-                        const publishResult = await publishResponse.json();
-                        alert(`Propuesta publicada correctamente: ${publishResult.message}`);
-                    } else {
-                        const publishErrorData = await publishResponse.json();
-                        alert(`Error al publicar la propuesta: ${JSON.stringify(publishErrorData)}`);
-                    }
-                }
-    
-                setShowStatusModal(false);  
+                alert(`Estado cambiado correctamente a: ${newStatus}.`);
+                setShowStatusModal(false);
             } else {
                 const errorData = await response.json();
                 alert(`Error al cambiar el estado: ${JSON.stringify(errorData)}`);
@@ -161,8 +144,7 @@ const ProposalDetail = () => {
         } catch (error) {
             alert('Error al cambiar el estado de la propuesta');
         }
-    }; 
-    
+    };
 
     if (loading) {
         return <p>Cargando...</p>;
@@ -192,6 +174,10 @@ const ProposalDetail = () => {
                         comments.map((comment, index) => (
                             <div key={comment.id || index} className="comment-ad">
                                 <p><strong>{comment.comment_by || 'Usuario desconocido'}</strong>: {comment.body || 'Comentario vacío'}</p>
+                                {/* Mostrar razón si existe */}
+                                {comment.reason && (
+                                    <p><strong>Razón:</strong> {comment.reason}</p>
+                                )}
                             </div>
                         ))
                     ) : (
@@ -229,6 +215,16 @@ const ProposalDetail = () => {
                             <option value="AP">Aceptar</option>
                             <option value="MC">Pedir Cambios</option>
                         </select>
+                        {/* Mostrar textarea para razón si es RJ o MC */}
+                        {(newStatus === 'RJ' || newStatus === 'MC') && (
+                            <textarea
+                                className='reason-ad'
+                                value={reason}
+                                onChange={(e) => setReason(e.target.value)}
+                                placeholder="Escribe la razón..."
+                                required
+                            />
+                        )}<br />
                         <button className="btn-save-ad" onClick={handleStatusChange}>
                             Enviar
                         </button>

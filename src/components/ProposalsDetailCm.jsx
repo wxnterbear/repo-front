@@ -345,11 +345,21 @@ const ProposalDetailCm = () => {
                             /><br />
                             <br /><label>Archivos:</label>
                             <input
-                                className='input-btn'
+                                className='input-btn-d'
                                 type="file"
                                 multiple
                                 onChange={handleFilesChange}
                             /><br />
+                            <br /><label>Propuesto por:</label>
+                            <select 
+                            className='select-social-d'
+                            value={editedProposal.edited_by || ''} 
+                            onChange={handleProposedByChange} required>
+                                        <option value="">---------</option>
+                                        <option value="wavy">wavy</option>
+                                        <option value="salo">salo</option>
+                                    </select>
+                            
                             <br />
                             <button className='btn-save-d' type="button" onClick={handleEditProposal}>Guardar Cambios</button>
                         </div>
