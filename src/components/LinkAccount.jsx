@@ -61,7 +61,7 @@ const LinkAccount = () => {
             const token = localStorage.getItem('token');
 
             const response = await fetch('https://django-tester.onrender.com/auth/google/unlink/', { // Cambiar a la URL correcta de desvinculación
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Authorization': `Token ${token}`,
                     'Content-Type': 'application/json',
