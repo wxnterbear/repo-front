@@ -60,7 +60,7 @@ const LinkAccount = () => {
         try {
             const token = localStorage.getItem('token');
     
-            const response = await fetch('https://django-tester.onrender.com/auth/google/unlink/', { // Cambiar a la URL correcta
+            const response = await fetch('https://django-tester.onrender.com/auth/google/unlink', { // Cambiar a la URL correcta
                 method: 'GET',  // Cambia a 'GET' si es lo que acepta el endpoint
                 headers: {
                     'Authorization': `Token ${token}`,
