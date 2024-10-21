@@ -24,7 +24,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        const data = new URLSearchParams(); 
+        const data = new URLSearchParams(); // Usar URLSearchParams para formatear correctamente los datos
         data.append('username', formData.username);
         data.append('password', formData.password);
     
@@ -37,13 +37,10 @@ const Login = () => {
             });
     
             if (response.status === 200) {
-                const token = response.data.token; 
-                const is_admin = response.data.is_admin;
+                const token = response.data.token; // Ajusta esto si el token se llama diferente
                 console.log('Token recibido:', token);
-                login(token); 
-                localStorage.setItem('is_admin', is_admin)
-                navigate('/about'); 
-
+                login(token); // Guarda el token en el contexto
+                navigate('/calendar'); // Redirige al calendario
             } else {
                 console.error('Error al iniciar sesión:', response.data.message);
                 alert('Error: ' + response.data.message);

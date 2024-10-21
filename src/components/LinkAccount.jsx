@@ -36,10 +36,20 @@ const LinkAccount = () => {
 
     const handleLinkGoogle = async () => {
         try {
-            const response = await fetch('https://django-tester.onrender.com/auth/google/');
+            // Obtener el token del localStorage
+            const token = localStorage.getItem('token'); // Asume que el token se guarda con la clave 'token'
+    
+            const response = await fetch('https://django-tester.onrender.com/auth/google/', {
+                method: 'GET', 
+                headers: {
+                    'Authorization': `Token ${token}`, // Incluye el token en el encabezado
+                    'Content-Type': 'application/json', // Ajusta según sea necesario
+                },
+            });
+    
             const data = await response.json();
             console.log('Respuesta del servidor (link):', data);
-
+    
             if (data) {
                 window.location.href = data; // Redirige a la URL de autenticación de Google
             } else {
