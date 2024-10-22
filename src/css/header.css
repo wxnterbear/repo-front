@@ -1,28 +1,29 @@
-/* -- header -- */  
+/* header.css */
 .header {
   width: 100%;
-  background-color: rgb(0, 0, 0); 
+  background-color: rgb(0, 0, 0);
   padding: 10px 0;
   position: fixed; 
   top: 0;
   left: 0;
   display: flex;
-  justify-content: space-between; /* Espacio entre los elementos */
-  z-index: 1000; /* Asegúrate de que el z-index sea alto */
+  justify-content: space-between;
+  z-index: 1000; 
+  justify-content: center;
 }
 
 .hamburger {
-  font-size: 30px; /* Tamaño del icono de hamburguesa */
+  font-size: 30px; 
   color: white;
   background: none;
   border: none;
   cursor: pointer;
-  display: none; /* Oculta el botón de hamburguesa en pantallas grandes */
+  display: none; /* Oculta en pantallas grandes */
 }
 
 .menu {
-  display: flex; /* Por defecto, muestra los botones en fila */
-  flex-wrap: wrap; /* Permite apilar botones si no hay espacio suficiente */
+  display: flex; 
+  flex-wrap: wrap; 
 }
 
 .opc {
@@ -47,44 +48,31 @@
 }
 
 /* Media Queries para pantallas pequeñas */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .hamburger {
-      display: block; /* Muestra el botón de hamburguesa en pantallas pequeñas */
+      display: block; 
   }
 
   .menu {
-      display: none; /* Oculta el menú por defecto */
-      flex-direction: column; /* Cambia a una disposición vertical */
-      width: 100%; /* Asegúrate de que el menú ocupe el ancho completo */
-      background-color: rgb(0, 0, 0); /* Color de fondo del menú */
-      position: absolute; /* Para que el menú esté por encima de otros contenidos */
-      top: 60px; /* Ajusta según el tamaño del header */
+      display: none; 
+      flex-direction: column; 
+      width: 100%; 
+      background-color: rgb(0, 0, 0);
+      position: absolute; 
+      top: 60px; 
       left: 0;
-      z-index: 3; /* Asegúrate de que esté por encima de otros elementos */
+      z-index: 3; 
   }
 
   .menu.open {
-      display: flex; /* Muestra el menú cuando está abierto */
+      display: flex; 
   }
 
   .opc {
-      width: 100%; /* Asegura que los botones ocupen todo el ancho */
-      text-align: center; /* Centra el texto */
-      padding: 10px 0; /* Agrega un poco de padding */
-      font-size: 20px; /* Mantiene el tamaño de fuente */
-      margin: 4px 0; /* Espaciado vertical entre botones */
-      background-color: rgb(81, 90, 90); /* Mismo fondo que los botones originales */
-      color: white; /* Color del texto */
-      border-radius: 5px; /* Mantiene el borde redondeado */
-      transition: background-color 0.3s; /* Transición de fondo */
+      width: 100%; 
+      text-align: center; 
+      padding: 10px 0; 
+      font-size: 20px; 
+      margin: 4px 0; 
   }
-
-  .opc:hover {
-      background-color: rgb(43, 48, 48); /* Color de fondo al pasar el mouse */
-  }
-}
-
-/* Añade esta regla para que el contenido se desplace hacia abajo al abrir el menú */
-.home-container.shifted {
-  margin-top: 200px; /* Ajusta esto según la altura del menú desplegable */
 }
