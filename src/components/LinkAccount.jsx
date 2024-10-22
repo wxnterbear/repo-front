@@ -85,7 +85,7 @@ const LinkAccount = () => {
     };
 
     const handleOauthCallbackMeta = async (queryString) => {
-        const url = `https://django-tester.onrender.com/auth/meta/oauth2callback${queryString}`;
+        const url = `https://django-tester.onrender.com/auth/meta/${queryString}`;
         try {
             const response = await fetch(url, {
                 method: 'GET',
