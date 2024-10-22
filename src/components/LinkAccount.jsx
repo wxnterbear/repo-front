@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import '../css/linkAccount.css';
+import Header from "./header";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 
@@ -158,7 +159,7 @@ const LinkAccount = () => {
     };
 
     const handleOauthCallbackMeta = async (queryString) => {
-        const url = `https://django-tester.onrender.com/auth/meta/oauth2callback${queryString}`;
+        const url = `https://django-tester.onrender.com/auth/meta/${queryString}`;
 
         try {
             const response = await fetch(url, {
@@ -173,15 +174,21 @@ const LinkAccount = () => {
                 const result = await response.json();
                 setIsMetaLinked(true);
                 localStorage.setItem('isMetaLinked', 'true');
-                Swal.fire('Vinculación exitosa!', 'La cuenta de Meta ha sido vinculada', 'success');
+                Swal.fire({
+                    title: 'Vinculación exitosa!',
+                    text: 'La cuenta de Meta ha sido vinculada',
+                    icon: 'success',
+                }).then(() => navigate('/link_account')); // Redirigir después del SweetAlert
             } else {
                 const errorData = await response.json();
+                console.log('error callback')
                 setError(`Error al procesar el callback de Meta: ${errorData.message}`);
             }
         } catch (error) {
             setError('Error en la solicitud al servidor');
         }
     };
+
 
     useEffect(() => {
         setIsGoogleLinked(localStorage.getItem('isGoogleLinked') === 'true');
@@ -190,6 +197,7 @@ const LinkAccount = () => {
 
     return (
         <div className="link-container">
+            <Header />
             <h1>Vinculación de cuentas</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <center>
