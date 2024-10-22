@@ -94,22 +94,26 @@ const LinkAccount = () => {
                     'Content-Type': 'application/json',
                 },
             });
-
+    
             if (response.ok) {
+                const responseData = await response.json(); 
+                console.log(JSON.stringify(responseData, null, 2)); 
+    
                 setIsMetaLinked(true);
                 localStorage.setItem('isMetaLinked', 'true');
                 Swal.fire({
                     title: 'Vinculación exitosa!',
                     text: 'La cuenta de Meta ha sido vinculada',
                     icon: 'success',
-                }).then(() => navigate('/link_account')); // Redirigir después del SweetAlert
+                }).then(() => navigate('/link_account')); 
             } else {
                 const errorData = await response.json();
                 setError(`Error al procesar el callback de Meta: ${errorData.message}`);
-                console.log(`Error al procesar el callback de Meta: ${errorData.message}`)
+                console.log(`Error al procesar el callback de Meta: ${JSON.stringify(errorData, null, 2)}`); 
             }
         } catch (error) {
             setError('Error en la solicitud al servidor');
+            console.log('Error en la solicitud al servidor:', error); 
         }
     };
 
