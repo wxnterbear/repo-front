@@ -13,6 +13,12 @@ Modal.setAppElement('#root');
 function Calendar() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const [menuHeight, setMenuHeight] = useState('0px');
+    const [menuOpen, setMenuOpen] = useState(false);
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+        setMenuHeight(menuOpen ? '0px' : '400px');
+    };
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [viewEventModalIsOpen, setViewEventModalIsOpen] = useState(false);
@@ -131,7 +137,7 @@ function Calendar() {
                         throw new Error(errorMessage);
                     });
                 }
-                return response.json(); 
+                return response.json();
             })
             .then(data => {
                 console.log("Evento creado correctamente:", data);
@@ -164,7 +170,7 @@ function Calendar() {
                         throw new Error(errorMessage);
                     });
                 }
-                return response.json(); 
+                return response.json();
             })
             .then(data => {
                 console.log("Evento actualizado correctamente:", data);
@@ -222,7 +228,7 @@ function Calendar() {
                 setError(error.message); // Muestra el mensaje de error
             });
     };
-    
+
 
     const handleEventClick = (info) => {
         const clickedEvent = events.find(event => event.id.toString() === info.event.id.toString());
@@ -254,8 +260,10 @@ function Calendar() {
     };
 
     return (
-        <div className='full-container'>
-            <Header />
+        <div className={`full-container ${menuOpen ? 'shifted' : ''}`} style={{ marginTop: menuHeight }}>
+            <div className="header-container">
+                <Header toggleMenu={toggleMenu} menuOpen={menuOpen} />
+            </div>
             <div className='container-calendar'>
                 <FullCalendar
                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -304,7 +312,7 @@ function Calendar() {
 
                 <Modal
                     isOpen={viewEventModalIsOpen}
-                    onRequestClose={closeViewEventModal} 
+                    onRequestClose={closeViewEventModal}
                     className="modal-view-event"
                     overlayClassName="overlay1"
                 >
@@ -335,7 +343,7 @@ function Calendar() {
                     <div><center>
                         <button className='confirmar' onClick={handleDeleteEvent}>Sí, Eliminar</button>
                         <button className='cancelar' onClick={closeConfirmDeleteModal}>Cancelar</button>
-                        </center>
+                    </center>
                     </div>
                 </Modal>
             </div>

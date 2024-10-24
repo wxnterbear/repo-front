@@ -6,6 +6,8 @@
     background: rgb(43, 43, 43);
     border-radius: 8px;
     margin-top: 40px;
+
+    transition: margin-top 0.3s; /* Transición suave al cambiar el margen */
 }
 
 .proposal-container-d {
@@ -57,14 +59,13 @@
     margin-bottom: 10px; /* Espacio entre comentarios */
 }
 
-.comments-d{
+.comments-d {
     width: 99%;
     border-radius: 8px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 15px;
     background-color: rgba(81, 90, 90, 0.623);
     color: white;
-
 }
 
 .btn-edit-d,
@@ -134,7 +135,7 @@
     width: 97%;
     margin-bottom: 10px;
     padding: 10px;
-    border: 2px solid rgb(133, 133, 133);;
+    border: 2px solid rgb(133, 133, 133);
     background-color: rgb(255, 255, 255);
     border-radius: 5px;
     font-size: 15px;
@@ -165,4 +166,35 @@
 
 .comment-button-d:hover {
     background-color: rgb(43, 48, 48);
+}
+
+/* Consultas de medios para hacer el diseño responsivo */
+@media (max-width: 768px) {
+    .proposal-container-d {
+        flex-direction: column; /* Cambiar a una sola columna en pantallas pequeñas */
+    }
+
+    .proposal-details-d,
+    .proposal-comments-d {
+        margin-right: 0; /* Eliminar el margen derecho */
+        max-height: none; /* Sin altura máxima para evitar el corte */
+    }
+
+    .proposal-detail-d h1 {
+        font-size: 30px; /* Tamaño de fuente más pequeño para el encabezado */
+    }
+
+    .proposal-detail-d h2 {
+        font-size: 40px; /* Tamaño de fuente más pequeño para el subencabezado */
+    }
+
+    .proposal-detail-d p {
+        font-size: 18px; /* Tamaño de fuente más pequeño para el párrafo */
+    }
+
+    .btn-edit-d,
+    .btn-save-d,
+    .comment-button-d {
+        font-size: 20px; /* Tamaño de fuente más pequeño para los botones */
+    }
 }

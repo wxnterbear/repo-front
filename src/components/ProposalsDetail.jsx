@@ -5,6 +5,13 @@ import Header from './header';
 
 const ProposalDetail = () => {
     const navigate = useNavigate();
+    const [menuHeight, setMenuHeight] = useState('0px');
+    const [menuOpen, setMenuOpen] = useState(false);
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+        setMenuHeight(menuOpen ? '0px' : '300px');
+    };
+    
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
     const [comments, setComments] = useState([]);
@@ -117,11 +124,11 @@ const ProposalDetail = () => {
             const formData = new FormData();
             formData.append('id', selectedProposal.id);
             formData.append('status', newStatus);  // Estado seleccionado
-            
+
             if (newStatus === 'RJ' || newStatus === 'MC') {
-                formData.append('reason', reason); 
-                await handleAddComment(reason); 
-                setReason(''); 
+                formData.append('reason', reason);
+                await handleAddComment(reason);
+                setReason('');
             }
 
             // Cambiar el estado de la propuesta
@@ -155,8 +162,10 @@ const ProposalDetail = () => {
     }
 
     return (
-        <div className="proposal-detail-ad">
-            <Header />
+        <div className={`proposal-detail-ad ${menuOpen ? 'shifted' : ''}`} style={{ marginTop: menuHeight }}>
+            <div className="header-container">
+                <Header toggleMenu={toggleMenu} menuOpen={menuOpen} />
+            </div>
             <div className="proposal-container-ad">
                 <div className="proposal-details-ad">
                     <h1>{selectedProposal.title}</h1>

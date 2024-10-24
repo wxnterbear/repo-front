@@ -10,10 +10,11 @@
     gap: 20px;
     padding: 20px;
     background: rgb(43, 43, 43);
+    transition: margin-top 0.3s; /* Transición suave al cambiar el margen */
 }
 
 .brainstorming-header {
-    margin-top: 80px;
+    margin-top: 20px;
     display: flex;
     align-items: center; 
     justify-content: space-between; 

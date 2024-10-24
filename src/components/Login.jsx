@@ -40,7 +40,7 @@ const Login = () => {
                 const token = response.data.token; // Ajusta esto si el token se llama diferente
                 console.log('Token recibido:', token);
                 login(token); // Guarda el token en el contexto
-                navigate('/calendar'); // Redirige al calendario
+                navigate('/home'); // Redirige al calendario
             } else {
                 console.error('Error al iniciar sesión:', response.data.message);
                 alert('Error: ' + response.data.message);

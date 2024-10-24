@@ -180,7 +180,7 @@ const handleUnlinkMeta = async () => {
 
     return (
         <div className="link-container">
-            <Header />
+            {/*<Header /> */}
             <h1>Vinculación de cuentas</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <center>

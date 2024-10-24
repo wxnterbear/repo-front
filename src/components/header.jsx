@@ -30,6 +30,8 @@ const Header = ({ toggleMenu, menuOpen }) => {
                     <button className="opc" onClick={() => navigate('/proposals')}>Ir a Propuestas</button>
                     <button className="opc" onClick={() => navigate('/proposals_form')}>Ir al formulario de Propuestas</button>
                     <button className="opc" onClick={() => navigate('/calendar')}>Ir a Calendario</button>
+                    <button className="opc" onClick={() => navigate('/about')}>Ir a About</button>
+                    {/*<button className="opc" onClick={() => navigate('/link_account')}>Ir a Vinvular cuentas</button>*/}
                     {isLoggedIn && (
                         <button className="opc" onClick={handleLogout}>Cerrar sesión</button>
                     )}

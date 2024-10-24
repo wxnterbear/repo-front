@@ -6,6 +6,13 @@ import Header from './header';
 
 const ProposalDetailCm = () => {
     const navigate = useNavigate();
+    const [menuHeight, setMenuHeight] = useState('0px');
+    const [menuOpen, setMenuOpen] = useState(false);
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+        setMenuHeight(menuOpen ? '0px' : '300px');
+    };
+    
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
     const [comments, setComments] = useState([]);
@@ -251,8 +258,10 @@ const ProposalDetailCm = () => {
     ];
 
     return (
-        <div className="proposal-detail-d">
-            <Header />
+        <div className={`proposal-detail-d ${menuOpen ? 'shifted' : ''}`} style={{ marginTop: menuHeight }}>
+            <div className="header-container">
+                <Header toggleMenu={toggleMenu} menuOpen={menuOpen} />
+            </div>
             <div className="proposal-container-d">
                 <div className="proposal-details-d">
                     <h1>{selectedProposal.title}</h1>
@@ -351,15 +360,15 @@ const ProposalDetailCm = () => {
                                 onChange={handleFilesChange}
                             /><br />
                             <br /><label>Propuesto por:</label>
-                            <select 
-                            className='select-social-d'
-                            value={editedProposal.edited_by || ''} 
-                            onChange={handleProposedByChange} required>
-                                        <option value="">---------</option>
-                                        <option value="wavy">wavy</option>
-                                        <option value="salo">salo</option>
-                                    </select>
-                            
+                            <select
+                                className='select-social-d'
+                                value={editedProposal.edited_by || ''}
+                                onChange={handleProposedByChange} required>
+                                <option value="">---------</option>
+                                <option value="wavy">wavy</option>
+                                <option value="salo">salo</option>
+                            </select>
+
                             <br />
                             <button className='btn-save-d' type="button" onClick={handleEditProposal}>Guardar Cambios</button>
                         </div>

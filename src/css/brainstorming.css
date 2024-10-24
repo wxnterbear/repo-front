@@ -1,102 +1,145 @@
 @font-face {
-    font-family: 'JerseyR';
-    src: url('../font/jerseyr.ttf') format('truetype');
-  }
+  font-family: 'JerseyR';
+  src: url('../font/jerseyr.ttf') format('truetype');
+}
 
 .brainstorming-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgba(31, 35, 70, 1);
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 40px rgba(204, 162, 64, 0.418);
-    margin-top: 70px;
-    margin-bottom: 70px;
-  }
-
-  .brainstorming-header {
-    display: flex;
-    align-items: center; /* Alinea verticalmente el contenido */
-    justify-content: space-between; /* Espacia el título y el botón a los extremos */
-    margin-bottom: 20px; /* Espacio debajo del contenedor */
-}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(31, 35, 70, 1);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 40px rgba(204, 162, 64, 0.418);
+  margin: 70px auto; /* Centrado y márgenes iguales en top/bottom */
+  max-width: 800px; /* Máximo ancho para evitar que se estire demasiado */
+  width: 90%; /* Ancho responsivo */
+  transition: margin-top 0.3s; /* Transición suave */
   
-  .title {
-    font-family: 'JerseyR', sans-serif;
-    font-size: 45px;
-    color: rgba(204, 161, 64, 1);
-    margin-bottom: 20px;
-  }
   
-  .brainstorming-container textarea {
-    width: 80%;
-    height: 100px;
-    padding: 10px;
-    border: 2px solid rgba(31, 35, 70, 1);
-    border-radius: 5px;
-    font-size: 18px;
-    margin-bottom: 10px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  }
-
-  .edit-select{
-    border-radius: 8px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 18px;
-  }
-  
-  .brainstorming-container button {
-    padding: 10px 20px;
-    font-family: 'JerseyR', sans-serif;
-    font-size: 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: rgba(204, 161, 64, 1);
-    color: rgba(31, 35, 70, 1);
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .brainstorming-container button:hover {
-    background-color: rgba(204, 162, 64, 0.8);
-  }
-  
-  .ideas-board {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 60px;
-    justify-content: space-between;
-  }
-  
-  .idea-postit {
-    background-color: rgba(204, 161, 64, 1);
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(204, 162, 64, 0.418);
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 16px;
-    color: rgba(31, 35, 70, 1);
-    word-break: break-word;
-    width: 150px;
-    height: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    transition: background-color 0.3s;
-    cursor: pointer;
 }
 
-.idea-postit:hover{
+.brainstorming-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+  margin-bottom: 20px;
+  
+ 
+}
+
+.title {
+  font-family: 'JerseyR', sans-serif;
+  font-size: 2.5rem; /* Usar rem para responsividad */
+  color: rgba(204, 161, 64, 1);
+  margin-bottom: 20px;
+}
+
+.brainstorming-container textarea {
+  width: 80%;
+  height: 100px;
+  padding: 10px;
+  border: 2px solid rgba(31, 35, 70, 1);
+  border-radius: 5px;
+  font-size: 1.125rem; /* Usar rem */
+  margin-bottom: 10px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.edit-select {
+  border-radius: 8px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1.125rem; /* Usar rem */
+}
+
+.brainstorming-container button {
+  padding: 10px 20px;
+  font-family: 'JerseyR', sans-serif;
+  font-size: 1.25rem; /* Usar rem */
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(204, 161, 64, 1);
+  color: rgba(31, 35, 70, 1);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.brainstorming-container button:hover {
+  background-color: rgba(204, 162, 64, 0.8);
+}
+
+.ideas-board {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 60px;
+  justify-content: space-between;
+}
+
+.idea-postit {
+  background-color: rgba(204, 161, 64, 1);
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(204, 162, 64, 0.418);
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1rem; /* Usar rem */
+  color: rgba(31, 35, 70, 1);
+  word-break: break-word;
+  width: calc(33.33% - 10px); /* Ancho responsivo en 3 columnas con espacio */
+  height: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.idea-postit:hover {
   background-color: rgb(112, 84, 18);
 }
-  
-.archive-button{
 
+.archive-button {
   width: 100px;
   background: #000;
 }
+
+/* Media Queries para hacer el diseño más responsivo */
+@media (max-width: 1200px) {
+  .brainstorming-container {
+      padding: 10px;
+  }
+
+  .brainstorming-header {
+      flex-direction: column; /* Cambia a columna en pantallas más pequeñas */
+      align-items: flex-start; /* Alinear al inicio */
+  }
+
+  .title {
+      font-size: 2rem; /* Disminuir el tamaño del texto */
+  }
+
+  .brainstorming-container textarea,
+  .brainstorming-container button {
+      width: 100%; /* Hacer que ocupen todo el ancho disponible */
+      font-size: 1rem; /* Disminuir el tamaño del texto */
+  }
+
+  .idea-postit {
+      width: calc(50% - 10px); /* Cambiar a 2 columnas en pantallas más pequeñas */
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+      font-size: 1.5rem; /* Tamaño de fuente aún más pequeño */
+  }
+
+  .idea-postit {
+      width: 100%; /* Una columna en pantallas muy pequeñas */
+  }
+}
+

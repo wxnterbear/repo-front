@@ -6,6 +6,7 @@
   background: rgb(43, 43, 43);
   border-radius: 8px;
   margin-top: 40px;
+  transition: margin-top 0.3s; /* Transición suave al cambiar el margen */
 }
 
 .proposal-container-ad {
@@ -14,21 +15,18 @@
   margin-top: 30px;
 }
 
-.proposal-details-ad {
-  flex: 1; /* Ocupa el espacio restante */
-  margin-right: 20px; /* Espacio entre columnas */
-  max-height: 600px; /* Altura máxima para el desplazamiento */
-  overflow-y: auto; /* Habilitar scroll si es necesario */
-  border: 1px solid #ccc; /* Borde alrededor del contenedor */
-  padding: 15px; /* Espaciado interno */
-}
-
+.proposal-details-ad,
 .proposal-comments-ad {
   flex: 1; /* Ocupa el espacio restante */
   max-height: 600px; /* Altura máxima para el desplazamiento */
   overflow-y: auto; /* Habilitar scroll si es necesario */
   border: 1px solid #ccc; /* Borde alrededor del contenedor */
   padding: 15px; /* Espaciado interno */
+}
+
+/* Espacio entre columnas en pantallas grandes */
+.proposal-details-ad {
+  margin-right: 20px; /* Espacio entre columnas */
 }
 
 .proposal-detail-ad h1 {
@@ -57,33 +55,20 @@
   margin-bottom: 10px; /* Espacio entre comentarios */
 }
 
-.comments-ad{
+.comments-ad {
   width: 99%;
   border-radius: 8px;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 15px;
   background-color: rgba(81, 90, 90, 0.623);
   color: white;
-
 }
 
 .btn-edit-ad,
-.btn-save-ad, .btn-change-status-ad {
+.btn-save-ad,
+.btn-change-status-ad,
+.btn-close-ad {
   margin-top: 10px;
-  font-size: 25px;
-  border-radius: 5px;
-  border: none;
-  padding: 10px 15px;
-  font-family: 'JerseyR', sans-serif;
-  background-color: rgb(81, 90, 90);
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn-close-ad{
-  margin-top: 10px;
-  margin-left: 20px;
   font-size: 25px;
   border-radius: 5px;
   border: none;
@@ -96,7 +81,9 @@
 }
 
 .btn-edit-ad:hover,
-.btn-save-ad:hover, .btn-change-status-ad:hover, .btn-close-ad:hover {
+.btn-save-ad:hover,
+.btn-change-status-ad:hover,
+.btn-close-ad:hover {
   background-color: rgb(43, 48, 48);
 }
 
@@ -148,20 +135,20 @@
   width: 97%;
   margin-bottom: 10px;
   padding: 10px;
-  border: 2px solid rgb(133, 133, 133);;
+  border: 2px solid rgb(133, 133, 133);
   background-color: rgb(255, 255, 255);
   border-radius: 5px;
   font-size: 15px;
 }
 
-.reason-ad{
+.reason-ad {
   border-radius: 8px;
   min-width: 100%;
   max-width: 100%;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 15px;
-
 }
+
 /* Estilo adicional para el formulario de comentarios */
 .comment-textarea-ad,
 .comment-input-ad {
@@ -187,4 +174,38 @@
 
 .comment-button-ad:hover {
   background-color: rgb(43, 48, 48);
+}
+
+/* Media Queries para responsive design */
+@media (max-width: 768px) {
+  .proposal-container-ad {
+    flex-direction: column; /* Apilar columnas en pantallas pequeñas */
+  }
+
+  .proposal-details-ad,
+  .proposal-comments-ad {
+    margin-right: 0; /* Eliminar margen derecho en pantallas pequeñas */
+    margin-bottom: 20px; /* Agregar espacio entre columnas apiladas */
+  }
+}
+
+@media (max-width: 480px) {
+  .proposal-detail-ad h1 {
+    font-size: 30px; /* Ajustar tamaño de fuente */
+  }
+
+  .proposal-detail-ad h2 {
+    font-size: 40px; /* Ajustar tamaño de fuente */
+  }
+
+  .proposal-detail-ad p {
+    font-size: 18px; /* Ajustar tamaño de fuente */
+  }
+
+  .btn-edit-ad,
+  .btn-save-ad,
+  .btn-change-status-ad,
+  .btn-close-ad {
+    font-size: 20px; /* Ajustar tamaño de botón */
+  }
 }

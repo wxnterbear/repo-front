@@ -9,6 +9,12 @@ import { AuthContext } from "../context/AuthContext";
 const ProposalsForms = () => {
     const navigate = useNavigate();
     const { token } = useContext(AuthContext);
+    const [menuHeight, setMenuHeight] = useState('0px');
+    const [menuOpen, setMenuOpen] = useState(false);
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+        setMenuHeight(menuOpen ? '0px' : '400px');
+    };
 
     const [title, setTitle] = useState('');
     const [type, setType] = useState('');
@@ -154,8 +160,10 @@ const ProposalsForms = () => {
     };
 
     return (
-        <div className="container-f">
-            <Header />
+        <div className={`container-f ${menuOpen ? 'shifted' : ''}`} style={{ marginTop: menuHeight }}>
+            <div className="header-container">
+                <Header toggleMenu={toggleMenu} menuOpen={menuOpen} />
+            </div>
             <center>
                 <div className="form-c">
                     <form onSubmit={handleSubmit}>

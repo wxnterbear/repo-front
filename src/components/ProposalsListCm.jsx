@@ -2,10 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import '../css/proposalsList.css';
 import '../css/header.css';
+import Header from "./header";
 
 const ProposalsListCm = () => {
     const [proposals, setProposals] = useState([]);
     const navigate = useNavigate(); // Inicializa useNavigate
+    const [menuHeight, setMenuHeight] = useState('0px'); 
+    const [menuOpen, setMenuOpen] = useState(false);
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+        setMenuHeight(menuOpen ? '0px' : '300px'); 
+    };
+
 
     // Función para obtener las propuestas
     const fetchContentProposal = async () => {
@@ -50,12 +58,9 @@ const ProposalsListCm = () => {
     };
 
     return (
-        <div className="proposals-list">
-            <div className="header">
-                <button className="opc" onClick={() => navigate('/brainstorming')}>Ir a lluvia de ideas</button>
-                <button className="opc" onClick={() => navigate('/proposals')}>Ir a Propuestas</button>
-                <button className="opc" onClick={() => navigate('/proposals_form')}>Ir al formulario de Propuestas</button>
-                <button className="opc" onClick={() => navigate('/calendar')}>Ir a Calendario</button>
+        <div className={`proposals-list ${menuOpen ? 'shifted' : ''}`} style={{ marginTop: menuHeight }}>
+            <div className="header-container">
+                <Header toggleMenu={toggleMenu} menuOpen={menuOpen} />
             </div>
             <h1>Propuestas</h1>
             <ul>

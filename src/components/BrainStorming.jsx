@@ -2,12 +2,19 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-modal";
 import { useNavigate } from 'react-router-dom';
-import '../css/ideas.css';
+
 import Header from './header';
 
 const Brainstorming = () => {
     const token = localStorage.getItem('token');
-
+    const [menuHeight, setMenuHeight] = useState('0px'); 
+    const [menuOpen, setMenuOpen] = useState(false);
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+        setMenuHeight(menuOpen ? '0px' : '300px'); 
+    };
+    
+    
     const [ideas, setIdeas] = useState([]); // Estado para almacenar las ideas
     const [newIdea, setNewIdea] = useState(''); // Estado para la nueva idea 
     const [modalIsOpen, setModalIsOpen] = useState(false); // Estado para controlar si el modal está abierto
@@ -49,7 +56,7 @@ const Brainstorming = () => {
             })
             .catch(error => console.error('Error al cargar las ideas:', error));
     };
-    
+
 
     const handleInputChange = (e) => {
         setNewIdea(e.target.value);
@@ -117,12 +124,12 @@ const Brainstorming = () => {
             alert('Debes proporcionar un motivo para rechazar la idea');
             return;
         }
-    
+
         if (selectedIdea) {
             formData.append('id', selectedIdea.id);
             formData.append('status', action); // 'AP' o 'RJ'
             if (action === 'RJ') formData.append('reason', reason);
-    
+
             try {
                 const response = await fetch(`https://django-tester.onrender.com/project_management/change-idea-status/`, {
                     method: 'POST',
@@ -131,19 +138,19 @@ const Brainstorming = () => {
                     },
                     body: formData,
                 });
-    
+
                 if (!response.ok) {
                     const errData = await response.json();
                     const errorMessage = errData.message || `Error: ${response.status} - ${response.statusText}`;
                     throw new Error(errorMessage);
                 }
-    
+
                 alert(`Idea ${action === 'AP' ? 'aceptada' : 'rechazada'} exitosamente`);
-    
+
                 // Mover la idea a la lista de archivadas
                 setIdeas(prevIdeas => prevIdeas.filter(idea => idea.id !== selectedIdea.id));
                 setArchivedIdeas(prevArchived => [...prevArchived, { ...selectedIdea, status: action }]);
-    
+
                 closeModal();
             } catch (error) {
                 console.error(`Error al ${action === 'AP' ? 'aceptar' : 'rechazar'} la idea:`, error);
@@ -224,12 +231,16 @@ const Brainstorming = () => {
     };
 
     return (
-        <div className="brainstorming-container">
-            <Header />
-            <div className="brainstorming-header">
-                <h1 className="title-brainstorming">Lluvia de ideas</h1>
-                <button className="archive-button" onClick={() => navigate('/ideas-archive')}>Ideas Aceptadas/Rechazadas</button>
+        <div className={`brainstorming-container ${menuOpen ? 'shifted' : ''}`} style={{ marginTop: menuHeight }}>
+            <div className="header-container">
+                <Header toggleMenu={toggleMenu} menuOpen={menuOpen} />
             </div>
+            <div className="brainstorming-header">
+            <h1 className="title-brainstorming">Lluvia de ideas</h1>
+            <button className="archive-button" onClick={() => navigate('/ideas-archive')}>
+                Ideas Aceptadas/Rechazadas
+            </button>
+        </div>
             <center>
                 <textarea
                     className="textarea-brainstorming"

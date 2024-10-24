@@ -3,19 +3,15 @@
     src: url('../font/jerseyr.ttf') format('truetype');
 }
 
-body{
-    margin-top: 15px;
-    margin-right: 15px;
-    margin-left: 15px;
+body {
+    margin: 15px;
     background: rgb(43, 43, 43);
-    
 }
 
-.container-calendar{
+.container-calendar {
     margin-top: 80px;
     background: rgb(43, 43, 43);
 }
-
 
 .fc-button.fc-prev-button,
 .fc-button.fc-next-button,
@@ -23,6 +19,7 @@ body{
     background-color: rgb(81, 90, 90);
     border: none;
     color: rgb(255, 255, 255);
+ 
 }
 
 .fc-button.fc-prev-button:hover,
@@ -38,13 +35,12 @@ body{
 .fc-button.fc-timeGridDay-button {
     background-color: rgb(81, 90, 90);
     border: none;
-
 }
 
 .fc-button.fc-dayGridMonth-button:hover,
 .fc-button.fc-timeGridWeek-button:hover,
 .fc-button.fc-timeGridDay-button:hover {
-    background: #0000009d;;
+    background: #0000009d;
     border: none;
 }
 
@@ -52,7 +48,7 @@ body{
     color: rgba(0, 0, 0, 0.726);
 }
 
-.fc-event-main{
+.fc-event-main {
     white-space: normal; /* Permite que el texto se divida en varias líneas */
     word-wrap: break-word; /* Permite que las palabras largas se dividan en varias líneas */
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -61,10 +57,9 @@ body{
     margin-left: 5px;
     margin-right: 5px;
     margin-bottom: 15px;
-    
-    
 }
-:root{
+
+:root {
     --fc-today-bg-color: #ffffff69; /* día actual */ 
     --fc-button-bg-color: #000000c4; /* boton de 'today' */ 
     --fc-button-active-bg-color: #000000bb; /* boton activo */ 
@@ -72,21 +67,24 @@ body{
     --fc-border-radius: 15px;
 }
 
-.fc .fc-toolbar-title{
+.fc .fc-toolbar-title {
     color: #ffffffb2;
+    font-size: 45px;
+    margin-left: 10px;
 }
 
-a{
+a {
     text-decoration: none;
     color: #ffffffb2;
 }
+
 .full-container {
     font-family: 'JerseyR', sans-serif;
     background: rgb(43, 43, 43);
     font-size: 20px;
     border-radius: 15px;
+    transition: margin-top 0.3s; /* Transición suave al cambiar el margen */
 }
-
 
 .overlay1 {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -100,7 +98,6 @@ a{
     z-index: 1000;
 }
 
-
 .modal-creation-event {
     position: absolute;
     top: 50%;
@@ -110,21 +107,23 @@ a{
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    width: 420px;
+    width: 90%; /* Cambiado para ser responsivo */
+    max-width: 400px; /* Cambiado para limitar el tamaño máximo */
+    max-height: 80vh; /* Añadido para limitar la altura máxima */
+    overflow-y: auto; /* Permitir desplazamiento vertical */
     background-color: rgb(43, 43, 43);
 }
-
 .modal-creation-event h2 {
     text-align: center;
     color: rgba(255, 255, 255, 0.856);
-    font-size: 40px;
+    font-size: 30px; /* Ajustado para pantallas pequeñas */
 }
 
 .modal-creation-event label {
     display: block;
     margin-top: 5px;
     color: rgba(255, 255, 255, 0.822);
-    font-size: 30px;
+    font-size: 20px; /* Ajustado para pantallas pequeñas */
 }
 
 .modal-creation-event input,
@@ -137,15 +136,13 @@ a{
     border-radius: 5px;
     background-color: #ffffff;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-
-
 }
 
 .modal-creation-event .fecha {
     margin-top: 10px;
     font-weight: normal;
     color: rgba(255, 255, 255, 0.795);
-    font-size: 30px;
+    font-size: 20px; /* Ajustado para pantallas pequeñas */
 }
 
 .modal-creation-event .guardar,
@@ -158,20 +155,17 @@ a{
     border-radius: 5px;
     cursor: pointer;
     font-family: 'JerseyR', sans-serif;
-    font-size: 25px;
+    font-size: 20px; /* Ajustado para pantallas pequeñas */
     transition: background-color 0.3s;
-
 }
 
 .modal-creation-event .guardar {
     background-color: #175A0C;
     color: white;
-
 }
 
 .modal-creation-event .guardar:hover {
     background-color: #0a2906;
-
 }
 
 .modal-creation-event .cancelar {
@@ -194,18 +188,17 @@ a{
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1001;
-    width: 400px;
-    max-width: 90%;
-    overflow-wrap: break-word;
-    
+    width: 90%; /* Cambiado para ser responsivo */
+    max-width: 400px; /* Cambiado para limitar el tamaño máximo */
+    max-height: 80vh; /* Añadido para limitar la altura máxima */
+    overflow-y: auto; /* Permitir desplazamiento vertical */
 }
 
 .modal-view-event h2 {
     text-align: center;
-    font-size: 45px;
+    font-size: 30px; /* Ajustado para pantallas pequeñas */
     font-weight: lighter;
     font-family: 'JerseyR', sans-serif;
-
 }
 
 .modal-view-event p {
@@ -213,14 +206,12 @@ a{
     font-size: 20px;
     font-weight: bolder;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-
 }
 
 .modal-view-event .button-container {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-    
 }
 
 .modal-view-event button {
@@ -231,7 +222,7 @@ a{
     border-radius: 5px;
     cursor: pointer;
     font-family: 'JerseyR', sans-serif;
-    font-size: 20px;
+    font-size: 20px; /* Ajustado para pantallas pequeñas */
     font-weight: bolder;
     transition: background-color 0.3s;
 }
@@ -275,12 +266,15 @@ a{
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1001;
-    width: 300px;
+    width: 90%; /* Cambiado para ser responsivo */
+    max-width: 300px; /* Cambiado para limitar el tamaño máximo */
+    max-height: 80vh; /* Añadido para limitar la altura máxima */
+    overflow-y: auto; /* Permitir desplazamiento vertical */
 }
 
 .modal-confirm-delete h2 {
     text-align: center;
-    font-size: 35px;
+    font-size: 30px; /* Ajustado para pantallas pequeñas */
 }
 
 .modal-confirm-delete p {
@@ -289,40 +283,77 @@ a{
     font-size: 20px;
 }
 
-.modal-confirm-delete .button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-
-}
-
 .modal-confirm-delete button {
-    flex: 1;
-    padding: 5px;
-    margin: 5px;
+    width: 100%;
+    padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-family: 'JerseyR', sans-serif;
-    font-size: 20px;
-    font-weight: bolder;
-    transition: background-color 0.3s;
+    font-size: 20px; /* Ajustado para pantallas pequeñas */
 }
 
-.modal-confirm-delete button:first-child {
+.modal-confirm-delete .confirm {
+    background-color: #175A0C;
+    color: white;
+}
+
+.modal-confirm-delete .confirm:hover {
+    background-color: #0a2906;
+}
+
+.modal-confirm-delete .cancel {
     background-color: #a3180e;
     color: white;
 }
 
-.modal-confirm-delete button:first-child:hover {
+.modal-confirm-delete .cancel:hover {
     background-color: #630b05;
 }
 
-.modal-confirm-delete button:last-child {
-    background-color: #07A193;
-    color: white;
+/* Media Queries */
+@media (max-width: 600px) {
+    .fc .fc-toolbar-title {
+        font-size: 30px; /* Tamaño de fuente más pequeño en pantallas pequeñas */
+    }
+
+    .modal-creation-event h2,
+    .modal-view-event h2,
+    .modal-confirm-delete h2 {
+        font-size: 24px; /* Tamaño de fuente más pequeño en pantallas pequeñas */
+    }
+
+    .modal-creation-event label,
+    .modal-creation-event .fecha,
+    .modal-view-event p,
+    .modal-confirm-delete p {
+        font-size: 16px; /* Tamaño de fuente más pequeño en pantallas pequeñas */
+    }
+
+    .modal-creation-event input,
+    .modal-creation-event textarea,
+    .modal-creation-event select,
+    .modal-view-event button,
+    .modal-confirm-delete button {
+        font-size: 16px; /* Tamaño de fuente más pequeño en pantallas pequeñas */
+    }
+
+    .modal-creation-event .guardar,
+    .modal-creation-event .cancelar,
+    .modal-view-event button,
+    .modal-confirm-delete button {
+        font-size: 16px; /* Tamaño de fuente más pequeño en pantallas pequeñas */
+    }
 }
 
-.modal-confirm-delete button:last-child:hover {
-    background-color: #074b45;
+@media (max-width: 480px) {
+    .modal-creation-event {
+        padding: 10px; /* Reduce el padding en pantallas más pequeñas */
+    }
+    
+    .modal-creation-event input,
+    .modal-creation-event textarea,
+    .modal-creation-event select {
+        padding: 8px; /* Reduce el padding de los inputs en pantallas más pequeñas */
+    }
 }

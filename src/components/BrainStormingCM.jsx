@@ -2,11 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-modal";
 import { useNavigate } from 'react-router-dom';
-import '../css/ideas.css'
+import '../css/ideasOmg.css'
 import Header from './header';
 
 const BrainstormingCM = () => {
     const token = localStorage.getItem('token');
+    const [menuHeight, setMenuHeight] = useState('0px'); 
+    const [menuOpen, setMenuOpen] = useState(false);
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+        setMenuHeight(menuOpen ? '0px' : '300px'); 
+    };
 
     const [ideas, setIdeas] = useState([]); // Estado para almacenar las ideas
     const [newIdea, setNewIdea] = useState(''); // Estado para la nueva idea 
@@ -188,12 +194,16 @@ const BrainstormingCM = () => {
     };
 
     return (
-        <div className="brainstorming-container">
-            <Header />
-            <div className="brainstorming-header">
-                <h1 className="title-brainstorming">Lluvia de ideas</h1>
-                <button className="archive-button" onClick={() => navigate('/ideas-archive')}>Ideas Aceptadas/Rechazadas</button>
+            <div className={`brainstorming-container ${menuOpen ? 'shifted' : ''}`} style={{ marginTop: menuHeight }}>
+            <div className="header-container">
+                <Header toggleMenu={toggleMenu} menuOpen={menuOpen} />
             </div>
+            <div className="brainstorming-header">
+            <h1 className="title-brainstorming">Lluvia de ideas</h1>
+            <button className="archive-button" onClick={() => navigate('/ideas-archive')}>
+                Ideas Aceptadas/Rechazadas
+            </button>
+        </div>
             <center>
                 <textarea
                     className="textarea-brainstorming"
@@ -208,7 +218,8 @@ const BrainstormingCM = () => {
             <div className="ideas-board">
                 {ideas.map((idea, index) => (
                     <div key={index} className="idea-postit" onClick={() => openModal(idea)}>
-                        {idea.idea} {/* Muestra solo el texto de la idea */}
+                        <b>Idea: </b> {idea.idea} {/* Muestra solo el texto de la idea */}<br />
+                        <b>Creada por: </b> {idea.created_by}
                     </div>
                 ))}
             </div>
@@ -235,8 +246,6 @@ const BrainstormingCM = () => {
                     onChange={(e) => setAction(e.target.value)}
                 >
                     <option value="" disabled>Selecciona una acción</option>
-                    <option value="accept">Aceptar</option>
-                    <option value="reject">Rechazar</option>
                     <option value="edit">Editar</option>
                     <option value="delete">Eliminar</option>
                 </select>
