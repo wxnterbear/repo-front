@@ -8,6 +8,13 @@ import '../css/about.css'
 const About = () => {
 
     const navigate = useNavigate();
+    const [menuHeight, setMenuHeight] = useState('0px');
+    const [menuOpen, setMenuOpen] = useState(false);
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+        setMenuHeight(menuOpen ? '0px' : '300px');
+    };
+
     const [errorMessage, setErrorMessage] = useState('')
 
     const [formData, setFormData] = useState({
@@ -55,8 +62,10 @@ const About = () => {
 
 
     return (
-        <div className="main-container">
-            <Header />
+            <div className={`main-container ${menuOpen ? 'shifted' : ''}`} style={{ marginTop: menuHeight }}>
+            <div className="header-container">
+                <Header toggleMenu={toggleMenu} menuOpen={menuOpen} />
+            </div>
             <div className="about-container">
                 <section className="about-header">
                     <h1 className="title-about">Sobre Nuestra Aplicación</h1>

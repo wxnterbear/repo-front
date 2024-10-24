@@ -9,10 +9,19 @@ const IdeasArchive = () => {
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
 
+    const URL = 'https://django-tester.onrender.com';
+
+    const [menuHeight, setMenuHeight] = useState('0px'); 
+    const [menuOpen, setMenuOpen] = useState(false);
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+        setMenuHeight(menuOpen ? '0px' : '300px'); 
+    };
+
     useEffect(() => {
         const fetchIdeas = async () => {
             try {
-                const response = await fetch('https://django-tester.onrender.com/project_management/ideas', {
+                const response = await fetch(`${URL}/project_management/ideas`, {
                     headers: {
                         'Authorization': `Token ${token}`,
                     }
@@ -36,8 +45,10 @@ const IdeasArchive = () => {
     }, []);
 
     return (
-        <div className="ideas-archive-container">
-            <Header />
+            <div className={`ideas-archive-container ${menuOpen ? 'shifted' : ''}`} style={{ marginTop: menuHeight }}>
+            <div className="header-container">
+                <Header toggleMenu={toggleMenu} menuOpen={menuOpen} />
+            </div>
             <div className="ideas-board-a-r accepted">
                 <h1 className="title-a">Ideas Aceptadas</h1>
                 <div className="ideas-list-a-r">

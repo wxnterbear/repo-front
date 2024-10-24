@@ -14,6 +14,8 @@ const ProposalsList = () => {
         setMenuHeight(menuOpen ? '0px' : '300px');
     };
 
+    const URL = 'https://django-tester.onrender.com';
+
     useEffect(() => {
         // Función asincrónica para obtener las propuestas de la API con token de autenticación
         const fetchProposals = async () => {
@@ -26,7 +28,7 @@ const ProposalsList = () => {
                     return;
                 }
 
-                const response = await axios.get('https://django-tester.onrender.com/content_proposal/', {
+                const response = await axios.get(`${URL}/content_proposal/`, {
                     headers: {
                         'Authorization': `Token ${token}`,
                         'Content-Type': 'application/json'

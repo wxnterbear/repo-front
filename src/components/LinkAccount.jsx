@@ -5,6 +5,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 
 const LinkAccount = () => {
+
+    const URL = 'https://django-tester.onrender.com';
+
     const location = useLocation();
     const navigate = useNavigate();
     const [error, setError] = useState(null);
@@ -33,7 +36,7 @@ const LinkAccount = () => {
 
     const handleLinkGoogle = async () => {
         try {
-            const response = await fetch('https://django-tester.onrender.com/auth/google/', {
+            const response = await fetch(`${URL}/auth/google/`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Token ${token}`,
@@ -57,7 +60,7 @@ const LinkAccount = () => {
     };
 
     const handleOauthCallbackGoogle = async (queryString) => {
-        const url = `https://django-tester.onrender.com/auth/google/oauth2callback${queryString}`;
+        const url = `${URL}/auth/google/oauth2callback${queryString}`;
         try {
             const response = await fetch(url, {
                 method: 'GET',
@@ -85,7 +88,7 @@ const LinkAccount = () => {
     };
 
     const handleOauthCallbackMeta = async (queryString) => {
-        const url = `https://django-tester.onrender.com/auth/meta/${queryString}`;
+        const url = `${URL}/auth/meta/${queryString}`;
         try {
             const response = await fetch(url, {
                 method: 'GET',
@@ -119,7 +122,7 @@ const LinkAccount = () => {
 
     const handleUnlinkGoogle = async () => {
         try {
-            const response = await fetch('https://django-tester.onrender.com/auth/google/unlink', {
+            const response = await fetch(`${URL}/auth/google/unlink`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Token ${token}`,
@@ -147,7 +150,7 @@ const LinkAccount = () => {
 
 const handleUnlinkMeta = async () => {
         try {
-            const response = await fetch('https://django-tester.onrender.com/auth/meta/unlink', {
+            const response = await fetch(`${URL}/auth/meta/unlink`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Token ${token}`,

@@ -5,13 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { BrowserRouter } from 'react-router-dom'; 
+import { AuthProvider } from './context/AuthContext'; // Asegúrate de importar el AuthProvider
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <GoogleOAuthProvider clientId="1058222296257-d03q9pl263dvc7a0topsvbm964dga001.apps.googleusercontent.com">
-      <BrowserRouter> {/* Envuelve tu aplicación con BrowserRouter */}
-        <App />
+      <BrowserRouter> 
+        <AuthProvider> {/* Envuelve tu aplicación con AuthProvider */}
+          <App />
+        </AuthProvider>
       </BrowserRouter>
     </GoogleOAuthProvider>
   </React.StrictMode>

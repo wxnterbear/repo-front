@@ -16,6 +16,8 @@ const ProposalsForms = () => {
         setMenuHeight(menuOpen ? '0px' : '400px');
     };
 
+    const URL = 'https://django-tester.onrender.com';
+
     const [title, setTitle] = useState('');
     const [type, setType] = useState('');
     const [socialMedia, setSocialMedia] = useState([]);
@@ -143,7 +145,7 @@ const ProposalsForms = () => {
         }
 
         try {
-            const response = await axios.post('https://django-tester.onrender.com/content_proposal/', formData, {
+            const response = await axios.post(`${URL}/content_proposal/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Token ${token}`, // Asegúrate de que el token esté en el formato correcto

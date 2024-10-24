@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
-import '../css/context.css'
+import { useNavigate } from 'react-router-dom';
+import '../css/context.css';
 
 // Crear el contexto
 export const AuthContext = createContext();
@@ -8,49 +8,53 @@ export const AuthContext = createContext();
 // Proveedor del contexto
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null);
-    const [loading, setLoading] = useState(true); // Añadir estado de "loading" para saber si ya se verificó el token
-    const navigate = useNavigate(); // Inicializar navigate
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
-        console.log("Token actual:", storedToken);
+        const storedIsAdmin = localStorage.getItem('isAdmin') === 'true';
 
         if (storedToken) {
             setToken(storedToken);
+            setIsAdmin(storedIsAdmin);
         } else {
-            console.log("No se encontró token, redirigiendo al login...");
             navigate('/login');
         }
 
-        // Agregar un pequeño retraso antes de ocultar el loading
         const timeout = setTimeout(() => {
             setLoading(false);
-        }, 2000); // 2000 ms = 2 segundos adicionales de carga
+        }, 2000);
 
-        return () => clearTimeout(timeout); // Limpiar el timeout si el componente se desmonta
+        return () => clearTimeout(timeout);
     }, [navigate]);
 
-    const login = (newToken) => {
+    const login = (newToken, adminStatus) => {
         setToken(newToken);
+        setIsAdmin(!!adminStatus);
         localStorage.setItem('token', newToken);
+        localStorage.setItem('isAdmin', adminStatus ? 'true' : 'false');
     };
 
     const logout = () => {
         setToken(null);
+        setIsAdmin(false);
         localStorage.removeItem('token');
+        localStorage.removeItem('isAdmin');
         navigate('/login');
     };
 
     if (loading) {
-        // Mostrar algún indicador de carga mientras se verifica el token
         return (
             <div className="loading-container">
                 <div className="loading-text">Cargando...</div>
-            </div>);
+            </div>
+        );
     }
 
     return (
-        <AuthContext.Provider value={{ token, login, logout }}>
+        <AuthContext.Provider value={{ token, isAdmin, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

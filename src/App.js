@@ -1,6 +1,7 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import Calendar from './components/Calendar';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ProposalDetail from './components/ProposalsDetail';
 import ProposalDetailCm from './components/ProposalsDetailCm';
 import ProposalsList from './components/ProposalsList';
@@ -8,15 +9,14 @@ import ProposalsListCm from './components/ProposalsListCm';
 import IdeasArchive from './components/IdeasArchive';
 import Brainstorming from './components/BrainStorming';
 import ProposalsForms from './components/ProposalsForm';
-import EditProposal from './components/EditProposal';
 import Home from './components/home';
 import BrainStormingCM from './components/BrainStormingCM';
 import About from './components/About';
 import LinkAccount from './components/LinkAccount';
+import Unauthorized from './components/Unauthorized';
 import GoogleCallback from './components/GoogleCalback';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
-import { useContext } from 'react';
 
 function App() {
   return (
@@ -24,110 +24,41 @@ function App() {
       <div className="App">
         <header className="App-header">
           <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route 
-              path="/login" 
-              element={<Login />} 
-            />
-            {/* Rutas protegidas */}
-            <Route 
-              path="/calendar" 
-              element={
-                <ProtectedRoute>
-                  <Calendar />
-                </ProtectedRoute>
-              } 
-            />
-            <Route path="/auth/google/oauth2callback/?" element={<LinkAccount />} />
-            <Route path="/auth/meta/?" element={<LinkAccount />} />
-            <Route 
-              path="/proposals" 
-              element={
-                <ProtectedRoute>
-                  <ProposalsList />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/content_proposal/:id" 
-              element={
-                <ProtectedRoute>
-                  <ProposalDetail />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/content_proposal_Cm/:id" 
-              element={
-                <ProtectedRoute>
-                  <ProposalDetailCm />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/brainstorming" 
-              element={
-                <ProtectedRoute>
-                  <Brainstorming />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/brainstormingCm" 
-              element={
-                <ProtectedRoute>
-                  <BrainStormingCM />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/ideas-archive" 
-              element={
-                <ProtectedRoute>
-                  <IdeasArchive />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/about" 
-              element={
-                <ProtectedRoute>
-                  <About />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/proposals_form" 
-              element={
-                <ProtectedRoute>
-                  <ProposalsForms />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/editproposal/:id" 
-              element={
-                <ProtectedRoute>
-                  <EditProposal />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/proposals_cm" 
-              element={
-                <ProtectedRoute>
-                  <ProposalsListCm />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/link_account" 
-              element={
-                <ProtectedRoute>
-                  <LinkAccount />
-                </ProtectedRoute>
-              } 
-            />
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/about" element={<About />} />
+
+            {/* Rutas protegidas para todos los usuarios con token */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/ideas-archive" element={<IdeasArchive />} />
+              <Route path="/proposals_form" element={<ProposalsForms />} />
+              <Route path="/auth/google/oauth2callback" element={<LinkAccount />} />
+              <Route path="/auth/meta" element={<LinkAccount />} />
+            </Route>
+
+            {/* Rutas protegidas solo para admins */}
+            <Route element={<ProtectedRoute requiredAdmin={true} />}>
+              <Route path="/link_account" element={<LinkAccount />} />
+              <Route path="/brainstorming" element={<Brainstorming />} />
+              <Route path="/proposals" element={<ProposalsList />} />
+              <Route path="/content_proposal/:id" element={<ProposalDetail />} />
+              
+            </Route>
+
+            {/* Rutas protegidas solo para CM */}
+            <Route element={<ProtectedRoute requiredAdmin={false} />}>
+              <Route path="/brainstormingCM" element={<BrainStormingCM />} />
+              <Route path="/proposals_cm" element={<ProposalsListCm />} />
+              <Route path="/content_proposal_Cm/:id" element={<ProposalDetailCm />} />
+        
+            </Route>
+
+            {/* Ruta de acceso no autorizado */}
+            <Route path="/unauthorized" element={<Unauthorized />} />
+
+            {/* Redirección para cualquier otra ruta */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </header>
       </div>

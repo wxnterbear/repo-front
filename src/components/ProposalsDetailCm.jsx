@@ -12,6 +12,8 @@ const ProposalDetailCm = () => {
         setMenuOpen(!menuOpen);
         setMenuHeight(menuOpen ? '0px' : '300px');
     };
+
+    const URL = 'https://django-tester.onrender.com';
     
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
@@ -33,7 +35,7 @@ const ProposalDetailCm = () => {
                     return;
                 }
 
-                const response = await fetch(`https://django-tester.onrender.com/content_proposal/${id}/`, {
+                const response = await fetch(`${URL}/content_proposal/${id}/`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Token ${token}`,
@@ -75,7 +77,7 @@ const ProposalDetailCm = () => {
     const fetchComments = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`https://django-tester.onrender.com/content_proposal/${id}/`, {
+            const response = await fetch(`${URL}/content_proposal/${id}/`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Token ${token}`,
@@ -105,7 +107,7 @@ const ProposalDetailCm = () => {
             formData.append('id', selectedProposal.id); // Cambia proposal_id a id
             formData.append('body', newComment); // Cambia 'text' a 'body'
 
-            const response = await fetch(`https://django-tester.onrender.com/content_proposal/comment/`, {
+            const response = await fetch(`${URL}/content_proposal/comment/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Token ${token}`,
@@ -185,7 +187,7 @@ const ProposalDetailCm = () => {
                 formData.append('files', files[i]);
             }
 
-            const response = await fetch(`https://django-tester.onrender.com/content_proposal/${selectedProposal.id}/`, {
+            const response = await fetch(`${URL}/content_proposal/${selectedProposal.id}/`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Token ${token}`,

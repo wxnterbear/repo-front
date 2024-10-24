@@ -20,6 +20,8 @@ function Calendar() {
         setMenuHeight(menuOpen ? '0px' : '400px');
     };
 
+    const URL = 'https://django-tester.onrender.com';
+
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [viewEventModalIsOpen, setViewEventModalIsOpen] = useState(false);
     const [confirmDeleteModalIsOpen, setConfirmDeleteModalIsOpen] = useState(false);
@@ -47,7 +49,7 @@ function Calendar() {
     }, [token]);
 
     const fetchEvents = () => {
-        fetch('https://django-tester.onrender.com/project_management/events', {
+        fetch(`${URL}/project_management/events`, {
             headers: {
                 'Authorization': `Token ${token}`,
             }
@@ -122,7 +124,7 @@ function Calendar() {
 
     // Función para manejar la creación de eventos (POST)
     const handleCreateEvent = (formData) => {
-        fetch('https://django-tester.onrender.com/project_management/events/', {
+        fetch(`${URL}/project_management/events`, {
             method: 'POST',
             headers: {
                 'Authorization': `Token ${token}`,
@@ -153,7 +155,7 @@ function Calendar() {
     };
 
     const handleUpdateEvent = (formData) => {
-        const url = `https://django-tester.onrender.com/project_management/events/${selectedEvent.id}/`;
+        const url = `${URL}/project_management/events/${selectedEvent.id}/`;
 
         fetch(url, {
             method: 'PUT',
@@ -195,7 +197,7 @@ function Calendar() {
     };
 
     const handleDeleteEvent = () => {
-        fetch(`https://django-tester.onrender.com/project_management/events/${selectedEvent.id}/`, {
+        fetch(`${URL}/project_management/events/${selectedEvent.id}/`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Token ${token}`

@@ -11,7 +11,9 @@ const ProposalDetail = () => {
         setMenuOpen(!menuOpen);
         setMenuHeight(menuOpen ? '0px' : '300px');
     };
-    
+
+    const URL = 'https://django-tester.onrender.com';
+
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
     const [comments, setComments] = useState([]);
@@ -34,7 +36,7 @@ const ProposalDetail = () => {
                 return;
             }
 
-            const response = await fetch(`https://django-tester.onrender.com/content_proposal/${id}/`, {
+            const response = await fetch(`${URL}/content_proposal/${id}/`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Token ${token}`,
@@ -66,7 +68,7 @@ const ProposalDetail = () => {
     const fetchComments = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`https://django-tester.onrender.com/content_proposal/${id}/`, {
+            const response = await fetch(`${URL}/content_proposal/${id}/`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Token ${token}`,
@@ -90,15 +92,19 @@ const ProposalDetail = () => {
     }, [id, navigate]);
 
     const handleAddComment = async (commentBody) => {
-        if (!commentBody.trim()) return; // Evita enviar comentarios vacíos
+        // Asegúrate de que commentBody es una cadena de texto
+        if (typeof commentBody !== 'string' || !commentBody.trim()) {
+            alert('El comentario no puede estar vacío o no es válido.');
+            return;
+        }
 
         try {
             const token = localStorage.getItem('token');
             const formData = new FormData();
             formData.append('id', selectedProposal.id);
-            formData.append('body', commentBody); // Usa el cuerpo del comentario proporcionado
+            formData.append('body', commentBody); // Aquí nos aseguramos de que es una cadena
 
-            const response = await fetch(`https://django-tester.onrender.com/content_proposal/comment/`, {
+            const response = await fetch(`${URL}/content_proposal/comment/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Token ${token}`,
@@ -107,15 +113,19 @@ const ProposalDetail = () => {
             });
 
             if (response.ok) {
-                fetchComments(); // Vuelve a cargar los comentarios después de agregar uno nuevo
+                fetchComments(); // Actualiza los comentarios después de agregar uno nuevo
             } else {
-                const errorData = await response.json();
-                alert(`Error al agregar el comentario: ${JSON.stringify(errorData)}`);
+                const errorData = await response.json(); // Extrae el cuerpo de la respuesta en formato JSON
+                console.error('Error en la respuesta del servidor:', errorData); // Muestra el error en la consola para depuración
+                alert(`Error al agregar el comentario: ${JSON.stringify(errorData)}`); // También puedes mostrar el error en un alert
             }
         } catch (error) {
-            alert('Error al agregar el comentario');
+            console.error('Error en la solicitud de fetch:', error); // Muestra el error de la solicitud en la consola
+            alert(`Error al agregar el comentario: ${error.message}`); // Muestra un mensaje más detallado al usuario
         }
     };
+
+
 
     // Función para cambiar el estado de la propuesta y manejar la publicación
     const handleStatusChange = async () => {
@@ -132,7 +142,7 @@ const ProposalDetail = () => {
             }
 
             // Cambiar el estado de la propuesta
-            const response = await fetch(`https://django-tester.onrender.com/content_proposal/change_status/`, {
+            const response = await fetch(`${URL}/content_proposal/change_status/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Token ${token}`,
@@ -193,7 +203,13 @@ const ProposalDetail = () => {
                         <p>No hay comentarios.</p>
                     )}
 
-                    <form onSubmit={handleAddComment}>
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault(); 
+                            handleAddComment(newComment); 
+                            setNewComment(''); 
+                        }}
+                    >
                         <textarea
                             className='comments-ad'
                             value={newComment}

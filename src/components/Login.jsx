@@ -6,6 +6,9 @@ import '../css/login.css';
 import imagen from '../images/logologin.png';
 
 const Login = () => {
+
+    const URL = 'https://django-tester.onrender.com';
+
     const navigate = useNavigate();
     const { login } = useContext(AuthContext); // Usar login del contexto
     const [formData, setFormData] = useState({
@@ -29,7 +32,7 @@ const Login = () => {
         data.append('password', formData.password);
     
         try {
-            const response = await axios.post('https://django-tester.onrender.com/auth/login/', data, {
+            const response = await axios.post(`${URL}/auth/login/`, data, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded', // Asegúrate de que el tipo de contenido sea correcto
                 },
@@ -37,10 +40,12 @@ const Login = () => {
             });
     
             if (response.status === 200) {
-                const token = response.data.token; // Ajusta esto si el token se llama diferente
+                const token = response.data.token;
+                const isAdmin = response.data.is_admin;
                 console.log('Token recibido:', token);
-                login(token); // Guarda el token en el contexto
-                navigate('/home'); // Redirige al calendario
+                console.log('Admin:', isAdmin)
+                login(token, isAdmin); // Guarda el token en el contexto
+                navigate('/'); 
             } else {
                 console.error('Error al iniciar sesión:', response.data.message);
                 alert('Error: ' + response.data.message);

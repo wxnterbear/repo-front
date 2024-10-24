@@ -14,6 +14,7 @@ const ProposalsListCm = () => {
         setMenuHeight(menuOpen ? '0px' : '300px'); 
     };
 
+    const URL = 'https://django-tester.onrender.com';
 
     // Función para obtener las propuestas
     const fetchContentProposal = async () => {
@@ -28,7 +29,7 @@ const ProposalsListCm = () => {
             }
 
             // Realizar la solicitud GET con el token en el header
-            const response = await fetch('https://django-tester.onrender.com/content_proposal/', {
+            const response = await fetch(`${URL}/content_proposal/`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Token ${token}`,  // Enviar el token en el header

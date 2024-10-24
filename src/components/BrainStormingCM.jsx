@@ -14,6 +14,8 @@ const BrainstormingCM = () => {
         setMenuHeight(menuOpen ? '0px' : '300px'); 
     };
 
+    const URL = 'https://django-tester.onrender.com';
+
     const [ideas, setIdeas] = useState([]); // Estado para almacenar las ideas
     const [newIdea, setNewIdea] = useState(''); // Estado para la nueva idea 
     const [modalIsOpen, setModalIsOpen] = useState(false); // Estado para controlar si el modal está abierto
@@ -37,7 +39,7 @@ const BrainstormingCM = () => {
     }, [token]);
 
     const fetchIdeas = () => {
-        fetch('https://django-tester.onrender.com/project_management/ideas', {
+        fetch(`${URL}/project_management/ideas`, {
             headers: {
                 'Authorization': `Token ${token}`,
             }
@@ -63,7 +65,7 @@ const BrainstormingCM = () => {
         const formData = new FormData();
         formData.append('idea', newIdea); 
 
-        fetch('https://django-tester.onrender.com/project_management/ideas/', {
+        fetch(`${URL}/project_management/ideas/`, {
             method: 'POST',
             headers: {
                 'Authorization': `Token ${token}`, 
@@ -113,7 +115,7 @@ const BrainstormingCM = () => {
             if (selectedUser && selectedIdea) {
                 const endpoint = action === 'accept' ? '/accept' : '/reject';
                 try {
-                    await axios.post(`https://django-tester.onrender.com/project_management/ideas/${endpoint}/`, {
+                    await axios.post(`${URL}/project_management/ideas/${endpoint}/`, {
                         idea_id: selectedIdea.id, 
                         user: selectedUser
                     });
@@ -130,7 +132,7 @@ const BrainstormingCM = () => {
                 formData.append('idea', selectedIdea.idea);
 
                 try {
-                    const response = await fetch(`https://django-tester.onrender.com/project_management/ideas/${selectedIdea.id}/`, {
+                    const response = await fetch(`${URL}/project_management/ideas/${selectedIdea.id}/`, {
                         method: 'PUT',
                         headers: {
                             'Authorization': `Token ${token}`,
@@ -162,7 +164,7 @@ const BrainstormingCM = () => {
                 try {
                     console.log("ID de la idea seleccionada:", selectedIdea.id);
 
-                    const response = await fetch(`https://django-tester.onrender.com/project_management/ideas/${selectedIdea.id}/`, {
+                    const response = await fetch(`${URL}/project_management/ideas/${selectedIdea.id}/`, {
                         method: 'DELETE',
                         headers: {
                             'Authorization': `Token ${token}`,
