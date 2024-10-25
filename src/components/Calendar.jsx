@@ -13,7 +13,7 @@ Modal.setAppElement('#root');
 function Calendar() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    const isAdmin = localStorage.getItem('isAdmin') === 'true'; // Verifica si el usuario es admin
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
     const [menuHeight, setMenuHeight] = useState('0px');
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => {
@@ -61,7 +61,7 @@ function Calendar() {
     };
 
     const handleDateClick = (arg) => {
-    
+
         if (isAdmin) {
             setEventDate(arg.dateStr); // Establece la fecha del evento
             openModal(); // Abre el modal para crear el evento
@@ -304,10 +304,10 @@ function Calendar() {
                     <label className='color'>Color del Evento:</label>
                     <select value={eventColor} onChange={(e) => setEventColor(e.target.value)}>
                         <option value="" disabled>Selecciona un color</option>
-                        <option value="GREEN">Verde</option>
-                        <option value="YELLOW">Amarillo</option>
-                        <option value="RED">Rojo</option>
-                        <option value="BLUE">Azul</option>
+                        <option value="#07A128">Verde</option>
+                        <option value="#900C3F">Rosa</option>
+                        <option value="#581845">Morado</option>
+                        <option value="#07A193">Azul</option>
                     </select>
                     <p className='fecha'>Fecha seleccionada: {eventDate}</p>
                     <div>
