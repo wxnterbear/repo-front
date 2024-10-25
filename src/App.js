@@ -29,7 +29,7 @@ function App() {
             <Route path="/about" element={<About />} />
 
             {/* Rutas protegidas para todos los usuarios con token */}
-            <Route element={<ProtectedRoute />}>
+            <Route element={<ProtectedRoute allowBothRoles={true} />}>
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/ideas-archive" element={<IdeasArchive />} />
               <Route path="/proposals_form" element={<ProposalsForms />} />

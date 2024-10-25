@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
-const ProtectedRoute = ({ requiredAdmin }) => {
+const ProtectedRoute = ({ requiredAdmin, allowBothRoles }) => {
     const { token, isAdmin } = useContext(AuthContext);
 
     console.log("Token:", token);
@@ -12,6 +12,10 @@ const ProtectedRoute = ({ requiredAdmin }) => {
     if (!token) {
         return <Navigate to="/login" replace />;
     }
+
+    if (allowBothRoles) {
+        return <Outlet />;
+      }
 
     // Si se requiere un admin y el usuario no es admin
     if (requiredAdmin && !isAdmin) {

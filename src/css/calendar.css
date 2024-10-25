@@ -157,6 +157,7 @@ a {
     font-family: 'JerseyR', sans-serif;
     font-size: 20px; /* Ajustado para pantallas pequeñas */
     transition: background-color 0.3s;
+    font-weight: lighter;
 }
 
 .modal-creation-event .guardar {
@@ -225,6 +226,7 @@ a {
     font-size: 20px; /* Ajustado para pantallas pequeñas */
     font-weight: bolder;
     transition: background-color 0.3s;
+    font-weight: lighter;
 }
 
 .modal-view-event button:first-child {
@@ -291,6 +293,7 @@ a {
     cursor: pointer;
     font-family: 'JerseyR', sans-serif;
     font-size: 20px; /* Ajustado para pantallas pequeñas */
+    font-weight: lighter;
 }
 
 .modal-confirm-delete .confirm {

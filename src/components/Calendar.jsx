@@ -13,6 +13,7 @@ Modal.setAppElement('#root');
 function Calendar() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const isAdmin = localStorage.getItem('isAdmin') === 'true'; // Verifica si el usuario es admin
     const [menuHeight, setMenuHeight] = useState('0px');
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => {
@@ -60,8 +61,13 @@ function Calendar() {
     };
 
     const handleDateClick = (arg) => {
-        setEventDate(arg.dateStr);
-        openModal();
+    
+        if (isAdmin) {
+            setEventDate(arg.dateStr); // Establece la fecha del evento
+            openModal(); // Abre el modal para crear el evento
+        } else {
+            alert('No tienes permisos para crear eventos.'); // Mensaje de advertencia
+        }
     };
 
     const openModal = () => {
@@ -326,8 +332,12 @@ function Calendar() {
                             <p><strong>Fecha:</strong> {selectedEvent.date}</p>
                             <p><strong>Color:</strong> {selectedEvent.color}</p>
                             <div>
-                                <button className='editar' onClick={handleEditEvent}>Editar Evento</button>
-                                <button className='eliminar' onClick={openConfirmDeleteModal}>Eliminar Evento</button>
+                                {isAdmin && ( // Solo mostrar botones si es admin
+                                    <>
+                                        <button className='editar' onClick={handleEditEvent}>Editar Evento</button>
+                                        <button className='eliminar' onClick={openConfirmDeleteModal}>Eliminar Evento</button>
+                                    </>
+                                )}
                                 <button className='cerrar' onClick={closeViewEventModal}>Cerrar</button>
                             </div>
                         </>
