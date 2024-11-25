@@ -331,6 +331,22 @@ const ProposalsForms = () => {
       });
 
       console.log("Respuesta del servidor:", response.data);
+
+      // Verificar el estado de Instagram en la respuesta
+      const instagramStatus = response.data.find(
+        (platform) =>
+          platform.Instagram && platform.Instagram.status === "IN_PROGRESS"
+      );
+
+      if (instagramStatus) {
+        // Mostrar mensaje si Instagram está en progreso
+        await Swal.fire({
+          title: "Instagram en Progreso",
+          text: "La publicación en Instagram puede tardar unos minutos. ¡Gracias por esperar!",
+          icon: "info",
+        });
+      }
+
       await Swal.fire({
         title: "Éxito",
         text: `Propuesta enviada con éxito`,
