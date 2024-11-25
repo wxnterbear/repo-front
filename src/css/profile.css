@@ -1,0 +1,182 @@
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
+.header-container {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+
+.title-profile {
+  font-size: 3rem;
+  color: rgb(255, 253, 253);
+  text-align: center;
+  margin-top: 80px;
+  font-family: "JerseyR", sans-serif;
+  font-weight: lighter;
+}
+
+.profileImageContainer {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profileImage {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.profileImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileImage .editIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.profileImage:hover .editIcon {
+  opacity: 1;
+}
+
+.placeholderText {
+  font-size: 0.9rem;
+  color: #fff;
+  text-align: center;
+}
+
+.fileInput {
+  display: none;
+}
+
+.infoContainer {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.infoText {
+  font-size: 20px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  color: rgb(255, 255, 255);
+  margin: 10px 0;
+}
+
+.changePasswordButton {
+  background-color: rgb(81, 90, 90);
+  font-family: "JerseyR", sans-serif;
+  font-weight: lighter;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.changePasswordButton:hover {
+  background-color: rgb(66, 70, 70);
+}
+
+/* Modal */
+.modal-container-pro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content-pro {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content-pro h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.modal-content-pro form {
+  display: flex;
+  flex-direction: column;
+}
+
+.psw-profile {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.modal-buttons-pro {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.modal-buttons-pro button {
+  background-color: #455f7a;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-buttons-pro button:hover {
+  background-color: #2d4055;
+}
+
+.modal-buttons-pro button[type="button"] {
+  background-color: #a3180e;
+}
+
+.modal-buttons-pro button[type="button"]:hover {
+  background-color: #47130f;
+}

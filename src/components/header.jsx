@@ -155,8 +155,11 @@ const Header = ({ toggleMenu, menuOpen }) => {
               </button>
               {userMenuOpen && (
                 <div className="user-dropdown">
-                  <button className="dropdown-option">
-                    {isAdmin ? "Administrador/a" : "CM"}
+                  <button
+                    className="dropdown-option"
+                    onClick={() => navigate("/profile")}
+                  >
+                    {isAdmin ? "Administrador/a - Perfil" : "CM - Perfil"}
                   </button>
                   <button className="dropdown-option" onClick={handleLogout}>
                     Cerrar sesión

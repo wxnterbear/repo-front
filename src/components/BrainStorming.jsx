@@ -176,10 +176,19 @@ const Brainstorming = () => {
 
           if (!response.ok) {
             const errData = await response.json();
-            const errorMessage =
+            {
+              /*const errorMessage =
               errData.message ||
               `Error: ${response.status} - ${response.statusText}`;
-            throw new Error(errorMessage);
+            throw new Error(errorMessage);*/
+            }
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text:
+                errData.message ||
+                `Error: ${response.status} - ${response.statusText}`,
+            });
           }
 
           Swal.fire({
@@ -236,10 +245,19 @@ const Brainstorming = () => {
         if (!response.ok) {
           const errData = await response.json();
           console.error("Error de respuesta del servidor:", errData);
-          const errorMessage =
+          {
+            /*const errorMessage =
             errData.message ||
             `Error: ${response.status} - ${response.statusText}`;
-          throw new Error(errorMessage);
+          throw new Error(errorMessage);*/
+          }
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text:
+              errData.message ||
+              `Error: ${response.status} - ${response.statusText}`,
+          });
         }
 
         Swal.fire({

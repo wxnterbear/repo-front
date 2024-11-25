@@ -28,8 +28,9 @@ import IgPdf from "./components/IgPdf";
 import FbPdf from "./components/FbPdf";
 import YtPdf from "./components/YtPdf";
 import Reports from "./components/Reports";
+import Profile from "./components/Profile";
 import Unauthorized from "./components/Unauthorized";
-import GoogleCallback from "./components/GoogleCalback";
+//import GoogleCallback from "./components/GoogleCalback";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -61,6 +62,7 @@ function App() {
               <Route path="/fb-pdf" element={<FbPdf />} />
               <Route path="/yt-pdf" element={<YtPdf />} />
               <Route path="/reports-pdf" element={<Reports />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
 
             {/* Rutas protegidas solo para admins */}

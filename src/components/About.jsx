@@ -5,6 +5,7 @@ import Header from "./header";
 import axios from "axios";
 import "../css/about.css";
 import URL from "./url";
+import Swal from "sweetalert2";
 
 const About = () => {
   const navigate = useNavigate();
@@ -48,15 +49,27 @@ const About = () => {
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error del servidor:", errorData);
-        setErrorMessage(errorData.detail || "Error al enviar el mensaje.");
+        Swal.fire({
+          icon: "error",
+          title: "¡Oops!",
+          text: errorData.detail || "Error al enviar el mensaje.",
+        });
       } else {
-        alert("Mensaje enviado con éxito.");
+        Swal.fire({
+          icon: "success",
+          title: "¡Mensaje enviado!",
+          text: "Tu mensaje se ha enviado con éxito.",
+        });
         console.log("Formulario enviado:", formData);
         setFormData({ email: "", subject: "", message: "" });
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      alert("Hubo un error al enviar el mensaje. Intenta de nuevo más tarde.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Hubo un error al enviar el mensaje. Intenta de nuevo más tarde.",
+      });
     }
   };
 

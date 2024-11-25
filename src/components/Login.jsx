@@ -34,7 +34,7 @@ const Login = () => {
     try {
       const response = await axios.post(`${URL}/auth/login/`, data, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded", // Asegúrate de que el tipo de contenido sea correcto
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         withCredentials: true,
       });
@@ -43,10 +43,12 @@ const Login = () => {
         const token = response.data.token;
         const isAdmin = response.data.is_admin;
         const username = formData.username;
+        const email = response.data.email;
         console.log("Token recibido:", token);
         console.log("Admin:", isAdmin);
         console.log("Username:", username);
-        login(token, isAdmin, username); // Guarda el token en el contexto
+        console.log("Email:", email);
+        login(token, isAdmin, username, email); // Guarda el token en el contexto
 
         // Verificar el estado de términos y condiciones
         try {

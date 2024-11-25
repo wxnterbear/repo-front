@@ -136,7 +136,7 @@ const Home = () => {
           <strong>Teléfono:</strong> +123 456 7890
         </p>
         <p>
-          <strong>Dirección:</strong> 123 Calle Ficticia, Ciudad, País
+          <strong>Ubicación:</strong> Bogotá, Colombia
         </p>
       </div>
     </div>
