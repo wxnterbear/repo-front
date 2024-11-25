@@ -212,13 +212,70 @@ const ProposalDetailCm = () => {
         type.startsWith("image")
       );
 
-      if (editedProposal.social_media.includes("FB") && files.length > 1) {
-        Swal.fire({
-          title: "Error",
-          text: `Solo puedes subir un archivo por publicación en Facebook`,
-          icon: "error",
-        });
-        return false;
+      if (editedProposal.includes("FB") && hasVideo) {
+        if (files.length > 1) {
+          Swal.fire({
+            title: "Error",
+            text: `Solo puedes subir un video por publicación en Facebook`,
+            icon: "error",
+          });
+          return false;
+        }
+      }
+
+      if (editedProposal.includes("YT") && hasVideo) {
+        if (files.length > 1) {
+          Swal.fire({
+            title: "Error",
+            text: `Solo puedes subir un video por publicación en YouTube`,
+            icon: "error",
+          });
+          return false;
+        }
+      }
+
+      if (editedProposal.includes("TT") && hasVideo) {
+        if (files.length > 1) {
+          Swal.fire({
+            title: "Error",
+            text: `Solo puedes subir un video por publicación en TikTok`,
+            icon: "error",
+          });
+          return false;
+        }
+      }
+
+      if (editedProposal.includes("IG") && hasVideo) {
+        if (files.length > 1) {
+          Swal.fire({
+            title: "Error",
+            text: `Solo puedes subir un video por publicación en Instagram`,
+            icon: "error",
+          });
+          return false;
+        }
+      }
+
+      if (editedProposal.type === "STI" && editedProposal.includes("FB")) {
+        if (files.length > 1) {
+          Swal.fire({
+            title: "Error",
+            text: `Solo puedes subir una imágen a stories en Facebook`,
+            icon: "error",
+          });
+          return false;
+        }
+      }
+
+      if (editedProposal.type === "STI" && editedProposal.includes("IG")) {
+        if (files.length > 1) {
+          Swal.fire({
+            title: "Error",
+            text: `Solo puedes subir una imágen a stories en Instagram`,
+            icon: "error",
+          });
+          return false;
+        }
       }
 
       if (editedProposal.social_media.includes("YT") && hasImage) {
@@ -401,7 +458,43 @@ const ProposalDetailCm = () => {
   };
 
   const handleFilesChange = (e) => {
-    setFiles(e.target.files);
+    const selectedFiles = e.target.files;
+    const validFiles = [];
+    const invalidFiles = [];
+
+    // Recorremos todos los archivos seleccionados
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const file = selectedFiles[i];
+
+      // Aquí puedes hacer tu validación de archivos (imágenes y videos)
+      if (
+        (editedProposal.type === "IMG" || editedProposal.type === "STI") &&
+        file.type.startsWith("image")
+      ) {
+        validFiles.push(file);
+      } else if (
+        (editedProposal.type === "VID" || editedProposal.type === "STV") &&
+        file.type.startsWith("video")
+      ) {
+        validFiles.push(file);
+      } else {
+        invalidFiles.push(file);
+      }
+    }
+
+    // Si hay archivos no válidos, mostramos un mensaje de error
+    if (invalidFiles.length > 0) {
+      Swal.fire({
+        title: "Error",
+        text: `Solo se pueden subir imágenes o videos. Los siguientes archivos no son válidos: ${invalidFiles
+          .map((file) => file.name)
+          .join(", ")}`,
+        icon: "error",
+      });
+    }
+
+    // Actualizamos el estado de los archivos válidos
+    setFiles(validFiles);
   };
 
   const handleSocialMediaChange = (selectedOptions) => {
@@ -539,7 +632,9 @@ const ProposalDetailCm = () => {
       <button className="btn-edit-d" onClick={() => setIsEditing(!isEditing)}>
         {isEditing ? "Cancelar Edición" : "Editar Propuesta"}
       </button>
-      <button className="btn-delete-d" onClick={handleDeleteProposal}></button>
+      <button className="btn-delete-d" onClick={handleDeleteProposal}>
+        Eliminar propuesta
+      </button>
 
       {isEditing && (
         <center>
@@ -609,12 +704,28 @@ const ProposalDetailCm = () => {
               <br />
               <br />
               <label>Archivos:</label>
-              <input
-                className="input-btn-d"
-                type="file"
-                multiple
-                onChange={handleFilesChange}
-              />
+              {(editedProposal.type === "STI" ||
+                editedProposal.type === "IMG") && (
+                <input
+                  className="input-btn-d"
+                  type="file"
+                  multiple
+                  accept="image/*" // Solo acepta imágenes
+                  onChange={handleFilesChange}
+                />
+              )}
+
+              {/* Si el tipo es 'STV' o 'VID', mostrar solo archivos de video */}
+              {(editedProposal.type === "STV" ||
+                editedProposal.type === "VID") && (
+                <input
+                  className="input-btn-d"
+                  type="file"
+                  multiple
+                  accept="video/*" // Solo acepta videos
+                  onChange={handleFilesChange}
+                />
+              )}
               <br />
 
               <br />

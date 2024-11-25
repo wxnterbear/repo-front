@@ -59,7 +59,41 @@ const ProposalsForms = () => {
   const handleDescriptionChange = (e) => setDescription(e.target.value);
   const handleCopyChange = (e) => setCopy(e.target.value);
   const handleProposedByChange = (e) => setProposedBy(e.target.value);
-  const handleFilesChange = (e) => setFiles(e.target.files);
+  const handleFilesChange = (e) => {
+    const selectedFiles = e.target.files;
+    const validFiles = [];
+    const invalidFiles = [];
+
+    // Recorremos todos los archivos seleccionados
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const file = selectedFiles[i];
+
+      // Validamos si el archivo es una imagen o un video
+      if ((type === "IMG" || type === "STI") && file.type.startsWith("image")) {
+        validFiles.push(file);
+      } else if (
+        (type === "VID" || type === "STV") &&
+        file.type.startsWith("video")
+      ) {
+        validFiles.push(file);
+      } else {
+        // Si el archivo no es válido, lo agregamos a la lista de archivos no válidos
+        invalidFiles.push(file);
+      }
+    }
+
+    // Si hay archivos no válidos, mostramos un mensaje de error
+    if (invalidFiles.length > 0) {
+      Swal.fire({
+        title: "Error",
+        text: `Solo se pueden subir imágenes o videos. Los siguientes archivos no son válidos: ${invalidFiles
+          .map((file) => file.name)
+          .join(", ")}`,
+        icon: "error",
+      });
+    }
+    setFiles(validFiles);
+  };
 
   // Función para verificar la duración del video y si es vertical
   const isVideoValid = (file) => {
@@ -80,18 +114,75 @@ const ProposalsForms = () => {
       return false;
     }
 
-    if (socialMedia.includes("FB") && files.length > 1) {
-      Swal.fire({
-        title: "Error",
-        text: `Solo puedes subir un archivo por publicación en Facebook`,
-        icon: "error",
-      });
-      return false;
-    }
-
     const selectedFileTypes = Array.from(files).map((file) => file.type);
     const hasVideo = selectedFileTypes.some((type) => type.startsWith("video"));
     const hasImage = selectedFileTypes.some((type) => type.startsWith("image"));
+
+    if (socialMedia.includes("FB") && hasVideo) {
+      if (files.length > 1) {
+        Swal.fire({
+          title: "Error",
+          text: `Solo puedes subir un video por publicación en Facebook`,
+          icon: "error",
+        });
+        return false;
+      }
+    }
+
+    if (socialMedia.includes("YT") && hasVideo) {
+      if (files.length > 1) {
+        Swal.fire({
+          title: "Error",
+          text: `Solo puedes subir un video por publicación en YouTube`,
+          icon: "error",
+        });
+        return false;
+      }
+    }
+
+    if (socialMedia.includes("TT") && hasVideo) {
+      if (files.length > 1) {
+        Swal.fire({
+          title: "Error",
+          text: `Solo puedes subir un video por publicación en TikTok`,
+          icon: "error",
+        });
+        return false;
+      }
+    }
+
+    if (socialMedia.includes("IG") && hasVideo) {
+      if (files.length > 1) {
+        Swal.fire({
+          title: "Error",
+          text: `Solo puedes subir un video por publicación en Instagram`,
+          icon: "error",
+        });
+        return false;
+      }
+    }
+
+    if (type === "STI" && socialMedia.includes("FB")) {
+      if (files.length > 1) {
+        Swal.fire({
+          title: "Error",
+          text: `Solo puedes subir una imágen a stories en Facebook`,
+          icon: "error",
+        });
+        return false;
+      }
+    }
+
+    if (type === "STI" && socialMedia.includes("IG")) {
+      if (files.length > 1) {
+        Swal.fire({
+          title: "Error",
+          text: `Solo puedes subir una imágen a stories en Instagram`,
+          icon: "error",
+        });
+        return false;
+      }
+    }
 
     // Verificaciones para YouTube y archivos
     if (socialMedia.includes("YT") && hasImage) {
@@ -100,7 +191,6 @@ const ProposalsForms = () => {
         text: `No puedes subir imágenes si seleccionas YouTube`,
         icon: "warning",
       });
-      alert("No puedes subir imágenes si seleccionas YouTube.");
       return false;
     }
 
@@ -153,6 +243,25 @@ const ProposalsForms = () => {
         icon: "warning",
       });
       //alert('No puedes seleccionar YouTube si eliges Storie_Video.');
+      return false;
+    }
+
+    // Verificación para Storie_Image y TikTok
+    if (type === "STI" && socialMedia.includes("TT")) {
+      Swal.fire({
+        title: "Error",
+        text: `No puedes seleccionar TikTok si eliges Storie_Image`,
+        icon: "warning",
+      });
+      return false;
+    }
+
+    if (type === "STV" && socialMedia.includes("TT")) {
+      Swal.fire({
+        title: "Error",
+        text: `No puedes seleccionar TikTok si eliges Storie_Video`,
+        icon: "warning",
+      });
       return false;
     }
 
@@ -335,13 +444,35 @@ const ProposalsForms = () => {
                                 </div>*/}
                 <div className="file-container">
                   <label>Archivos:</label>
+                  {(type === "STI" || type === "IMG") && (
+                    <input
+                      className="input-btn-f"
+                      type="file"
+                      multiple
+                      accept="image/*" // Solo acepta imágenes
+                      onChange={handleFilesChange}
+                    />
+                  )}
+
+                  {/* Si el tipo es 'STV' o 'VID', mostrar solo archivos de video */}
+                  {(type === "STV" || type === "VID") && (
+                    <input
+                      className="input-btn-f"
+                      type="file"
+                      multiple
+                      accept="video/*" // Solo acepta videos
+                      onChange={handleFilesChange}
+                    />
+                  )}
+                </div>
+                {/*
                   <input
                     className="input-btn-f"
                     type="file"
                     multiple
                     onChange={handleFilesChange}
-                  />
-                </div>
+                  />*/}
+
                 <button
                   className="btn-pform"
                   type="submit"

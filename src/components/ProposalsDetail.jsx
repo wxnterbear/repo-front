@@ -238,14 +238,65 @@ const ProposalDetail = () => {
             });
           } else {
             const publishErrorData = await publishResponse.json();
-            Swal.fire({
-              title: "Error de publicación",
-              text: `Error al publicar la propuesta: ${JSON.stringify(
-                publishErrorData
-              )}`,
-              icon: "error",
-            });
-            console.log(`error: ${publishErrorData.message}`);
+            const container_id =
+              publishErrorData[0]?.Instagram?.data?.container_id;
+
+            if (container_id) {
+              try {
+                const retryResponse = await fetch(
+                  `${URL}/publish/publish_container_id/${container_id}`,
+                  {
+                    method: "GET",
+                    headers: {
+                      Authorization: `Token ${token}`,
+                    },
+                  }
+                );
+
+                if (retryResponse.ok) {
+                  const retryResult = await retryResponse.json();
+                  if (retryResult && retryResult.success) {
+                    Swal.fire({
+                      title: "Publicación exitosa",
+                      text: "Propuesta publicada correctamente.",
+                      icon: "success",
+                    });
+                  } else {
+                    Swal.fire({
+                      title: "Error reintento",
+                      text: `No se pudo reintentar la publicación: ${
+                        retryResult?.message || "Error desconocido"
+                      }`,
+                      icon: "error",
+                    });
+                  }
+                } else {
+                  const retryError = await retryResponse.json();
+                  Swal.fire({
+                    title: "Error en el reintento",
+                    text: `No se pudo reintentar la publicación: ${retryError.message}`,
+                    icon: "error",
+                  });
+                }
+              } catch (retryError) {
+                console.log("Error al intentar publicar:", retryError);
+                Swal.fire({
+                  title: "Error",
+                  text: `Hubo un problema al intentar reintentar la publicación. Por favor intente más tarde.`,
+                  icon: "error",
+                });
+              }
+            } else {
+              // Si no se obtiene el container_id
+              Swal.fire({
+                title: "Error de publicación",
+                text: `Error al publicar la propuesta: ${JSON.stringify(
+                  publishErrorData
+                )}`,
+                icon: "error",
+              });
+              console.log(`Error: ${JSON.stringify(publishErrorData)}`);
+            }
           }
         }
 
@@ -295,7 +346,7 @@ const ProposalDetail = () => {
 
       if (response.ok) {
         Swal.fire("Eliminado", "La propuesta ha sido eliminada.", "success");
-        navigate("/proposals_cm");
+        navigate("/proposals");
       } else {
         Swal.fire("Error", "No se pudo eliminar la propuesta.", "error");
       }

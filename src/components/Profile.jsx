@@ -88,7 +88,7 @@ const Profile = () => {
         </p>
         <p className="infoText">
           <strong>Correo asociado:</strong> {email || "Sin datos"}
-        </p>
+        </p><br/>
         <button
           className="changePasswordButton"
           onClick={() => setShowModal(true)}
@@ -126,17 +126,18 @@ const Profile = () => {
                 placeholder="Confirmar nueva contraseña"
                 required
               />
-              <p>
-                Su contraseña no puede asemejarse tanto a su otra información
-                personal
-                <br />
-                Su contraseña debe contener por lo menos 8 caracteres
-                <br />
-                Su contraseña no puede ser una clave utilizada comúnmente
-                <br />
-                Su contraseña no puede ser completamente numérica
-                <br />
-              </p>
+
+              <ul className="psw-conditions">
+                <li>
+                  Su contraseña no puede asemejarse tanto a su otra información
+                  personal
+                </li>
+                <li>Su contraseña debe contener por lo menos 8 caracteres</li>
+                <li>
+                  Su contraseña no puede ser una clave utilizada comúnmente
+                </li>
+                <li>Su contraseña no puede ser completamente numérica</li>
+              </ul>
               <div className="modal-buttons-pro">
                 <button type="submit">Confirmar</button>
                 <button type="button" onClick={() => setShowModal(false)}>

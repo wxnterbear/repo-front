@@ -30,7 +30,7 @@
 }
 
 .proposal-detail-ad h1 {
-  font-family: 'JerseyR', sans-serif;
+  font-family: "JerseyR", sans-serif;
   font-size: 40px;
   color: rgb(255, 255, 255);
   font-weight: lighter;
@@ -38,14 +38,14 @@
 
 .proposal-detail-ad h2 {
   margin-top: 20px;
-  font-family: 'JerseyR', sans-serif;
+  font-family: "JerseyR", sans-serif;
   font-size: 50px;
   color: rgb(255, 255, 255);
   font-weight: lighter;
 }
 
 .proposal-detail-ad p {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 20px;
   color: rgba(255, 255, 255, 0.822);
   margin: 0 0 10px;
@@ -58,7 +58,7 @@
 .comments-ad {
   width: 99%;
   border-radius: 8px;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 15px;
   background-color: rgba(81, 90, 90, 0.623);
   color: white;
@@ -67,13 +67,14 @@
 .btn-edit-ad,
 .btn-save-ad,
 .btn-change-status-ad,
-.btn-close-ad {
+.btn-close-ad,
+.btn-delete-ad {
   margin-top: 10px;
   font-size: 25px;
   border-radius: 5px;
   border: none;
   padding: 10px 15px;
-  font-family: 'JerseyR', sans-serif;
+  font-family: "JerseyR", sans-serif;
   background-color: rgb(81, 90, 90);
   color: white;
   cursor: pointer;
@@ -85,7 +86,8 @@
 .btn-edit-ad:hover,
 .btn-save-ad:hover,
 .btn-change-status-ad:hover,
-.btn-close-ad:hover {
+.btn-close-ad:hover,
+.btn-delete-ad:hover {
   background-color: rgb(43, 48, 48);
 }
 
@@ -147,7 +149,7 @@
   border-radius: 8px;
   min-width: 100%;
   max-width: 100%;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 15px;
 }
 
@@ -167,7 +169,7 @@
   border-radius: 5px;
   border: none;
   padding: 10px 15px;
-  font-family: 'JerseyR', sans-serif;
+  font-family: "JerseyR", sans-serif;
   background-color: rgb(81, 90, 90);
   color: white;
   cursor: pointer;
@@ -207,7 +209,8 @@
   .btn-edit-ad,
   .btn-save-ad,
   .btn-change-status-ad,
-  .btn-close-ad {
+  .btn-close-ad,
+  .btn-delete-ad {
     font-size: 20px; /* Ajustar tamaño de botón */
   }
 }
