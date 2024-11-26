@@ -338,14 +338,13 @@ const ProposalsForms = () => {
         icon: "success",
         timer: 2000, // Duración del SweetAlert (en milisegundos)
         timerProgressBar: true,
-        willClose: () => {
-          if (isAdmin) {
-            navigate("/proposals"); // Redirige después de que se cierre el SweetAlert
-          } else {
-            navigate("/proposals_cm");
-          }
-        },
       });
+      if (isAdmin) {
+        navigate("/proposals"); // Redirige después de que se cierre el SweetAlert
+      } else {
+        navigate("/proposals_cm");
+      }
+
       //alert('Propuesta enviada con éxito');
       //navigate('/proposals'); // Redirige a la página deseada después de enviar la propuesta
     } catch (error) {
@@ -361,7 +360,6 @@ const ProposalsForms = () => {
       //alert('Hubo un error al enviar la propuesta: ' + (error.response ? error.response.data : error.message));
     } finally {
       setIsSubmitting(false);
-      Swal.close();
     }
   };
 
