@@ -220,7 +220,7 @@ function Calendar() {
           text: `Evento actualizado exitosamente`,
           icon: "success",
         });
-        alert("Evento actualizado exitosamente.");
+        //alert("Evento actualizado exitosamente.");
       })
       .catch((error) => {
         console.error("Error al actualizar el evento:", error);

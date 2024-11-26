@@ -323,30 +323,39 @@ const ProposalsForms = () => {
     }
 
     try {
-      const response = await axios.post(`${URL}/content_proposal/`, formData, {
+      const response = await fetch(`${URL}/content_proposal/`, {
+        method: "POST",
         headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Token ${token}`, // Asegúrate de que el token esté en el formato correcto
+          Authorization: `Token ${token}`,
         },
+        body: formData,
       });
 
-      console.log("Respuesta del servidor:", response.data);
+      if (!response.ok) {
+        const errorData = await response.json();
+        await Swal.fire({
+          title: "Error",
+          text: errorData.detail || "Hubo un error al enviar la propuesta.",
+          icon: "error",
+        });
+        return;
+      }
+
+      const responseData = await response.json();
+      console.log("Respuesta del servidor:", responseData);
 
       await Swal.fire({
         title: "Éxito",
         text: `Propuesta enviada con éxito`,
         icon: "success",
-        timer: 2000, // Duración del SweetAlert (en milisegundos)
+        timer: 2000,
         timerProgressBar: true,
       });
       if (isAdmin) {
-        navigate("/proposals"); // Redirige después de que se cierre el SweetAlert
+        navigate("/proposals");
       } else {
         navigate("/proposals_cm");
       }
-
-      //alert('Propuesta enviada con éxito');
-      //navigate('/proposals'); // Redirige a la página deseada después de enviar la propuesta
     } catch (error) {
       console.error(
         "Error al enviar la propuesta:",
