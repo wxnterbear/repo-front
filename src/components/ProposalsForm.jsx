@@ -357,7 +357,7 @@ const ProposalsForms = () => {
         navigate("/proposals_cm");
       }
     } catch (error) {
-      console.error(
+      console.log(
         "Error al enviar la propuesta:",
         error.response ? error.response.data : error.message
       );
