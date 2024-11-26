@@ -357,9 +357,9 @@ const ProposalsForms = () => {
         navigate("/proposals_cm");
       }
     } catch (error) {
-      console.log(
-        "Error al enviar la propuesta:",
-        error.response ? error.response.data : error.message
+      console.error(
+        "Error de red o inesperado al enviar la propuesta:",
+        error.message
       );
       Swal.fire({
         title: "Error",
