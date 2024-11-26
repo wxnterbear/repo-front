@@ -231,11 +231,22 @@ const ProposalDetail = () => {
 
           if (publishResponse.ok) {
             const publishResult = await publishResponse.json();
-            Swal.fire({
-              title: "Publicación exitosa",
-              text: `Propuesta publicada correctamente`,
-              icon: "success",
-            });
+
+            // Verificar si el status está en progreso
+            const instagramStatus = publishResult?.Instagram?.status;
+            if (instagramStatus === "IN_PROGRESS") {
+              await Swal.fire({
+                title: "Instagram en Progreso",
+                text: "La publicación en Instagram puede tardar unos minutos. ¡Gracias por esperar!",
+                icon: "info",
+              });
+            } else {
+              Swal.fire({
+                title: "Publicación exitosa",
+                text: `Propuesta publicada correctamente`,
+                icon: "success",
+              });
+            }
           } else {
             const publishErrorData = await publishResponse.json();
             const container_id =
