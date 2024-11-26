@@ -363,7 +363,7 @@ const ProposalsForms = () => {
       );
       Swal.fire({
         title: "Error",
-        text: `Hubo un error al enviar la propuesta `,
+        text: `Error de red o inesperado al enviar la propuesta`,
         icon: "warning",
       });
       //alert('Hubo un error al enviar la propuesta: ' + (error.response ? error.response.data : error.message));
